@@ -1,0 +1,21 @@
+/*--------------------------------------------------------------
+    NAVBAR
+--------------------------------------------------------------*/
+.navbar {
+    background-color: transparent;
+    height: 7vh;
+}
+.navbar , .side-nav > svg {
+    height: 4vh;
+    width: 4vh;
+  }
+.side-nav{
+    background-color: red;
+    height: screen;
+    width: 20%;
+    position: fixed;
+    z-index: 1;
+}
+.h100{
+    height: 200vh;
+}
