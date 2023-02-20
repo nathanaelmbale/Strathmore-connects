@@ -2,14 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { PostContextProvide } from './context/PostContext';
+import { PostsContextProvider } from './context/PostContext';
+import { AuthContextProvider } from './context/AuthContext';
+import { CommunityContextProvider } from './context/CommunityContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <PostContextProvide>
-      <App />
-    </PostContextProvide>
+    <AuthContextProvider>
+      <PostsContextProvider>
+        <CommunityContextProvider>
+          <App />
+        </CommunityContextProvider>
+      </PostsContextProvider>
+    </AuthContextProvider>
   </React.StrictMode>
 );
 
