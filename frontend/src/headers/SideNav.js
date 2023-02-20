@@ -25,7 +25,7 @@ $(document).ready(function () {
 const SideNav = () => {
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        {/*<nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
 
                 <button type="button" id="sidebarCollapse" className="btn btn-info">
@@ -53,7 +53,7 @@ const SideNav = () => {
                     </ul>
                 </div>
             </div>
-        </nav>
+    </nav>*/}
     )
 }
 

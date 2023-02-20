@@ -6,6 +6,7 @@ const {
         getPosts,
         deletePost
 } = require('../controllers/postController')
+
 const requireAuth = require('../middleware/requireAuth')
 
 //require route for all routes
@@ -33,7 +34,6 @@ const storage = multer.diskStorage({
         },
         filename: (req, file, callback) => {
                 console.log("File:" + file)
-
                 callback(null, filename + file.originalname)
         }
 })

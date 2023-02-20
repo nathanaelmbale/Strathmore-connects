@@ -3,7 +3,7 @@
 --------------------------------------------------------------*/
 .navbar {
     background-color: transparent;
-    height: 7vh;
+    width: 100%;
 }
 .navbar , .side-nav > svg {
     height: 4vh;

@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 //routes
 const userRoutes = require('./routes/user')
 const postRoutes = require('./routes/post')
+const communityRoutes = require('./routes/community')
 
 const URI = process.env.MONGO_URI
 const port = process.env.PORT
@@ -24,9 +25,11 @@ app.use((req, res, next) => {
 //route
 app.use('/user', userRoutes)
 app.use('/post', postRoutes)
+app.use('/community', communityRoutes)
 
 
-mongoose.set('strictQuery', true);
+
+mongoose.set('strictQuery', true)
 //connect to dtabase
 mongoose.connect(URI)
     .then(() => {
