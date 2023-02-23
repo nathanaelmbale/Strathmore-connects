@@ -13,3 +13,7 @@ https://nodejs.org/en/
 5. Type 'cd backend'
 6. Then type 'npm install'
 
+---------------------------------------------------------
+Frontend
+
+Here  we will make 
