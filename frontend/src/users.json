@@ -1,0 +1,29 @@
+{
+    "users": [
+        {
+            "_id": {
+                "$oid": "63e7ed64bb993c262040e1f2"
+            },
+            "email": "Mupoy@gmail.com",
+            "password": "$2b$10$BUaXmPzynSdgUx/Fbu3r9urqHaMe1XkTYQ5RJaJOl.hDHMG5jlZt6",
+            "__v": {
+                "$numberInt": "3"
+            },
+            "notification": [
+                {
+                    "_id": {
+                        "$oid": "63ee90d45ab9ec8aaa0de95d"
+                    },
+                    "title": "This is an other notification"
+                },
+                {
+                    "_id": {
+                        "$oid": "63ee90d45ab9ec8aba0de95d"
+                    },
+                    "title": "Chess club",
+                    "description": "Let us meet at stc 1st floor"
+                }
+            ]
+        }
+    ]
+}

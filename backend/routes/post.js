@@ -4,6 +4,8 @@ const {
         createPost,
         getMyPosts,
         getPosts,
+        comment,
+        deleteComment,
         deletePost
 } = require('../controllers/postController')
 
@@ -17,10 +19,15 @@ router.use(requireAuth)
 //gets all posts
 router.get('/', getPosts)
 
+
 //get my post
-router.get('/', getMyPosts)
+router.get('/mypost', getMyPosts)
 
+//make comment
+router.post('/comment' , comment)
 
+//delete comment
+router.delete('/uncomment' , deleteComment)
 
 //middleware 
 const multer = require('multer')
@@ -33,8 +40,9 @@ const storage = multer.diskStorage({
                 callback(null, '../frontend/src/uploads')
         },
         filename: (req, file, callback) => {
-                console.log("File:" + file)
                 callback(null, filename + file.originalname)
+                console.log("File:" + file.originalname)
+
         }
 })
 
@@ -42,7 +50,7 @@ const upload = multer({ storage: storage })
 //POST a posts
 router.post('/', upload.single("NAME"), createPost)
 //DELETE a posts
-router.delete('/:id', deletePost)
+router.delete('/delete', deletePost)
 
 
 module.exports = router

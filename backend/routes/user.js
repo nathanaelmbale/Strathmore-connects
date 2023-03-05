@@ -1,7 +1,7 @@
 const express = require('express')
 
 //controller functions
-const { loginUser, signupUser ,myNotification , UserNotification ,DeleteNotification } =require('../controllers/userController')
+const { loginUser, signupUser ,myNotification , userNotification ,DeleteNotification } =require('../controllers/userController')
 
 const router = express.Router()
 
@@ -12,10 +12,10 @@ router.post('/login', loginUser)
 router.post('/signup', signupUser)
 
 //get notification
-router.get('/notification', myNotification)
+router.post('/notification', myNotification)
 
 //add notification
-router.post('/notification/add', UserNotification)
+router.post('/notification/add', userNotification)
 
 //Delete 
 router.delete('/notification/delete', DeleteNotification)

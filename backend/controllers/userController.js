@@ -15,10 +15,10 @@ const loginUser = async (req, res) => {
         //create a token
         const token = createToken(user._id)
 
-        res.status(200).json({email, token})
+        res.status(200).json({ email, token })
 
     } catch (error) {
-        res.status(400).json({msg: error.message})
+        res.status(400).json({ msg: error.message })
     }
 
 }
@@ -41,7 +41,100 @@ const signupUser = async (req, res) => {
     }
 }
 
+
+//notification
+const myNotification = async (req ,res) => {
+    const { email } = req.body
+    console.log(req.body)
+
+    try {
+        const user = await User.findOne({ email })
+        if (!user) {
+            throw Error('Couldnt find an email')
+        }
+
+        res.status(200).json({ email: user.email, notification: user.notification})
+
+    } catch (error) {
+
+        res.status(400).json({ msg: error.message })
+    }
+}
+
+//Create a user notification
+const userNotification = async (req, res) => {
+    console.log(" notify",req.body)
+    //notification is the id of the post
+    const { _id, notificationId, title , description } = req.body
+        console.log(req.body)
+        console.log(_id , notificationId , title ,description)
+    try {
+        //const user = await User.login(_id)
+        const user = await User.findById({ _id: _id })
+        if (!user) {
+            throw Error('Invalid user')
+        }
+        console.log("Found user" , user)
+
+        // create new notification object
+        const newNotification = {
+            _id: notificationId,
+            title: title ,
+            description: description
+        }
+        
+        
+        
+        // add notification object to user document
+        console.log(newNotification.description)
+        user.notification.push(newNotification);
+
+        // save changes to database
+        await user.save()
+
+        res.status(200).json({ email: user.email, notification: user.notification})
+
+    } catch (error) {
+        res.status(400).json({ msg: error.message })
+    }
+}
+
+//delete notification
+const DeleteNotification = async (req, res) => {
+    const { email, notificationId } = req.body
+
+    console.log("body",req.body)
+
+    try {
+        
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        // find index of notification with given ID
+        const index = user.notification.findIndex(n => n._id.toString() === notificationId);
+        if (index === -1) {
+            throw new Error('Notification not found');
+        }
+
+        // remove notification from array
+        user.notification.splice(index, 1)
+
+        // save changes to database
+        await user.save();
+
+        res.status(200).json({ email: user.email, notification: user.notification});
+
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+}
 module.exports = {
     loginUser,
-    signupUser
+    signupUser,
+    myNotification,
+    userNotification,
+    DeleteNotification
 }

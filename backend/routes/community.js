@@ -46,6 +46,6 @@ router.post('/', createCommunity)
 router.post('/unjoin', removeAccountFromCommunity)
 
 //DELETE a Communities
-router.delete('/:id', deleteCommunity)
+router.delete('/delete', deleteCommunity)
 
 module.exports = router;

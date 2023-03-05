@@ -32,7 +32,7 @@ const Communities = () => {
             id: community._id,
             name: community.name,
             description: community.description
-        };
+        }
         console.log("dammm", userToCommunity)
 
         fetch('/community', {
@@ -53,6 +53,32 @@ const Communities = () => {
 
     }
 
+    const deleteCommunity = async (community) => {
+        const userToCommunity = {
+            id: community._id,
+            name: community.name,
+            description: community.description
+        }
+
+        console.log("dammm", userToCommunity)
+
+        fetch('/community/delete', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+            body: JSON.stringify(userToCommunity)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+
+            }).catch((error) => {
+                console.log(error.message)
+            })
+    }
+
     return (
         <>
             <h3>Communities</h3>
@@ -62,6 +88,7 @@ const Communities = () => {
                         <h4>{community.name}</h4>
                         <p>{community.description}</p>
                         <button onClick={() => joinedCommunity(community)} className="btn btn-outline-primary">Join</button>
+                        <button onClick={() => deleteCommunity(community)} className="btn btn-danger ml-5">Delete</button>
                     </div>
                 </>
             ))}

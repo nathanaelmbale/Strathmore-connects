@@ -19,7 +19,7 @@ const createCommunity = async (req, res) => {
     console.log(name + " " + description + _id)
     //adds doc to db
     try {
-        const existingCommunity = await Community.findOne({ _id })
+        const existingCommunity = await Community.findOne({ name })
 
         if (existingCommunity) {
             existingCommunity.accounts.push(req.user._id)
@@ -27,6 +27,7 @@ const createCommunity = async (req, res) => {
             console.log(updatedCommunity)
             res.status(200).json(updatedCommunity)
         } else {
+            
             const newCommunity = await Community.create({
                 name,
                 description,
@@ -82,17 +83,21 @@ const removeAccountFromCommunity = async (req, res) => {
 }
 //delete a Item
 const deleteCommunity = async (req, res) => {
-    const { id } = req.params
+    const { id } = req.body
+    console.log(req.body)
     //checks if id is valid
     if (!mongoose.Types.ObjectId.isValid(id)) {
         res.status(404).json({ error: " No such item" })
     }
     //finds id
-    const community = await Community.findOneAndDelete({ _id: id }).sort({ createdAt: -1 })
+    const community = await Community.findById({ _id: id }).sort({ createdAt: -1 })
 
+    console.log("community",community)
     if (!community) {
         return res.status(404).json({ error: "community not found" })
     }
+
+    await community.remove()
 
     res.status(200).json(community)
     console.log("community was deleted")

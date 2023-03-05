@@ -8,6 +8,7 @@ import PageNotFound from './pages/PageNotFound';
 import Signup from "./pages/Signup";
 import Navbar from "./headers/Navbar";
 import { useAuthContext } from "./hooks/useAuthContext";
+import PostDetails from "./components/PostDetails";
 
 function App() {
   const { user } = useAuthContext()
@@ -20,6 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/posts/:postId" element={<PostDetails />} />
           <Route path='/settings'></Route>
           <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/" />} />
           <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
