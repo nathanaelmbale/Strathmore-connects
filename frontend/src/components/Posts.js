@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 const Posts = () => {
     const { user } = useAuthContext()
     const { posts } = usePostContext()
-    console.log("Posts by",posts)
+    console.log("Posts by", posts)
     const deletePost = async (post) => {
         const postDelete = {
             _id: post._id
@@ -60,22 +60,22 @@ const Posts = () => {
             <h1>Posts</h1>
             {posts && posts.map(post => (
                 <div className='card m-5' key={post._id}>
-                    {post.imagePath === "undefined" ?
-                        <></> : 
-                        <>
+                    {post.imagePath && (
                         <img
                             src={require(`../uploads/${post.imagePath}`)}
                             className='card-img-top'
                             style={{ "width": "100%" }}
                             alt={post.description}
                         />
-                        </>
-                    }
+                    )}
+
                     <div className='card-body'>
                         <h4 className='card-title'>{post.title}</h4>
                         <p className='card-text'>{post.description}</p>
-                        <Link className='btn btn-outline-primary mr-4' to={`/posts/${post._id}`}>view post</Link>
+                        <Link className='btn btn-primary mr-4' to={`/posts/${post._id}`}>view post</Link>
+                        {user.admin === true ? 
                         <button className='btn btn-danger' onClick={() => deletePost(post)}>delete</button>
+                        : null }
                     </div>
                 </div>
             ))}

@@ -83,7 +83,7 @@ const removeAccountFromCommunity = async (req, res) => {
 }
 //delete a Item
 const deleteCommunity = async (req, res) => {
-    const { id } = req.body
+    const { id , username } = req.body
     console.log(req.body)
     //checks if id is valid
     if (!mongoose.Types.ObjectId.isValid(id)) {

@@ -16,11 +16,19 @@ const postSchema = new Schema(
             type: String,
             required: false
         }, 
+        community: {
+            type: String ,
+            required: true
+        },
         imagePath: {
             type: String ,
             required: false
         },
         user_id: {
+            type: String,
+            required: true
+        },
+        email: {
             type: String,
             required: true
         },

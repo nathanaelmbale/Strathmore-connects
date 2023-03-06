@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 // get all the posts
 const getPosts = async (req, res) => {
     const posts = await Post.find({}).sort({ createdAt: -1 })
+    
 
     res.status(200).json(posts)
 }
@@ -23,10 +24,9 @@ const getMyPosts = async (req, res) => {
 
 //create a new Item
 const createPost = async (req, res) => {
+    console.log("request", req.body)
     //defines parameters for the data to be inputed in the database
     const { title, description, category, community , email } = req.body
-    //the community name used to find the users of a commmunity
-    const communityId = community
     //this is the image path
     const imagePath = req.file && req.file.filename
 
@@ -36,29 +36,28 @@ const createPost = async (req, res) => {
         //this os the user making the post
         const user = await User.findOne({email: email})
         const user_id = user._id
-        console.log(user)
-        console.log(req.user)
 
-        if (category == "post") {
-            //the schema takes in title category communityId , imagepath(optional) , user_id
-            const post = await Post.create({ title, description, category, communityId, imagePath, user_id })
+        //console.log(req.user)
+
+        if (!imagePath) {
+            //the schema takes in title category community , imagepath(optional) , user_id
+            const post = await Post.create({ title, description, category, community, email, user_id })
             //confirm post has been made
             console.log("Post made today:" + post)
             //find the community by its name and get the accounts in that community
-            const accountList = await Community.findById({ _id: communityId })
-            const accounts = accountList.accounts
-            console.log("here")
+            const community = await Community.findOne({ community : community })
+            const accounts = community.accounts
+            
 
             res.status(200).json({ post, accounts })
         } else {
-            //the schema takes in title category communityId , imagepath(optional) , user_id
-            const post = await Post.create({ title, description, category, communityId, imagePath, user_id })
+            //the schema takes in title category communityId , imagepath , user_id
+            const post = await Post.create({ title, description, category, email, community, imagePath, user_id })
             //confirm post has been made
             console.log("Post made today:" + post)
             //find the community by its name and get the accounts in that community
-            const accountList = await Community.findById({ _id: communityId })
-            const accounts = accountList.accounts
-            console.log("here")
+            const community = await Community.findById({ _id: community })
+            const accounts = community.accounts
 
 
             res.status(200).json({ post, accounts })
@@ -100,7 +99,8 @@ const comment = async (req, res) => {
 //delete comment
 const deleteComment = async (req, res) => {
     const { postId, commentId } = req.body;
-  
+    
+    console.log(postId ,commentId)
     try {
       const post = await Post.findById(postId);
   

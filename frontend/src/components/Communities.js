@@ -87,8 +87,11 @@ const Communities = () => {
                     <div key={community._id}>
                         <h4>{community.name}</h4>
                         <p>{community.description}</p>
-                        <button onClick={() => joinedCommunity(community)} className="btn btn-outline-primary">Join</button>
+                        <button onClick={() => joinedCommunity(community)} className="btn btn-primary">Join</button>
+                        {user.admin === true ? 
                         <button onClick={() => deleteCommunity(community)} className="btn btn-danger ml-5">Delete</button>
+                        :null
+                        }
                     </div>
                 </>
             ))}

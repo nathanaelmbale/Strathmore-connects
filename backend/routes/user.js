@@ -1,7 +1,7 @@
 const express = require('express')
 
 //controller functions
-const { loginUser, signupUser ,myNotification , userNotification ,DeleteNotification } =require('../controllers/userController')
+const { loginUser, signupUser ,myNotification , userNotification ,DeleteNotification ,DeleteAccount } =require('../controllers/userController')
 
 const router = express.Router()
 
@@ -17,8 +17,11 @@ router.post('/notification', myNotification)
 //add notification
 router.post('/notification/add', userNotification)
 
-//Delete 
+//Delete notification
 router.delete('/notification/delete', DeleteNotification)
 
+
+//Delete account
+router.delete('/account/delete', DeleteAccount)
 
 module.exports = router

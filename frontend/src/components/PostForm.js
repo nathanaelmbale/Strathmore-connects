@@ -22,6 +22,7 @@ const PostForm = () => {
         formData.append('description', description)
         formData.append('category', category)
         formData.append('community', community)
+        console.log(community+ " community")
         formData.append('email', email)
 
 
@@ -42,13 +43,13 @@ const PostForm = () => {
                 const notifyUsers = async (email, notificationId, title, description) => {
                     //console.log(email, notificationId, title, description)
                     const userArray = await json.accounts
-                    //console.log("notify", userArray[0])
-                    //console.log("notify", userArray.length)
-                    
+                    console.log("notify", userArray[0])
+                    console.log("notify", userArray.length)
+
                     for (let i = 0; i < userArray.length; i++) {
                         //console.log(userArray[i]);
                         const _id = userArray[i]
-            
+
                         const body = {
                             email,
                             notificationId,
@@ -56,7 +57,7 @@ const PostForm = () => {
                             description,
                             _id
                         }
-            
+
                         try {
                             await fetch('user/notification/add', {
                                 method: 'POST',
@@ -69,10 +70,10 @@ const PostForm = () => {
                             //const json = await response.json();
                             //console.log('Notification sent:', json);
                         } catch (error) {
-                            //console.error(error);
+                            console.error(error);
                         }
                     }
-            
+
                 }
 
                 if (json.accounts[0]) {
@@ -96,47 +97,49 @@ const PostForm = () => {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    <input type="file" name="NAME" onChange={(e) => {
-                        //console.log("The file property",e.target.files[0])
-                        const image = e.target.files[0]
-                        setFile(image)
-                    }} />
-                </label>
+            {user && user.admin === true ?
+                <form onSubmit={handleSubmit}>
+                    <label>
+                        <input type="file" name="NAME" onChange={(e) => {
+                            //console.log("The file property",e.target.files[0])
+                            const image = e.target.files[0]
+                            setFile(image)
+                        }} />
+                    </label>
 
-                <label>
-                    Title:
-                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-                </label>
-                <label>
-                    Description:
-                    <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-                </label>
-                <label>
-                    Type:
-                    <select value={category} onChange={(e) => setCategory(e.target.value)}>
-                        <option value="">Select a type</option>
-                        <option value="post">Post</option>
-                        <option value="comment">Comment</option>
-                    </select>
-                </label>
-                <label>
-                    Community:
-                    <select value={community} onChange={(e) => setCommunity(e.target.value)}>
-                        <option value="">Select a community</option>
-                        {communities && communities.map(communite => (
-                            <>
-                                <option key={communite._id} value={communite._id}>
-                                    {communite.name}
-                                </option>
-                            </>
-                        ))}
-                    </select>
-                </label>
+                    <label>
+                        Title:
+                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    </label>
+                    <label>
+                        Description:
+                        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                    </label>
+                    <label>
+                        Type:
+                        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                            <option value="">Select a type</option>
+                            <option value="post">Post</option>
+                            <option value="comment">Comment</option>
+                        </select>
+                    </label>
+                    <label>
+                        Community:
+                        <select value={community} onChange={(e) => setCommunity(e.target.value)}>
+                            <option value="">Select a community</option>
+                            {communities && communities.map(communite => (
+                                <>
+                                    <option key={communite._id} value={communite._id}>
+                                        {communite.name}
+                                    </option>
+                                </>
+                            ))}
+                        </select>
+                    </label>
 
-                <button type="submit" className='btn btn-outline-primary'>Submit</button>
-            </form>
+                    <button type="submit" className='btn btn-outline-primary'>Submit</button>
+                </form>
+                : null}
         </>
     )
 }

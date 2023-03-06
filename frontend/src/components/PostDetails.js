@@ -12,31 +12,8 @@ function PostDetails() {
     const [comments, setComments] = useState(null)
     const [creator, setCreator] = useState("")
 
-    useEffect(() => {
-        const fetchPosts = async () => {
-            const response = await fetch('/post', {
-                headers: { 'Authorization': `Bearer ${user.token}` },
-            })
-            const json = await response.json()
-            //console.log(JSON.stringify(json)) --the posts
-
-            if (response.ok) {
-                dispatch({ type: 'SET_POSTS', payload: json })
-                const currentPost = await json.find(post => post._id === postId)
-                setPost(currentPost)
-                setComments(currentPost.comments)
-                setCreator(currentPost.user_id)
-                //console.log("comments", currentPost.comments)
-                //console.log("creator", creator)
-            }
-        }
 
 
-        if (user) {
-            fetchPosts()
-        }
-
-    }, [dispatch, user, postId, creator])
 
     const notifyUser = async () => {
 
@@ -69,9 +46,10 @@ function PostDetails() {
         }
 
     }
+
     const makeAComment = async (e) => {
         e.preventDefault()
-        console.log("event", post)
+
         const obj = {
             _id: post._id,
             comment: comment,
@@ -88,7 +66,7 @@ function PostDetails() {
             })
             const json = await response.json();
             //console.log("commentsss", json)--the creators notification
-            if (json) {
+            if (json && user.email !== post.email) {
                 notifyUser()
             }
 
@@ -96,6 +74,97 @@ function PostDetails() {
             console.log(error);
         }
     }
+
+    const deleteComment = async (commentId) => {
+        const obj = {
+            postId: post._id,
+            commentId: commentId
+        }
+        try {
+            const response = await fetch('/post/uncomment', {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                },
+                body: JSON.stringify(obj)
+            })
+            const json = await response.json()
+            console.log(json)
+            //delete the comment from the user notification
+            if (json.message === "Comment deleted successfully") {
+                console.log("email", post)
+                try {
+                    const request = {
+                        email: post.email,
+                        notificationId: postId
+                    }
+
+                    const response = await fetch('/user/notification/delete', {
+                        method: "DELETE",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${user.token}`
+                        },
+                        body: JSON.stringify(request)
+                    })
+                    const json = await response.json()
+                    console.log("deleted notification", json)
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
+    useEffect(() => {
+        //fetch posts
+        const fetchPosts = async () => {
+            const response = await fetch('/post', {
+                headers: { 'Authorization': `Bearer ${user.token}` },
+            })
+            const json = await response.json()
+            //console.log(JSON.stringify(json)) --the posts
+
+            if (response.ok) {
+                dispatch({ type: 'SET_POSTS', payload: json })
+                //find the post on which the route you are in currently is
+                const currentPost = await json.find(post => post._id === postId)
+                setPost(currentPost)
+                setComments(currentPost.comments)
+                setCreator(currentPost.user_id)
+                //console.log("comments", currentPost.comments)
+                //console.log("creator", creator)
+            }
+        }
+
+        const partOfCommunity = async () => {
+            //finf the current community
+            const response = await fetch('/community', {
+                headers: { 'Authorization': `Bearer ${user.token}` },
+            })
+            const json = await response.json()
+            console.log(JSON.stringify(json))
+            //capture the communityId use it to find if the user can comment or not 
+            if (response.ok) {
+                //find the post on which the route you are in currently is
+                const currentCommunity = await json.find(community => community._id === post.community)
+                console.log("current community", currentCommunity._id)
+            }
+
+
+        }
+
+        if (user) {
+            fetchPosts()
+            partOfCommunity()
+        }
+
+    }, [dispatch, user, postId])
 
     return (
         <>
@@ -125,13 +194,13 @@ function PostDetails() {
                 </form>
 
                 {comments && comments.map(comm => (
-                    <>
-                        <div key={comm._id}>
-                            <div>{comm.comment}</div>
-                            <small className="form-text text-muted">Post made by {comm.user}</small>
-                        </div>
-                    </>
+                    <div key={comm._id}>
+                        <div>{comm.comment}</div>
+                        <button className="btn btn-outline-danger" onClick={() => deleteComment(comm._id)}>Delete</button>
+                        <small className="form-text text-muted">Post made by {comm.user}</small>
+                    </div>
                 ))}
+
             </div>
         </>
     )
