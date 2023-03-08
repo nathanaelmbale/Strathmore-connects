@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useCommunityContext } from '../hooks/useCommunityContext'
+import { usePostContext } from '../hooks/usePostsContext'
 
 const PostForm = () => {
     const [file, setFile] = useState()
@@ -11,7 +12,7 @@ const PostForm = () => {
     const [community, setCommunity] = useState('')
     const { user } = useAuthContext()
     const { communities } = useCommunityContext()
-
+    const { dispatch } = usePostContext() 
     const handleSubmit = async (e) => {
         e.preventDefault()
         const email = user.email
@@ -22,7 +23,7 @@ const PostForm = () => {
         formData.append('description', description)
         formData.append('category', category)
         formData.append('community', community)
-        console.log(community+ " community")
+        //console.log(community+ " community")
         formData.append('email', email)
 
 
@@ -34,17 +35,16 @@ const PostForm = () => {
         })
             .then(async (response) => {
                 const json = response.data
+                console.log("Response post: " + JSON.stringify(json.post))
                 /*
                 console.log("Response data: " + JSON.stringify(json))
-                console.log("Response post: " + JSON.stringify("posts" ,json.post))
+                
                 console.log("Response accounts: " + JSON.stringify(json.accounts))
                 */
-
+                dispatch({ type: "CREATE_POST", payload: json.post })
                 const notifyUsers = async (email, notificationId, title, description) => {
                     //console.log(email, notificationId, title, description)
                     const userArray = await json.accounts
-                    console.log("notify", userArray[0])
-                    console.log("notify", userArray.length)
 
                     for (let i = 0; i < userArray.length; i++) {
                         //console.log(userArray[i]);
@@ -86,6 +86,13 @@ const PostForm = () => {
                     )
                 }
 
+                setCategory("")
+                setCommunity(null)
+                setDescription("")
+                setFile(null)
+                setTitle("")
+                setCommunity("Select a community")
+
             })
             .catch(error => {
                 console.error(error);
@@ -98,46 +105,55 @@ const PostForm = () => {
     return (
         <>
             {user && user.admin === true ?
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        <input type="file" name="NAME" onChange={(e) => {
+                <form onSubmit={handleSubmit} className="container m-4">
+                    <div className='container'>
+                    <div className="form-group">
+                        <label>Image </label>
+                        <input className="form-control" type="file" name="NAME" onChange={(e) => {
                             //console.log("The file property",e.target.files[0])
                             const image = e.target.files[0]
                             setFile(image)
                         }} />
-                    </label>
+                    </div>
 
-                    <label>
-                        Title:
-                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-                    </label>
-                    <label>
-                        Description:
-                        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-                    </label>
-                    <label>
-                        Type:
-                        <select value={category} onChange={(e) => setCategory(e.target.value)}>
-                            <option value="">Select a type</option>
-                            <option value="post">Post</option>
-                            <option value="comment">Comment</option>
-                        </select>
-                    </label>
-                    <label>
-                        Community:
-                        <select value={community} onChange={(e) => setCommunity(e.target.value)}>
-                            <option value="">Select a community</option>
-                            {communities && communities.map(communite => (
-                                <>
-                                    <option key={communite._id} value={communite._id}>
-                                        {communite.name}
-                                    </option>
-                                </>
-                            ))}
-                        </select>
-                    </label>
+                    <div className="form-group">
+
+                        <label>
+                            Title:</label>
+                        <input className="form-control" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+
+                    </div>
+
+                    <div className="form-group">
+                    <label>Description:</label>
+                    <input className="form-control" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                    </div>
+
+                    <div className="form-group">
+                    <label>Type:  </label>
+                    <select className="form-control" value={category} onChange={(e) => setCategory(e.target.value)}>
+                        <option value="">Select a type</option>
+                        <option value="post">Post</option>
+                        <option value="comment">Comment</option>
+                    </select>
+                    </div>
+
+                    <div className="form-group">
+                    <label>Community:</label>
+                    <select value={community} className="form-control" onChange={(e) => setCommunity(e.target.value)}>
+                        <option value="">Select a community</option>
+                        {communities && communities.map(communite => (
+                            <>
+                                <option key={communite._id} value={communite._id}>
+                                    {communite.name}
+                                </option>
+                            </>
+                        ))}
+                    </select>
+                    </div>
 
                     <button type="submit" className='btn btn-outline-primary'>Submit</button>
+                    </div>
                 </form>
                 : null}
         </>

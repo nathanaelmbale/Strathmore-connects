@@ -15,6 +15,7 @@ export const PostReducer =(state, action) =>{
                 return {
                     //returns one post ...spreads the state
                     posts: [ action.payload, ...state.posts]
+                    
                 }
             
                 case 'DELETE_POST':

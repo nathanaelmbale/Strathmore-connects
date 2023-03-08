@@ -7,7 +7,7 @@ const Notification = () => {
 
     const [notifications, setNotification] = useState([]);
     useEffect(() => {
-        console.log("Actual user", user)
+        //console.log("Actual user", user)
         const getNotifications = async () => {
             const response = await fetch('user/notification', {
                 method: "POST",
@@ -20,7 +20,7 @@ const Notification = () => {
 
             const json = await response.json();
             setNotification(json.notification);
-            console.log("json:" + JSON.stringify(json))
+            //console.log("json:" + JSON.stringify(json))
         }
 
         if (user) {

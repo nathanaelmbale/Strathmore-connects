@@ -6,13 +6,14 @@ import { Link } from 'react-router-dom'
 
 const Posts = () => {
     const { user } = useAuthContext()
-    const { posts } = usePostContext()
-    console.log("Posts by", posts)
+    const { posts ,dispatch } = usePostContext()
+
     const deletePost = async (post) => {
+
         const postDelete = {
             _id: post._id
         }
-        console.log("post id", post._id)
+        
         fetch('post/delete', {
             method: 'DELETE',
             headers: {
@@ -24,6 +25,7 @@ const Posts = () => {
             .then(response => response.json())
             .then(data => {
                 console.log("deleted", data.posts)
+                dispatch({ type: "DELETE_POST", payload:  data.posts })
                 if (data.message === "post was deleted") deleteNotification(data.posts._id)
 
             }).catch((error) => {

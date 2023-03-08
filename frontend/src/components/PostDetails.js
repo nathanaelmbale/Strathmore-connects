@@ -40,7 +40,7 @@ function PostDetails() {
                 body: JSON.stringify(body)
             });
             const json = await response.json();
-            console.log('Notification sent:', json);
+            //console.log('Notification sent:', json);
         } catch (error) {
             console.error(error);
         }
@@ -71,7 +71,7 @@ function PostDetails() {
             }
 
         } catch (error) {
-            console.log(error);
+            //console.log(error);
         }
     }
 
@@ -90,7 +90,7 @@ function PostDetails() {
                 body: JSON.stringify(obj)
             })
             const json = await response.json()
-            console.log(json)
+            //console.log(json)
             //delete the comment from the user notification
             if (json.message === "Comment deleted successfully") {
                 console.log("email", post)
@@ -109,7 +109,7 @@ function PostDetails() {
                         body: JSON.stringify(request)
                     })
                     const json = await response.json()
-                    console.log("deleted notification", json)
+                    //("deleted notification", json)
                 } catch (error) {
                     console.log(error);
                 }
@@ -148,12 +148,12 @@ function PostDetails() {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
             const json = await response.json()
-            console.log(JSON.stringify(json))
+            //console.log(JSON.stringify(json))
             //capture the communityId use it to find if the user can comment or not 
             if (response.ok) {
                 //find the post on which the route you are in currently is
                 const currentCommunity = await json.find(community => community._id === post.community)
-                console.log("current community", currentCommunity._id)
+                //console.log("current community", currentCommunity._id)
             }
 
 
@@ -164,7 +164,7 @@ function PostDetails() {
             partOfCommunity()
         }
 
-    }, [dispatch, user, postId])
+    }, [dispatch, user, postId ,post.community])
 
     return (
         <>

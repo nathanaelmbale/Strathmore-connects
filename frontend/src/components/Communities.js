@@ -6,14 +6,14 @@ const Communities = () => {
     const { user } = useAuthContext()
     const { communities, dispatch } = useCommunityContext()
 
-    console.log('user', user)
+    //console.log('user', user)
     useEffect(() => {
         const fetchPosts = async () => {
             const response = await fetch('/community', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
             const json = await response.json()
-            console.log("json:" + JSON.stringify(json))
+            //console.log("json:" + JSON.stringify(json))
             //test = JSON.stringify(json)
 
             if (response.ok) {
@@ -24,7 +24,7 @@ const Communities = () => {
         if (user) {
             fetchPosts()
         }
-    }, [dispatch, user])
+    }, [dispatch, user ])
 
     const joinedCommunity = async (community) => {
 
@@ -72,7 +72,8 @@ const Communities = () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
+                console.log('Success:', data)
+                dispatch({ type: "DELETE_COMMUNITY", payload: data })
 
             }).catch((error) => {
                 console.log(error.message)
@@ -88,7 +89,7 @@ const Communities = () => {
                         <h4>{community.name}</h4>
                         <p>{community.description}</p>
                         <button onClick={() => joinedCommunity(community)} className="btn btn-primary">Join</button>
-                        {user.admin === true ? 
+                        {user.admin  ? 
                         <button onClick={() => deleteCommunity(community)} className="btn btn-danger ml-5">Delete</button>
                         :null
                         }

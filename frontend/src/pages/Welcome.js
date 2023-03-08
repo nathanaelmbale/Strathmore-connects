@@ -17,7 +17,7 @@ const Welcome = () => {
         headers: { 'Authorization': `Bearer ${user.token}` },
       })
       const json = await response.json()
-      console.log("json:" + JSON.stringify(json))
+      //console.log("json:" + JSON.stringify(json))
       //test = JSON.stringify(json)
 
       if (response.ok) {

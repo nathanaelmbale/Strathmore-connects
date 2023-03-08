@@ -30,7 +30,6 @@ const createPost = async (req, res) => {
     //this is the image path
     const imagePath = req.file && req.file.filename
 
-
     //adds doc to db
     try {
         //this os the user making the post
@@ -45,8 +44,8 @@ const createPost = async (req, res) => {
             //confirm post has been made
             console.log("Post made today:" + post)
             //find the community by its name and get the accounts in that community
-            const community = await Community.findOne({ community : community })
-            const accounts = community.accounts
+            const communite = await Community.findOne({ community : community })
+            const accounts = communite.accounts
             
 
             res.status(200).json({ post, accounts })
@@ -56,8 +55,8 @@ const createPost = async (req, res) => {
             //confirm post has been made
             console.log("Post made today:" + post)
             //find the community by its name and get the accounts in that community
-            const community = await Community.findById({ _id: community })
-            const accounts = community.accounts
+            const communite = await Community.findById({ _id: community })
+            const accounts = communite.accounts
 
 
             res.status(200).json({ post, accounts })
