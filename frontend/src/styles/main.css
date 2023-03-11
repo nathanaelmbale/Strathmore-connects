@@ -19,3 +19,6 @@
 .h100{
     height: 200vh;
 }
+.delete-button:hover {
+    fill: aqua;
+}

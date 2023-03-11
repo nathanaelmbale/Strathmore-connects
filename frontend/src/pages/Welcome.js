@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import Communities from '../components/Communities'
 import CommunityForm from '../components/CommunityForm'
 import PostForm from '../components/PostForm'
-import Notification from '../components/Notification'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { usePostContext } from '../hooks/usePostsContext'
 import Posts from '../components/Posts'
@@ -37,7 +36,7 @@ const Welcome = () => {
   return (
     <>
       Welcome home
-      <Notification></Notification>
+      
       <div className='row'>
         <div className='col'>
           <PostForm></PostForm>

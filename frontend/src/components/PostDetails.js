@@ -152,7 +152,7 @@ function PostDetails() {
             //capture the communityId use it to find if the user can comment or not 
             if (response.ok) {
                 //find the post on which the route you are in currently is
-                const currentCommunity = await json.find(community => community._id === post.community)
+                //const currentCommunity = await json.find(community => community._id === post.community)
                 //console.log("current community", currentCommunity._id)
             }
 
@@ -164,7 +164,7 @@ function PostDetails() {
             partOfCommunity()
         }
 
-    }, [dispatch, user, postId ,post.community])
+    }, [dispatch, user, postId ])
 
     return (
         <>

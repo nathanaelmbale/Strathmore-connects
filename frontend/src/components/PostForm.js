@@ -43,11 +43,11 @@ const PostForm = () => {
                 */
                 dispatch({ type: "CREATE_POST", payload: json.post })
                 const notifyUsers = async (email, notificationId, title, description) => {
-                    //console.log(email, notificationId, title, description)
+                    console.log(email, notificationId, title, description)
                     const userArray = await json.accounts
 
                     for (let i = 0; i < userArray.length; i++) {
-                        //console.log(userArray[i]);
+                        console.log(userArray[i]);
                         const _id = userArray[i]
 
                         const body = {
@@ -59,7 +59,7 @@ const PostForm = () => {
                         }
 
                         try {
-                            await fetch('user/notification/add', {
+                            const response = await fetch('user/notification/add', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -67,8 +67,8 @@ const PostForm = () => {
                                 },
                                 body: JSON.stringify(body)
                             });
-                            //const json = await response.json();
-                            //console.log('Notification sent:', json);
+                            const json = await response.json();
+                            console.log('Notification sent:', json);
                         } catch (error) {
                             console.error(error);
                         }
@@ -85,14 +85,14 @@ const PostForm = () => {
 
                     )
                 }
-
+                /*
                 setCategory("")
                 setCommunity(null)
                 setDescription("")
                 setFile(null)
                 setTitle("")
                 setCommunity("Select a community")
-
+                */
             })
             .catch(error => {
                 console.error(error);

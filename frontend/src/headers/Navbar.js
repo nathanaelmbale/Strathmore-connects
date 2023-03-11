@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useLogout } from '../hooks/useLogout'
 import { useAuthContext } from '../hooks/useAuthContext'
+import Notification from '../components/Notification'
 
 const Navbar = () => {
     const { logout } = useLogout()
@@ -12,22 +13,37 @@ const Navbar = () => {
     return (
         <>
 
-            <nav className='navbar'>
-                <a href='/' >Home</a>
-                {!user && (
-                    <div className='login '>
-                        <Link to='/login' className='nav-item pr-3'>Log in</Link>
-                        <Link to='/signup' className='nav-item pr-3'>Sign up</Link>
+            <nav className='m-2'>
+                <div className='row'>
+                    <div className='col'>
+                        <a href='/' >Home</a>
                     </div>
-                )}
-                {/*Logout */}
-                {user && (
-                    <>
-                        <button className='btn btn-danger container' onClick={handleClick}>
-                            Log out
-                        </button>
-                    </>
-                )}
+                    <div className='col-8'></div>
+                    <div className='col'>
+                        {!user && (
+                            <div className='login '>
+                                <Link to='/login' className='nav-item pr-3'>Log in</Link>
+                                <Link to='/signup' className='nav-item pr-3'>Sign up</Link>
+                            </div>
+                        )}
+                        {/*Logout */}
+                        {user && (
+                            <div className='d-flex'>
+                                <div className=''>
+                                    <Notification></Notification>
+                                </div>
+
+                                <div className='pl-4'>
+                                    <button className='btn btn-danger' onClick={handleClick}>
+                                        Log out
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+
             </nav>
 
         </>

@@ -63,7 +63,7 @@ const myNotification = async (req, res) => {
 
 //Create a user notification
 const userNotification = async (req, res) => {
-    //console.log(" notify",req.body)
+    console.log(" notify",req.body)
     //notification is the id of the post
     const { _id, notificationId, title, description } = req.body
     //console.log(req.body)
@@ -74,7 +74,7 @@ const userNotification = async (req, res) => {
         if (!user) {
             throw Error('Invalid user')
         }
-        //console.log("Found user", user)
+        console.log("Found user", user.email)
 
         // create new notification object
         const newNotification = {
@@ -83,7 +83,7 @@ const userNotification = async (req, res) => {
             description: description
         }
 
-
+        console.log("hell",newNotification)
 
         // add notification object to user document
         //console.log(newNotification.description)

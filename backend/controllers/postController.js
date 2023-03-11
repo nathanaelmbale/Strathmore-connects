@@ -42,9 +42,9 @@ const createPost = async (req, res) => {
             //the schema takes in title category community , imagepath(optional) , user_id
             const post = await Post.create({ title, description, category, community, email, user_id })
             //confirm post has been made
-            console.log("Post made today:" + post)
+            //console.log("Post made today:" + post)
             //find the community by its name and get the accounts in that community
-            const communite = await Community.findOne({ community : community })
+            const communite = await Community.findById({ _id : community })
             const accounts = communite.accounts
             
 
@@ -56,6 +56,7 @@ const createPost = async (req, res) => {
             console.log("Post made today:" + post)
             //find the community by its name and get the accounts in that community
             const communite = await Community.findById({ _id: community })
+            console.log("users dd" ,communite.accounts)
             const accounts = communite.accounts
 
 
