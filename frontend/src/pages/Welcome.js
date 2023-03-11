@@ -28,23 +28,26 @@ const Welcome = () => {
       fetchPosts()
 
     }
-  }, [ dispatch, user])
+  }, [dispatch, user])
 
 
 
 
   return (
     <>
-      Welcome home
-      
-      <div className='row'>
-        <div className='col'>
-          <PostForm></PostForm>
-          <Posts></Posts>
-        </div>
-        <div className='col'>
-          <CommunityForm></CommunityForm>
-          <Communities></Communities>
+
+      <div className=''>
+        <div className='row'>
+          <div className='col-9'>
+            <div className='container p-5'>
+              <PostForm></PostForm>
+              <Posts></Posts>
+            </div>
+          </div>
+          <div className='col'>
+            <CommunityForm></CommunityForm>
+            <Communities></Communities>
+          </div>
         </div>
       </div>
     </>

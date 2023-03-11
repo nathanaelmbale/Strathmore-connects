@@ -24,7 +24,7 @@ const Communities = () => {
         if (user) {
             fetchPosts()
         }
-    }, [dispatch, user ])
+    }, [dispatch, user])
 
     const joinedCommunity = async (community) => {
 
@@ -85,14 +85,16 @@ const Communities = () => {
             <h3>Communities</h3>
             {communities && communities.map(community => (
                 <>
-                    <div key={community._id}>
-                        <h4>{community.name}</h4>
-                        <p>{community.description}</p>
-                        <button onClick={() => joinedCommunity(community)} className="btn btn-primary">Join</button>
-                        {user.admin  ? 
-                        <button onClick={() => deleteCommunity(community)} className="btn btn-danger ml-5">Delete</button>
-                        :null
-                        }
+                    <div className='conatiner'>
+                        <div key={community._id}>
+                            <h4>{community.name}</h4>
+                            <p>{community.description}</p>
+                            <button onClick={() => joinedCommunity(community)} className="btn btn-primary">Join</button>
+                            {user.admin ?
+                                <button onClick={() => deleteCommunity(community)} className="btn btn-danger ml-5">Delete</button>
+                                : null
+                            }
+                        </div>
                     </div>
                 </>
             ))}

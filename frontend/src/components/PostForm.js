@@ -105,8 +105,8 @@ const PostForm = () => {
     return (
         <>
             {user && user.admin === true ?
-                <form onSubmit={handleSubmit} className="container m-4">
-                    <div className='container'>
+                <form onSubmit={handleSubmit} >
+                    
                     <div className="form-group">
                         <label>Image </label>
                         <input className="form-control" type="file" name="NAME" onChange={(e) => {
@@ -153,7 +153,7 @@ const PostForm = () => {
                     </div>
 
                     <button type="submit" className='btn btn-outline-primary'>Submit</button>
-                    </div>
+                    
                 </form>
                 : null}
         </>

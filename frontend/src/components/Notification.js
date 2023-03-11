@@ -79,7 +79,7 @@ const Notification = () => {
             </div>
 
             {open ?
-            <span className='conatainer'>
+            <span className='conatainer notification-bar'>
                 {notifications.map(notification => (
                     <span className='card-body' key={notification._id}>
                         <h3>{notification.title}</h3>

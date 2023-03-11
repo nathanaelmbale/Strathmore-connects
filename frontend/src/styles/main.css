@@ -1,3 +1,9 @@
+/* ------------------------------------------------------------
+    ROOT
+---------------------------------------------------------------*/
+body{
+    overflow-x: hidden;
+}
 /*--------------------------------------------------------------
     NAVBAR
 --------------------------------------------------------------*/
@@ -21,4 +27,15 @@
 }
 .delete-button:hover {
     fill: aqua;
+}
+.notification{
+    position: relative;
+
+}
+.notification-bar{
+    position: absolute;
+    z-index: 1;
+    background-color: red;
+    width: 250px;
+    right: -80px;
 }

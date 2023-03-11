@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useLogout } from '../hooks/useLogout'
 import { useAuthContext } from '../hooks/useAuthContext'
 import Notification from '../components/Notification'
+import '../styles/main.css'
 
 const Navbar = () => {
     const { logout } = useLogout()
@@ -29,7 +30,7 @@ const Navbar = () => {
                         {/*Logout */}
                         {user && (
                             <div className='d-flex'>
-                                <div className=''>
+                                <div className='notification'>
                                     <Notification></Notification>
                                 </div>
 

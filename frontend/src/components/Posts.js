@@ -59,9 +59,10 @@ const Posts = () => {
     }
     return (
         <>
+        <div className=''>
             <h1>Posts</h1>
             {posts && posts.map(post => (
-                <div className='card m-5' key={post._id}>
+                <div className='card mt-2'  key={post._id}>
                     {post.imagePath && (
                         <img
                             src={require(`../uploads/${post.imagePath}`)}
@@ -81,6 +82,7 @@ const Posts = () => {
                     </div>
                 </div>
             ))}
+            </div>
         </>
     )
 }
