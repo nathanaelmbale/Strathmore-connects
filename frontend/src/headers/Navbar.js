@@ -13,8 +13,7 @@ const Navbar = () => {
     }
     return (
         <>
-
-            <nav className='m-2'>
+            <nav className='sticky-top shadow-lg bg-light'>
                 <div className='row'>
                     <div className='col'>
                         <a href='/' >Home</a>

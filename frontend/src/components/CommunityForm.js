@@ -36,7 +36,7 @@ const CommunityForm = () => {
     return (
         <>
             {user && user.admin ?
-                <form onSubmit={handleSubmit} className="container m-4">
+                <form onSubmit={handleSubmit} >
                     <div className="form-group">
                         <label>Community name</label>
                         <input className="form-control" type="text" value={name} onChange={(e) => setName(e.target.value)} />

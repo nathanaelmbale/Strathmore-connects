@@ -1,11 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useCommunityContext } from '../hooks/useCommunityContext'
+//import { Link } from 'react-router-dom'
+import '../styles/community.css'
+
 
 const Communities = () => {
     const { user } = useAuthContext()
     const { communities, dispatch } = useCommunityContext()
 
+    const [joinedCommunities, setJoinedCommunities] = useState([])
+    const [notJoinedCommunities, setNotJoinedCommunities] = useState([])
     //console.log('user', user)
     useEffect(() => {
         const fetchPosts = async () => {
@@ -21,10 +26,21 @@ const Communities = () => {
             }
         }
 
+
+
         if (user) {
             fetchPosts()
         }
     }, [dispatch, user])
+
+    useEffect(() => {
+        if (communities && communities.length > 0) {
+            const joined = communities.filter(community => community.accounts.includes(user._id))
+            setJoinedCommunities(joined)
+            const notJoined = communities.filter(community => !community.accounts.includes(user._id))
+            setNotJoinedCommunities(notJoined)
+        }
+    }, [communities, user])
 
     const joinedCommunity = async (community) => {
 
@@ -79,25 +95,41 @@ const Communities = () => {
                 console.log(error.message)
             })
     }
-
+    console.log("joined", joinedCommunities)
+    console.log("not joined", notJoinedCommunities)
     return (
         <>
-            <h3>Communities</h3>
-            {communities && communities.map(community => (
+            <h3 className='border-bottom py-4'>Communities</h3>
+            {joinedCommunities &&
                 <>
-                    <div className='conatiner'>
-                        <div key={community._id}>
-                            <h4>{community.name}</h4>
-                            <p>{community.description}</p>
-                            <button onClick={() => joinedCommunity(community)} className="btn btn-primary">Join</button>
-                            {user.admin ?
-                                <button onClick={() => deleteCommunity(community)} className="btn btn-danger ml-5">Delete</button>
-                                : null
-                            }
+                    <h6>Not joined Communities</h6>
+                    {notJoinedCommunities.map(community => (
+                        <div className='conatiner border-bottom p-2' key={community._id}>
+                            <div>
+                                <h4>{community.name}</h4>
+                                <p>{community.description}</p>
+                                <button onClick={() => joinedCommunity(community)} className="btn btn-outline-primary">Join</button>
+                                {user.admin &&
+                                    <button onClick={() => deleteCommunity(community)} className="btn btn-danger ml-5">Delete</button>
+                                }
+                            </div>
                         </div>
-                    </div>
+                    ))}
+                    <br></br>
+                    <h6>Joined Communities</h6>
+                    {joinedCommunities.map(community => (
+                        <div className='conatiner border-bottom p-2' key={community._id}>
+                            <h4>{community.name}</h4>
+                            <div className='community-description'>{community.description}</div>
+                                <button onClick={() => deleteCommunity(community)} className="btn btn-outline-danger">
+                                    Leave
+
+                                </button>
+                        </div>
+                    ))}
                 </>
-            ))}
+            }
+
         </>
     )
 }

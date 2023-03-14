@@ -15,7 +15,12 @@ const loginUser = async (req, res) => {
         //create a token
         const token = createToken(user._id)
 
-        res.status(200).json({ email, token, admin :user.admin })
+        res.status(200).json({
+            email,
+            token,
+            admin: user.admin,
+            _id: user._id
+        })
 
     } catch (error) {
         res.status(400).json({ msg: error.message })
@@ -34,7 +39,12 @@ const signupUser = async (req, res) => {
         //create a token
         const token = createToken(user._id)
 
-        res.status(200).json({ email, token, admin :user.admin })
+        res.status(200).json({
+            email,
+            token,
+            admin: user.admin,
+            _id: user._id
+        })
 
     } catch (error) {
         res.status(400).json({ msg: error.message })
@@ -63,7 +73,7 @@ const myNotification = async (req, res) => {
 
 //Create a user notification
 const userNotification = async (req, res) => {
-    console.log(" notify",req.body)
+    console.log(" notify", req.body)
     //notification is the id of the post
     const { _id, notificationId, title, description } = req.body
     //console.log(req.body)
@@ -83,7 +93,7 @@ const userNotification = async (req, res) => {
             description: description
         }
 
-        console.log("hell",newNotification)
+        console.log("hell", newNotification)
 
         // add notification object to user document
         //console.log(newNotification.description)
@@ -146,7 +156,7 @@ const DeleteAccount = async (req, res) => {
             throw new Error('User not found');
         }
 
-    console.log(user.email)
+        console.log(user.email)
 
         // check if user is an admin or the email matches the email on the schema
         if (user.admin !== true && user.email !== email) {

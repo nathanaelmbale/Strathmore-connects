@@ -1,0 +1,9 @@
+.exit-community {
+    position: relative;
+    top: 6px;
+    left: 5px;
+}
+
+.exit-community-btn :hover{
+    color: rgb(19, 109, 1);
+}

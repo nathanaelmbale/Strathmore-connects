@@ -5,6 +5,7 @@ import PostForm from '../components/PostForm'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { usePostContext } from '../hooks/usePostsContext'
 import Posts from '../components/Posts'
+import '../styles/welcome.css'
 
 const Welcome = () => {
   const { user } = useAuthContext()
@@ -30,21 +31,18 @@ const Welcome = () => {
     }
   }, [dispatch, user])
 
-
-
-
   return (
     <>
 
       <div className=''>
-        <div className='row'>
-          <div className='col-9'>
+        <div className='row m-0 p-0 '>
+          <div className='col-9 border-left'>
             <div className='container p-5'>
               <PostForm></PostForm>
               <Posts></Posts>
             </div>
           </div>
-          <div className='col'>
+          <div className='col border-left'>
             <CommunityForm></CommunityForm>
             <Communities></Communities>
           </div>

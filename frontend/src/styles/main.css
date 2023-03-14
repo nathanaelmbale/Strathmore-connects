@@ -1,9 +1,30 @@
 /* ------------------------------------------------------------
     ROOT
 ---------------------------------------------------------------*/
-body{
+:root {
+    --blue: #2f50d0;
+    --navy-blue: #0b115e;
+    --strathmore-red: #D21F26;
+    --strathmore-blue: #354e9d;
+}
+
+body {
     overflow-x: hidden;
 }
+.clickable :hover{
+    cursor: pointer;
+    color: rgb(19, 109, 1);
+}
+h1,h2,h3 {
+    color: var(--blue);
+}
+h6 {
+    color: #1f1f1fdc;
+}
+h5 {
+    color: var(--navy-blue);
+}
+
 /*--------------------------------------------------------------
     NAVBAR
 --------------------------------------------------------------*/
@@ -11,28 +32,35 @@ body{
     background-color: transparent;
     width: 100%;
 }
-.navbar , .side-nav > svg {
+
+.navbar,
+.side-nav>svg {
     height: 4vh;
     width: 4vh;
-  }
-.side-nav{
+}
+
+.side-nav {
     background-color: red;
     height: screen;
     width: 20%;
     position: fixed;
     z-index: 1;
 }
-.h100{
+
+.h100 {
     height: 200vh;
 }
+
 .delete-button:hover {
     fill: aqua;
 }
-.notification{
+
+.notification {
     position: relative;
 
 }
-.notification-bar{
+
+.notification-bar {
     position: absolute;
     z-index: 1;
     background-color: red;
