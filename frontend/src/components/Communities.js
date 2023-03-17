@@ -42,6 +42,7 @@ const Communities = () => {
         }
     }, [communities, user])
 
+    /*
     const joinedCommunity = async (community) => {
 
         const userToCommunity = {
@@ -67,7 +68,7 @@ const Communities = () => {
                 console.log(error.message)
             })
 
-    }
+    } */
 
     const deleteCommunity = async (community) => {
         const userToCommunity = {
@@ -99,37 +100,43 @@ const Communities = () => {
     console.log("not joined", notJoinedCommunities)
     return (
         <>
-            <h3 className='border-bottom py-4'>Communities</h3>
-            {joinedCommunities &&
-                <>
-                    <h6>Not joined Communities</h6>
-                    {notJoinedCommunities.map(community => (
-                        <div className='conatiner border-bottom p-2' key={community._id}>
-                            <div>
+            <div className=''>
+                <h3 className='border-bottom border-top py-2 pl-3'>Communities</h3>
+                {joinedCommunities &&
+                    <>
+                        {notJoinedCommunities.map(community => (
+                            <div className='conatiner community-header border-bottom pl-3 py-2' key={community._id}>
+
                                 <h4>{community.name}</h4>
-                                <p>{community.description}</p>
-                                <button onClick={() => joinedCommunity(community)} className="btn btn-outline-primary">Join</button>
+                                <p className='text-desc'>{community.description}</p>
+                                <small>Created on: {new Date(community.createdAt).toLocaleDateString('en-GB')}</small>
                                 {user.admin &&
-                                    <button onClick={() => deleteCommunity(community)} className="btn btn-danger ml-5">Delete</button>
+                                    <div className='my-2'>
+                                        <button onClick={() => deleteCommunity(community)} className="btn btn-danger ">Delete</button>
+                                    </div>
                                 }
                             </div>
-                        </div>
-                    ))}
-                    <br></br>
-                    <h6>Joined Communities</h6>
-                    {joinedCommunities.map(community => (
-                        <div className='conatiner border-bottom p-2' key={community._id}>
-                            <h4>{community.name}</h4>
-                            <div className='community-description'>{community.description}</div>
-                                <button onClick={() => deleteCommunity(community)} className="btn btn-outline-danger">
-                                    Leave
+                        ))}
 
-                                </button>
-                        </div>
-                    ))}
-                </>
-            }
+                        <h3 className='border-bottom community-header py-2 pl-3'>Communities joined</h3>
 
+                        {joinedCommunities.map(community => (
+                            <div className='conatiner border-bottom pl-3 py-2' key={community._id}>
+                                <h4>{community.name}</h4>
+                                <div className='community-description'>
+                                    <p className='text-desc'>{community.description}</p>
+                                    <small className='text-right'>Created on: {new Date(community.createdAt).toLocaleDateString('en-GB')}</small>
+                                </div>
+                                {user.admin &&
+                                    <div className='my-2'>
+                                        <button onClick={() => deleteCommunity(community)} className="btn btn-danger ">Delete</button>
+                                    </div>
+                                }
+                            </div>
+                        ))}
+                    </>
+                }
+            </div>
         </>
     )
 }

@@ -1,28 +1,52 @@
 /* ------------------------------------------------------------
     ROOT
 ---------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;700;800;900;1000&display=swap');
+
+
 :root {
     --blue: #2f50d0;
-    --navy-blue: #0b115e;
+    --navy-blue: #1b249b;
     --strathmore-red: #D21F26;
     --strathmore-blue: #354e9d;
 }
 
 body {
     overflow-x: hidden;
+    background-color: rgb(252, 252, 252);
+    font-family: 'Nunito', sans-serif;
+}
+bg-white{
+    background-color: white !important;
+}
+
+#welcome{
+    font-weight: 250;
+}
+
+#posts{
+    font-weight: 300;
 }
 .clickable :hover{
     cursor: pointer;
     color: rgb(19, 109, 1);
 }
 h1,h2,h3 {
-    color: var(--blue);
+    color: #000;
+    font-weight: 400;
+
 }
 h6 {
     color: #1f1f1fdc;
 }
-h5 {
+h5 ,h4 {
     color: var(--navy-blue);
+    font-weight: 300;
+}
+
+.text-desc{
+    color:rgb(0, 0, 0) ;
+    font-weight: 300;
 }
 
 /*--------------------------------------------------------------

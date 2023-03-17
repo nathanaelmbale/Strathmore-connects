@@ -34,15 +34,15 @@ const Welcome = () => {
   return (
     <>
 
-      <div className=''>
+      <div className='bg-white' id='welcome'>
         <div className='row m-0 p-0 '>
-          <div className='col-9 border-left'>
-            <div className='container p-5'>
+          <div className='col-9 m-2 border-left'>
+            <div id='posts' className='container p-5'>
               <PostForm></PostForm>
               <Posts></Posts>
             </div>
           </div>
-          <div className='col border-left'>
+          <div id='community' className='col m-0 p-0 border-left'>
             <CommunityForm></CommunityForm>
             <Communities></Communities>
           </div>
