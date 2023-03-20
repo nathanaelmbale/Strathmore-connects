@@ -59,7 +59,7 @@ const Posts = () => {
     }
     return (
         <>
-        <div className=''>
+        <div className='container'>
             <h1>Posts</h1>
             {posts && posts.map(post => (
                 <div className='card mt-2'  key={post._id}>
