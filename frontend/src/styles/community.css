@@ -7,3 +7,7 @@
 .exit-community-btn :hover{
     color: rgb(19, 109, 1);
 }
+.link:hover ,.clickable-title:hover {
+    color: blue;
+    text-decoration: none;
+}

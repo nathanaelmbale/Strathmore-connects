@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useCommunityContext } from '../hooks/useCommunityContext'
-//import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import '../styles/community.css'
 
 
@@ -107,7 +107,12 @@ const Communities = () => {
                         {notJoinedCommunities.map(community => (
                             <div className='conatiner community-header border-bottom pl-3 py-2' key={community._id}>
 
-                                <h4>{community.name}</h4>
+                                <Link
+                                    className='link'
+                                    to={`/community/${community._id}`}>
+                                    <h4 className='clickable-title'>{community.name}</h4>
+                                </Link>
+                                
                                 <p className='text-desc'>{community.description}</p>
                                 <small>Created on: {new Date(community.createdAt).toLocaleDateString('en-GB')}</small>
                                 {user.admin &&
@@ -122,7 +127,12 @@ const Communities = () => {
 
                         {joinedCommunities.map(community => (
                             <div className='conatiner border-bottom pl-3 py-2' key={community._id}>
-                                <h4>{community.name}</h4>
+                                <Link
+                                    className='link'
+                                    to={`/community/${community._id}`}>
+                                    <h4 className='clickable-title'>{community.name}</h4>
+                                </Link>
+                                
                                 <div className='community-description'>
                                     <p className='text-desc'>{community.description}</p>
                                     <small className='text-right'>Created on: {new Date(community.createdAt).toLocaleDateString('en-GB')}</small>

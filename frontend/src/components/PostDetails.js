@@ -65,6 +65,7 @@ function PostDetails() {
                 body: JSON.stringify(obj)
             })
             const json = await response.json();
+            setComment("")
             //console.log("commentsss", json)--the creators notification
             if (json && user.email !== post.email) {
                 notifyUser()
@@ -144,18 +145,9 @@ function PostDetails() {
 
         const partOfCommunity = async () => {
             //finf the current community
-            const response = await fetch('/community', {
+            await fetch('/community', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
-            const json = await response.json()
-            //console.log(JSON.stringify(json))
-            //capture the communityId use it to find if the user can comment or not 
-            if (response.ok) {
-                //find the post on which the route you are in currently is
-                //const currentCommunity = await json.find(community => community._id === post.community)
-                //console.log("current community", currentCommunity._id)
-            }
-
 
         }
 
@@ -164,39 +156,47 @@ function PostDetails() {
             partOfCommunity()
         }
 
-    }, [dispatch, user, postId ])
+    }, [dispatch, user, postId])
 
     return (
         <>
             <div className="container">
                 <h1>Posts</h1>
                 {post && (
-                    <div key={post._id} className='card-body'>
-                        {post && post.imagePath && (
-                            <img
-                                src={require(`../uploads/${post.imagePath}`)}
-                                className='card-img-top'
-                                style={{ "width": "38rem" }}
-                                alt={post.description}
-                            />
-                        )}
+                    <div className="card shadow">
+                        <div key={post._id} className='card-body'>
+                            {post && post.imagePath && (
+                                <img
+                                    src={require(`../uploads/${post.imagePath}`)}
+                                    className='card-img-top'
+                                    style={{ "width": "38rem" }}
+                                    alt={post.description}
+                                />
+                            )}
 
-                        <h4 className='card-title'>{post.title}</h4>
-                        <p className='card-text'>{post.description}</p>
-                        <small className="form-text text-muted">{post.category}</small>
+                            <h4 className='card-title'>{post.title}</h4>
+                            <p className='card-text'>{post.description}</p>
+                            <small className="form-text text-muted">{post.category}</small>
+                        </div>
                     </div>
                 )}
 
+                <div className=" m-2"></div>
+                <small id="emailHelp" className="form-text text-muted">
+                    Make a comment here
+                </small>
 
-                <form className="container" onSubmit={makeAComment}>
-                    <input type="text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="make a comment"></input>
-                    <input type="submit"></input>
+                <form className="" onSubmit={makeAComment}>
+                    <input type="text" className="form-control" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="make a comment"></input>
+                    <input type="submit" className="btn btn-primary my-2" name="comment" placeholder="comment" value="comment" ></input>
                 </form>
 
                 {comments && comments.map(comm => (
-                    <div key={comm._id}>
-                        <div>{comm.comment}</div>
-                        <button className="btn btn-outline-danger" onClick={() => deleteComment(comm._id)}>Delete</button>
+                    <div key={comm._id} className="comment">
+                        <div className="d-flex justify-content-between align-items-center">
+                            <div>{comm.comment}</div>
+                            <button className="btn btn-outline-danger" onClick={() => deleteComment(comm._id)}>Delete</button>
+                        </div>
                         <small className="form-text text-muted">Post made by {comm.user}</small>
                     </div>
                 ))}
