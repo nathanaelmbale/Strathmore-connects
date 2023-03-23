@@ -26,7 +26,7 @@ function App() {
           <Route path="/posts/:postId" element={<PostDetails />} />
           <Route path='/settings'></Route>
           <Route path="/test" element={<Test></Test>}></Route>
-          <Route path="/community" element={<CommunityForum/>}></Route>
+          <Route path="/community/:communityId" element={<CommunityForum/>}></Route>
           <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/" />} />
           <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
           <Route path="*" element={<PageNotFound />} />

@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { usePostContext } from "../hooks/usePostsContext"
+import { useCommentContext } from "../hooks/useCommentContext";
 
 function PostDetails() {
     const { dispatch } = usePostContext()
+    const { comments, dispatchComments } = useCommentContext()
     const { postId } = useParams()
     const { user } = useAuthContext()
     const [post, setPost] = useState(null)
     const [comment, setComment] = useState(null)
-    const [comments, setComments] = useState(null)
+    //const [commentss, setComments] = useState(null)
     const [creator, setCreator] = useState("")
 
 
@@ -39,7 +41,7 @@ function PostDetails() {
                 },
                 body: JSON.stringify(body)
             });
-            const json = await response.json();
+            await response.json();
             //console.log('Notification sent:', json);
         } catch (error) {
             console.error(error);
@@ -65,16 +67,21 @@ function PostDetails() {
                 body: JSON.stringify(obj)
             })
             const json = await response.json();
+            console.log("comment created", {})
             setComment("")
-            //console.log("commentsss", json)--the creators notification
+
+            //console.log("commentsss", json)//--the creators notification
+            dispatchComments({ type: 'SET_COMMENTS', payload: json })
+
             if (json && user.email !== post.email) {
                 notifyUser()
             }
 
         } catch (error) {
-            //console.log(error);
+            console.log(error);
         }
     }
+
 
     const deleteComment = async (commentId) => {
         const obj = {
@@ -91,7 +98,9 @@ function PostDetails() {
                 body: JSON.stringify(obj)
             })
             const json = await response.json()
-            //console.log(json)
+            console.log(json)
+            dispatchComments({ type: 'SET_COMMENTS', payload: json.comment })
+
             //delete the comment from the user notification
             if (json.message === "Comment deleted successfully") {
                 console.log("email", post)
@@ -109,7 +118,7 @@ function PostDetails() {
                         },
                         body: JSON.stringify(request)
                     })
-                    const json = await response.json()
+                    await response.json()
                     //("deleted notification", json)
                 } catch (error) {
                     console.log(error);
@@ -136,27 +145,19 @@ function PostDetails() {
                 //find the post on which the route you are in currently is
                 const currentPost = await json.find(post => post._id === postId)
                 setPost(currentPost)
-                setComments(currentPost.comments)
+                //setComments(currentPost.comments)
+                dispatchComments({ type: 'SET_COMMENTS', payload: currentPost.comments })
                 setCreator(currentPost.user_id)
                 //console.log("comments", currentPost.comments)
                 //console.log("creator", creator)
             }
         }
 
-        const partOfCommunity = async () => {
-            //finf the current community
-            await fetch('/community', {
-                headers: { 'Authorization': `Bearer ${user.token}` },
-            })
-
-        }
-
         if (user) {
             fetchPosts()
-            partOfCommunity()
         }
 
-    }, [dispatch, user, postId])
+    }, [dispatch, dispatchComments, user, postId])
 
     return (
         <>

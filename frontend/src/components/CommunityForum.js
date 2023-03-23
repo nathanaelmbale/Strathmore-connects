@@ -1,13 +1,28 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { usePostContext } from '../hooks/usePostsContext'
-import Posts from '../components/Posts'
+import { useParams, Link } from 'react-router-dom'
 import Communities from '../components/Communities'
+import { useCommunityContext } from '../hooks/useCommunityContext'
+import CommunityPost from './CommunityPost'
+
+//allow user to post -comment
+//start handling errors
+
 
 
 const CommunityForum = () => {
+    const { communityId } = useParams()
     const { user } = useAuthContext()
-    const { dispatch } = usePostContext()
+    const { posts, dispatch } = usePostContext()
+    const [communityPosts, setCommunityPosts] = useState([])
+    const { communities, dispatchCommunity } = useCommunityContext()
+    const [isUserInCommunity, setIsUserInCommunity] = useState(false)
+    console.log("reloaded",isUserInCommunity)
+    const [makePost, setMakePost] = useState(false)
+    const [currentCommunity , setCurrentCommunity] =useState(null)
+    
+
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -15,26 +30,140 @@ const CommunityForum = () => {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
             const json = await response.json()
-            //console.log("json:" + JSON.stringify(json))
-            //test = JSON.stringify(json)
 
             if (response.ok) {
                 dispatch({ type: 'SET_POSTS', payload: json })
             }
         }
 
+        const fetchCommunity = async () => {
+            const response = await fetch('/community', {
+                headers: { 'Authorization': `Bearer ${user.token}` },
+            })
+            const communitiees = await response.json()
+            //console.log("json:" + JSON.stringify(json))
+            //test = JSON.stringify(json)
+
+            if (response.ok) {
+                dispatchCommunity({ type: 'SET_COMMUNITIES', payload: communitiees })
+            }
+        }
+        if (posts) {
+            const available = posts && posts.filter(post => post.community?.includes(communityId))
+            setCommunityPosts(available)
+            //console.log("post available",available)
+        }
+
+        //check communityId if it exists in communities._id
+
         if (user) {
             fetchPosts()
-
+            fetchCommunity()
         }
-    }, [dispatch, user])
+
+    }, [dispatch, user, dispatchCommunity])
+
+
+    useEffect(() => {
+        const community = communities && communities.find(c => c._id === communityId)
+        setCurrentCommunity(community)
+        console.log("Current community",currentCommunity)
+        //console.log("community",community)
+        const comm= community && community.accounts.includes(user._id)
+        console.log("boolean",community && community.accounts.includes(user._id))
+        //console.log("ddsds",comm)
+        console.log("resorted")
+        if(comm === true) {
+            setIsUserInCommunity(true)
+        } 
+        //console.log("value" ,isUserInCommunity)
+    }, [ communityId,communities])
+
+
+    const deletePost = async (post) => {
+        const postDelete = {
+            _id: post._id
+        }
+
+        fetch('post/delete', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            },
+            body: JSON.stringify(postDelete)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("deleted", data.posts)
+                dispatch({ type: "DELETE_POST", payload: data.posts })
+                if (data.message === "post was deleted") deleteNotification(data.posts._id)
+
+            }).catch((error) => {
+                console.log(error.message)
+            })
+
+
+        const deleteNotification = async (notification) => {
+            const notify = {
+                email: user.email,
+                notificationId: notification
+            }
+            console.log(notify)
+
+            fetch('user/notification/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                },
+                body: JSON.stringify(notify)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+
+                }).catch((error) => {
+                    console.log(error.message)
+                })
+        }
+    }
+
     return (
         <>
+            {communityId}
             <div className='bg-white' id='welcome'>
                 <div className='row m-0 p-0'>
                     <div className='col-12 col-md-9 m-2 absolute top-0 left-0 w-full h-auto z-10'>
                         <div id='posts' className='container w-100 '>
-                            <Posts></Posts>
+                            {isUserInCommunity ?
+                                <button className='btn btn-outline-primary w-100' onClick={() => setMakePost(!makePost)} >Create Post</button>
+                                : null}
+                            {makePost ? 
+                            <CommunityPost></CommunityPost>:
+                            null}
+                            
+                            {communityPosts && communityPosts.map(post => (
+                                <div className='card mt-2' key={post._id}>
+                                    {post.imagePath && (
+                                        <img
+                                            src={require(`../uploads/${post.imagePath}`)}
+                                            className='card-img-top'
+                                            style={{ "width": "100%" }}
+                                            alt={post.description}
+                                        />
+                                    )}
+
+                                    <div className='card-body'>
+                                        <h4 className='card-title'>{post.title}</h4>
+                                        <p className='card-text'>{post.description}</p>
+                                        <Link className='btn btn-primary mr-4' to={`/posts/${post._id}`}>view post</Link>
+                                        {user.admin === true ?
+                                            <button className='btn btn-danger' onClick={() => deletePost(post)}>delete</button>
+                                            : null}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                     <div id='community' className='col m-0 p-0 border-left absolute top-0 left-0 w-full h-auto z-10 sm:static sm:w-auto sm:h-full sm:z-0'>

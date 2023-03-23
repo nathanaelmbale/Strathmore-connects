@@ -7,7 +7,7 @@ export const PostsContext = createContext()
 export const PostReducer =(state, action) =>{
         switch (action.type) {
             case 'SET_POSTS':
-                console.log("payload:",action.payload)
+                //console.log("payload:",action.payload)
                 return {
                     posts: action.payload
                 }
@@ -28,7 +28,7 @@ export const PostReducer =(state, action) =>{
 }
 
 export const PostsContextProvider = ({ children }) => {
-    console.log("Child:",children)
+    //console.log("Child:",children)
     const [state, dispatch] = useReducer(PostReducer , {//func name,this is the current state and action is what is passed in the dispacth property
         posts : null
     })

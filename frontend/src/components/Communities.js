@@ -7,7 +7,7 @@ import '../styles/community.css'
 
 const Communities = () => {
     const { user } = useAuthContext()
-    const { communities, dispatch } = useCommunityContext()
+    const { communities, dispatchCommunity } = useCommunityContext()
 
     const [joinedCommunities, setJoinedCommunities] = useState([])
     const [notJoinedCommunities, setNotJoinedCommunities] = useState([])
@@ -22,7 +22,7 @@ const Communities = () => {
             //test = JSON.stringify(json)
 
             if (response.ok) {
-                dispatch({ type: 'SET_COMMUNITIES', payload: json })
+                dispatchCommunity({ type: 'SET_COMMUNITIES', payload: json })
             }
         }
 
@@ -31,18 +31,24 @@ const Communities = () => {
         if (user) {
             fetchPosts()
         }
-    }, [dispatch, user])
+    }, [dispatchCommunity, user])
 
     useEffect(() => {
+
         if (communities && communities.length > 0) {
             const joined = communities.filter(community => community.accounts.includes(user._id))
             setJoinedCommunities(joined)
+            dispatchCommunity({ type: 'SET_JOINED_COMMUNITIES',payload: joined})
+
             const notJoined = communities.filter(community => !community.accounts.includes(user._id))
             setNotJoinedCommunities(notJoined)
+            dispatchCommunity({ type: 'SET_NOT_JOINED_COMMUNITIES',payload: joined})
+
         }
     }, [communities, user])
 
-    /*
+
+
     const joinedCommunity = async (community) => {
 
         const userToCommunity = {
@@ -62,14 +68,14 @@ const Communities = () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
+                console.log('Success:', data)
+
 
             }).catch((error) => {
                 console.log(error.message)
             })
 
-    } */
-
+    }
     const deleteCommunity = async (community) => {
         const userToCommunity = {
             id: community._id,
@@ -77,7 +83,7 @@ const Communities = () => {
             description: community.description
         }
 
-        console.log("dammm", userToCommunity)
+        //console.log("dammm", userToCommunity)
 
         fetch('/community/delete', {
             method: 'DELETE',
@@ -89,15 +95,15 @@ const Communities = () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data)
-                dispatch({ type: "DELETE_COMMUNITY", payload: data })
+                //console.log('Success:', data)
+                dispatchCommunity({ type: "DELETE_COMMUNITY", payload: data })
 
             }).catch((error) => {
                 console.log(error.message)
             })
     }
-    console.log("joined", joinedCommunities)
-    console.log("not joined", notJoinedCommunities)
+    //console.log("joined", joinedCommunities)
+    //console.log("not joined", notJoinedCommunities)
     return (
         <>
             <div className=''>
@@ -112,9 +118,12 @@ const Communities = () => {
                                     to={`/community/${community._id}`}>
                                     <h4 className='clickable-title'>{community.name}</h4>
                                 </Link>
-                                
+
                                 <p className='text-desc'>{community.description}</p>
                                 <small>Created on: {new Date(community.createdAt).toLocaleDateString('en-GB')}</small>
+                                <div className='my-2'>
+                                    <button onClick={() => joinedCommunity(community)} className="btn btn-outline-primary ">Join</button>
+                                </div>
                                 {user.admin &&
                                     <div className='my-2'>
                                         <button onClick={() => deleteCommunity(community)} className="btn btn-danger ">Delete</button>
@@ -132,11 +141,12 @@ const Communities = () => {
                                     to={`/community/${community._id}`}>
                                     <h4 className='clickable-title'>{community.name}</h4>
                                 </Link>
-                                
+
                                 <div className='community-description'>
                                     <p className='text-desc'>{community.description}</p>
                                     <small className='text-right'>Created on: {new Date(community.createdAt).toLocaleDateString('en-GB')}</small>
                                 </div>
+
                                 {user.admin &&
                                     <div className='my-2'>
                                         <button onClick={() => deleteCommunity(community)} className="btn btn-danger ">Delete</button>
