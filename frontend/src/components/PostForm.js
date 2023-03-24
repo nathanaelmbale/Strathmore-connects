@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useAuthContext } from '../hooks/useAuthContext'
-import { useCommunityContext } from '../hooks/useCommunityContext'
 import { usePostContext } from '../hooks/usePostsContext'
 
 const PostForm = () => {
@@ -10,9 +9,10 @@ const PostForm = () => {
     const [description, setDescription] = useState('')
     const [category, setCategory] = useState('')
     const [community, setCommunity] = useState('')
+    const [communities, setCommunities] = useState(null)
     const { user } = useAuthContext()
-    const { communities } = useCommunityContext()
-    const { dispatch } = usePostContext() 
+    const { dispatch } = usePostContext()
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         const email = user.email
@@ -85,28 +85,43 @@ const PostForm = () => {
 
                     )
                 }
-                /*
+
                 setCategory("")
-                setCommunity(null)
                 setDescription("")
                 setFile(null)
                 setTitle("")
                 setCommunity("Select a community")
-                */
+                
             })
             .catch(error => {
                 console.error(error);
             });
     }
 
+    useEffect(() => {
+        const fetchCommunity = async () => {
+            const response = await fetch('/community', {
+                headers: { 'Authorization': `Bearer ${user.token}` },
+            })
+            const json = await response.json()
 
+            if (response.ok) {
+                setCommunities(json)
+            }
+        }
+
+        if (user) {
+            fetchCommunity()
+        }
+    }, [user, setCommunities])
 
 
     return (
         <>
             {user && user.admin === true ?
+                
                 <form onSubmit={handleSubmit} >
-                    
+                    <h1>Post form</h1>
                     <div className="form-group">
                         <label>Image </label>
                         <input className="form-control" type="file" name="NAME" onChange={(e) => {
@@ -125,35 +140,35 @@ const PostForm = () => {
                     </div>
 
                     <div className="form-group">
-                    <label>Description:</label>
-                    <input className="form-control" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                        <label>Description:</label>
+                        <input className="form-control" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
                     </div>
 
                     <div className="form-group">
-                    <label>Type:  </label>
-                    <select className="form-control" value={category} onChange={(e) => setCategory(e.target.value)}>
-                        <option value="">Select a type</option>
-                        <option value="post">Post</option>
-                        <option value="comment">Comment</option>
-                    </select>
+                        <label>Type:  </label>
+                        <select className="form-control" value={category} onChange={(e) => setCategory(e.target.value)}>
+                            <option value="">Select a type</option>
+                            <option value="post">Post</option>
+                            <option value="comment">Comment</option>
+                        </select>
                     </div>
 
                     <div className="form-group">
-                    <label>Community:</label>
-                    <select value={community} className="form-control" onChange={(e) => setCommunity(e.target.value)}>
-                        <option value="">Select a community</option>
-                        {communities && communities.map(communite => (
-                            <>
+                        <label>Community:</label>
+                        <select value={community} className="form-control" onChange={(e) => setCommunity(e.target.value)}>
+                            <option value="">Select a community</option>
+                            {communities && communities.map(communite => (
+
                                 <option key={communite._id} value={communite._id}>
                                     {communite.name}
                                 </option>
-                            </>
-                        ))}
-                    </select>
+
+                            ))}
+                        </select>
                     </div>
 
                     <button type="submit" className='btn btn-outline-primary'>Submit</button>
-                    
+
                 </form>
                 : null}
         </>

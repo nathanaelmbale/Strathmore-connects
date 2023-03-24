@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useCommunityContext } from '../hooks/useCommunityContext'
-import { Link } from 'react-router-dom'
 import '../styles/community.css'
+import { Link } from 'react-router-dom'
 
 
 const Communities = () => {
     const { user } = useAuthContext()
     const { communities, dispatchCommunity } = useCommunityContext()
-
+    
     const [joinedCommunities, setJoinedCommunities] = useState([])
     const [notJoinedCommunities, setNotJoinedCommunities] = useState([])
-    //console.log('user', user)
+
     useEffect(() => {
-        const fetchPosts = async () => {
+
+        const fetchCommunity = async () => {
             const response = await fetch('/community', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
+
             const json = await response.json()
-            //console.log("json:" + JSON.stringify(json))
-            //test = JSON.stringify(json)
 
             if (response.ok) {
                 dispatchCommunity({ type: 'SET_COMMUNITIES', payload: json })
@@ -27,9 +27,8 @@ const Communities = () => {
         }
 
 
-
         if (user) {
-            fetchPosts()
+            fetchCommunity()
         }
     }, [dispatchCommunity, user])
 
@@ -38,14 +37,14 @@ const Communities = () => {
         if (communities && communities.length > 0) {
             const joined = communities.filter(community => community.accounts.includes(user._id))
             setJoinedCommunities(joined)
-            dispatchCommunity({ type: 'SET_JOINED_COMMUNITIES',payload: joined})
+            dispatchCommunity({ type: 'SET_JOINED_COMMUNITIES', payload: joined })
 
             const notJoined = communities.filter(community => !community.accounts.includes(user._id))
             setNotJoinedCommunities(notJoined)
-            dispatchCommunity({ type: 'SET_NOT_JOINED_COMMUNITIES',payload: joined})
+            dispatchCommunity({ type: 'SET_NOT_JOINED_COMMUNITIES', payload: joined })
 
         }
-    }, [communities, user])
+    }, [communities, user ,dispatchCommunity])
 
 
 
@@ -102,8 +101,7 @@ const Communities = () => {
                 console.log(error.message)
             })
     }
-    //console.log("joined", joinedCommunities)
-    //console.log("not joined", notJoinedCommunities)
+
     return (
         <>
             <div className=''>
@@ -138,7 +136,8 @@ const Communities = () => {
                             <div className='conatiner border-bottom pl-3 py-2' key={community._id}>
                                 <Link
                                     className='link'
-                                    to={`/community/${community._id}`}>
+                                    to={`/community/${community._id}`}
+                                >
                                     <h4 className='clickable-title'>{community.name}</h4>
                                 </Link>
 

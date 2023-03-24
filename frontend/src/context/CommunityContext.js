@@ -7,19 +7,19 @@ export const CommunityContext = createContext()
 export const CommunityReducer = (state, action) => {
     switch (action.type) {
         case "SET_COMMUNITIES":
-            console.log("community payload:", action.payload)
+            //console.log("community payload:", action.payload)
             return {
                 communities: action.payload
             }
 
         case "SET_JOINED_COMMUNITIES":
-            console.log("communities joined:", action.payload)
+            //console.log("communities joined:", action.payload)
             return {
                 joinedCommunities: action.payload
             }
 
         case "SET_NOT_JOINED_COMMUNITIES":
-            console.log("communities not joined:", action.payload)
+            //console.log("communities not joined:", action.payload)
             return {
                 joinedNotommunities: action.payload
             }
@@ -42,7 +42,7 @@ export const CommunityReducer = (state, action) => {
 }
 
 export const CommunityContextProvider = ({ children }) => {
-    //console.log("Child:", children)
+    ////console.log("Child:", children)
     const [state, dispatchCommunity] = useReducer(CommunityReducer, {//func name,this is the current state and action is what is passed in the dispacth property
         communities: null
     })

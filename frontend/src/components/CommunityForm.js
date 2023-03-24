@@ -3,8 +3,8 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import { useCommunityContext } from '../hooks/useCommunityContext'
 
 const CommunityForm = () => {
-    const [description, setDescription] = useState()
-    const [name, setName] = useState()
+    const [description, setDescription] = useState("")
+    const [name, setName] = useState("")
     //context
     const { user } = useAuthContext()
     const { dispatch } = useCommunityContext()
@@ -36,7 +36,8 @@ const CommunityForm = () => {
     return (
         <>
             {user && user.admin ?
-                <form onSubmit={handleSubmit} >
+                <form onSubmit={handleSubmit} className='container' >
+                    <h2>Community form</h2>
                     <div className="form-group">
                         <label>Community name</label>
                         <input className="form-control" type="text" value={name} onChange={(e) => setName(e.target.value)} />
@@ -47,7 +48,10 @@ const CommunityForm = () => {
                         <label>Description:</label>
                         <input className="form-control" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
                     </div>
-                    <button type="submit" className='btn btn-outline-primary'>Submit</button>
+                    <div className=' my-3'>
+                        <button type="submit" className='btn btn-primary container '>Submit</button>
+
+                    </div>
                 </form>
                 : null}
         </>

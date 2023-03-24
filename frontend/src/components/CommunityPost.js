@@ -1,31 +1,52 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useAuthContext } from '../hooks/useAuthContext'
-import { useCommunityContext } from '../hooks/useCommunityContext'
 import { usePostContext } from '../hooks/usePostsContext'
+import { useParams } from 'react-router-dom'
 
 
 const CommunityPost = () => {
 
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
-    const [category, setCategory] = useState('')
-    const [community, setCommunity] = useState('')
+    const [community, setCommunity] = useState(null)
     const { user } = useAuthContext()
-    const { communities } = useCommunityContext()
     const { dispatch } = usePostContext()
+    const { communityId } = useParams()
+
+    useEffect(() => {
+        
+        console.log("Hello World")
+
+        const fetchCommunity = async () => {
+            const response = await fetch('/community', {
+                headers: { 'Authorization': `Bearer ${user.token}` },
+            })
+
+            const commune = await response.json()
+
+            const communityee = commune && commune.find(c => c._id === communityId)
+            setCommunity(communityee._id)
+
+        }
+
+        fetchCommunity()
+
+    }, [communityId ,user])
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         //auto-set community
         //autoset category
         const email = user.email
+
         const formData = new FormData()
+
         formData.append('title', title)
         formData.append('description', description)
-        formData.append('category', category)
+        formData.append('category', 'comment')
         formData.append('community', community)
-        //console.log(community+ " community")
         formData.append('email', email)
 
 
@@ -39,8 +60,7 @@ const CommunityPost = () => {
                 const json = response.data
                 console.log("Response post: " + JSON.stringify(json.post))
                 /*
-                console.log("Response data: " + JSON.stringify(json))
-                
+
                 console.log("Response accounts: " + JSON.stringify(json.accounts))
                 */
                 dispatch({ type: "CREATE_POST", payload: json.post })
@@ -103,7 +123,7 @@ const CommunityPost = () => {
 
     return (
         <div className='card mt-3'>
-            
+
             <form className=' m-3' onSubmit={handleSubmit} >
                 <h4><center>Make a community post</center></h4>
                 <div className="form-group">
