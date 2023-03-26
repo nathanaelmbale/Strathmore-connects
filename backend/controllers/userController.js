@@ -1,5 +1,6 @@
 const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 const createToken = (_id) => {
     return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '30d' })
@@ -11,9 +12,10 @@ const loginUser = async (req, res) => {
 
     try {
         const user = await User.login(email, password)
-
+        console.log(email, password)
         //create a token
         const token = createToken(user._id)
+        console.log("Failed here", user)
 
         res.status(200).json({
             email,
@@ -23,12 +25,25 @@ const loginUser = async (req, res) => {
         })
 
     } catch (error) {
-        res.status(400).json({ msg: error.message })
+        res.status(400).json({ message: error.message })
     }
 
 }
 
+const userId = async (req, res) => {
+    const { email } = req.body
+    console.log("Email", email)
+    try {
+        const user = await User.findOne({ email: email })
+        console.log("USer", user)
+        if (!user) res.status(400).json("User not found")
+        res.status(200).json({ userId: user })
 
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+
+}
 //signup user or store
 const signupUser = async (req, res) => {
     const { email, password } = req.body
@@ -47,7 +62,31 @@ const signupUser = async (req, res) => {
         })
 
     } catch (error) {
-        res.status(400).json({ msg: error.message })
+        res.status(400).json({ message: error.message })
+    }
+}
+
+//change passowrd
+const changePassword = async (req, res) => {
+    const { email, password } = req.body;
+    console.log("FOund", password)
+    try {
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(password, salt)
+
+        const user = await User.findOneAndUpdate(
+            { email: email },
+            { password: hash },
+            { new: true } // This returns the updated document
+        );
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        return res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+        return res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -67,7 +106,7 @@ const myNotification = async (req, res) => {
 
     } catch (error) {
 
-        res.status(400).json({ msg: error.message })
+        res.status(400).json({ message: error.message })
     }
 }
 
@@ -105,7 +144,7 @@ const userNotification = async (req, res) => {
         res.status(200).json({ email: user.email, notification: user.notification })
 
     } catch (error) {
-        res.status(400).json({ msg: error.message })
+        res.status(400).json({ message: error.message })
     }
 }
 
@@ -139,7 +178,7 @@ const DeleteNotification = async (req, res) => {
         res.status(200).json({ email: user.email, notification: user.notification });
 
     } catch (error) {
-        res.status(400).json({ msg: error.message });
+        res.status(400).json({ message: error.message });
     }
 }
 
@@ -150,34 +189,92 @@ const DeleteAccount = async (req, res) => {
 
     try {
         // find user by email
-        const user = await User.findOne({ email })
+        const user = await User.findOne({ email: email })
 
+        console.log(user)
         if (!user) {
             throw new Error('User not found');
         }
 
-        console.log(user.email)
 
-        // check if user is an admin or the email matches the email on the schema
-        if (user.admin !== true && user.email !== email) {
-            throw new Error('Unauthorized');
+
+        //  the email matches the email on the schema
+        if (user.email === email) {
+            const deleted = await User.deleteOne({ email })
+            res.status(200).json({ message: 'User deleted successfully' })
+        }
+
+        //check if user is an admin 
+        if (user.admin === true) {
+            const deleted = await User.deleteOne({ email })
+            res.status(200).json({ message: 'User deleted successfully' })
         }
 
         // delete user document from database
-        await User.deleteOne({ email })
-
-        res.status(200).json({ msg: 'User deleted successfully' })
+        res.status(403).json({ message: 'Access denied' })
 
     } catch (error) {
-        res.status(400).json({ msg: error.message })
+        res.status(400).json({ message: error.message })
     }
 }
+
+//make one an admin
+const updateUserAdmin = async (req, res) => {
+    const { email, admin } = req.body
+
+    try {
+        const user = await User.findByEmail(email)
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+
+        user.admin = admin
+        await user.save()
+        console.log(user)
+        res.status(200).json({
+            email: user.email,
+            admin: user.admin
+        })
+
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+}
+
+//remove admin
+const removeAdmin = async (req, res) => {
+    const { email } = req.body
+
+    try {
+        const user = await User.findOne({ email })
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+
+        // remove the admin property
+        user.admin = undefined
+
+        await user.save()
+        console.log(user)
+
+        res.status(200).json({ message: 'Admin removed successfully', user })
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+}
+
 
 module.exports = {
     loginUser,
     signupUser,
+    userId,
+    changePassword,
     myNotification,
     userNotification,
+    updateUserAdmin,
+    removeAdmin,
     DeleteNotification,
     DeleteAccount
 }

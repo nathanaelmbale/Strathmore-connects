@@ -13,6 +13,7 @@ const Welcome = () => {
  
   
   useEffect(() => {
+    console.log("Rann")
     const fetchPosts = async () => {
       const response = await fetch('/post', {
         headers: { 'Authorization': `Bearer ${user.token}` },
@@ -30,7 +31,7 @@ const Welcome = () => {
       fetchPosts()
 
     }
-  }, [dispatch, user])
+  }, [user,dispatch])
 
   return (
     <>

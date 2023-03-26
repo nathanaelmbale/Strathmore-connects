@@ -15,8 +15,8 @@ const getCommunities = async (req, res) => {
 const createCommunity = async (req, res) => {
 
     //defines parameters for the data to be inputed in the database
-    const { name, description, _id } = req.body
-    console.log(name + " " + description + _id)
+    const { name, description } = req.body
+    console.log(name + " " + description )
     //adds doc to db
     try {
         const existingCommunity = await Community.findOne({ name })
@@ -27,14 +27,7 @@ const createCommunity = async (req, res) => {
             console.log(updatedCommunity)
             res.status(200).json(updatedCommunity)
         } else {
-            
-            const newCommunity = await Community.create({
-                name,
-                description,
-                accounts: [req.user._id]
-            })
-            console.log("New community posted",newCommunity)
-            res.status(200).json(newCommunity);
+            res.status(403).json({message : "Community already exists"})
         }
 
     } catch (error) {
@@ -43,19 +36,57 @@ const createCommunity = async (req, res) => {
     }
 
 }
-
-//remove someone from s community
-const removeAccountFromCommunity = async (req, res) => {
-    const communitykey = req.body.communitkey
+//edit community
+const updateCommunity = async (req, res) => {
+    const { name, description , _id } = req.body;
+    console.log("Update ",req.body)
+  
+    try {
+      const updatedCommunity = await Community.findByIdAndUpdate(
+        _id ,
+        { name, description },
+        { new: true }
+      );
+      console.log("Updated body",updatedCommunity)
+      res.status(200).json(updatedCommunity);
+    } catch (error) {
+      console.log("Failed to update community: " + error.message);
+      res.status(400).json({ error: error.message });
+    }
+  };
+  
+//add user to community
+const addUserToCommunity = async (req, res) => {
+    const { name, description } = req.body;
     console.log(req.body)
-    const accountId = req.user._id
-    console.log(communitykey)
-    console.log(accountId)
+    try {
+        const community = await Community.findOneAndUpdate(
+            { name: name, description: description },
+            { $addToSet: { accounts: req.user._id } },
+            { new: true }
+        );
+
+        if (!community) {
+            return res.status(404).json({ error: 'Community not found' });
+        }
+
+        return res.status(200).json({ message: 'User added to community successfully' });
+    } catch (error) {
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+//remove someone from community
+const removeAccountFromCommunity = async (req, res) => {
+    const { communityId ,accountId } = req.body
+    console.log(req.body)
+
 
     try {
-        const community = await Community.findById({_id :communitykey })
+        const community = await Community.findById({_id :communityId })
         if (!community) {
-          console.error(`Community with ID ${communitykey} not found`)
+          console.error(`Community with ID ${communityId} not found`)
         }
     
         const accounts = community.accounts || []
@@ -64,7 +95,9 @@ const removeAccountFromCommunity = async (req, res) => {
 
 
         if (accountIndex === -1) {
-            res.send('Account with ID ${accountId} not found in community with ID ${_id }')
+            console.log(`Account with ID ${accountId} not found in community with ID ${_id }`)
+            res.send.status(404).json({error : error.message})
+
           throw new Error(`Account with ID ${accountId} not found in community with ID ${_id }`);
         }
     
@@ -72,15 +105,17 @@ const removeAccountFromCommunity = async (req, res) => {
     
         await community.updateOne({ accounts })
     
-        res.send(community)
+        res.send.status(200).json(community)
 
       } catch (error) {
-        res.send(`Failed to remove account ${accountId} from community ${_id }: ${error.message}`)
+        res.send({error :error.message})
         console.log(`${error.message}`);
         throw error;
       }
       
 }
+
+
 //delete a Item
 const deleteCommunity = async (req, res) => {
     const { id , username } = req.body
@@ -108,6 +143,8 @@ const deleteCommunity = async (req, res) => {
 module.exports = {
     createCommunity,
     getCommunities,
+    updateCommunity,
+    addUserToCommunity,
     removeAccountFromCommunity,
     deleteCommunity
 }

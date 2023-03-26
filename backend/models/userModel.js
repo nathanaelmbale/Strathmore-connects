@@ -66,24 +66,26 @@ userSchema.statics.signup = async function (email, password) {
 
 //static login method
 userSchema.statics.login = async function (email, password) {
-    //validation
+    // validation
     if (!email || !password) {
-        throw Error('You are requires to input values in all fields above')
+        throw Error('You are required to input values in all fields above')
     }
-
+    console.log("here")
     const user = await this.findOne({ email })
+    console.log("here",user)
+
     if (!user) {
         throw Error('Incorrect email')
     }
 
     const match = await bcrypt.compare(password, user.password)
-
     if (!match) {
         throw Error('Incorrect password')
     }
 
     return user
 }
+
 
 userSchema.statics.findByEmail = async function (email) {
     if (!email) {

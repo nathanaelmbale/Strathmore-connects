@@ -59,6 +59,7 @@ const Posts = () => {
     }
     return (
         <>
+        {user ?
             <div className='container'>
                 <h1>Posts</h1>
                 {posts && posts.filter(post => post.category === 'post').map(post => (
@@ -82,7 +83,8 @@ const Posts = () => {
                         </div>
                     </div>
                 ))}
-            </div>
+            </div> :
+            <h5>You need an account to view the posts</h5>}
         </>
     )
 }

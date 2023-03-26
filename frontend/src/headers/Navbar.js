@@ -29,6 +29,8 @@ const Navbar = () => {
                         {/*Logout */}
                         {user && (
                             <div className='d-flex'>
+                                <div> 
+                                    <Link to='/settings' className=''>Settings</Link></div>
                                 <div className='notification'>
                                     <Notification></Notification>
                                 </div>

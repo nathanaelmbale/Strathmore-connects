@@ -28,6 +28,24 @@ export const CommunityReducer = (state, action) => {
             return {
                 communities: [action.payload, ...state.communities],
             }
+
+            case "UPDATE_COMMUNITY":
+                const updatedCommunityIndex = state.communities.findIndex(
+                    (community) => community._id === action.payload._id
+                )
+                const updatedCommunity = {
+                    ...state.communities[updatedCommunityIndex],
+                    ...action.payload.community
+                }
+                const updatedCommunities = [
+                    ...state.communities.slice(0, updatedCommunityIndex),
+                    updatedCommunity,
+                    ...state.communities.slice(updatedCommunityIndex + 1)
+                ]
+                return {
+                    communities: updatedCommunities
+                }
+
         case "DELETE_COMMUNITY":
             return {
                 communities: state.communities.filter(

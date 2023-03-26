@@ -2,7 +2,9 @@ const express = require('express')
 
 const {
     createCommunity,
+    updateCommunity,
     getCommunities,
+    addUserToCommunity,
     removeAccountFromCommunity,
     deleteCommunity
 } = require('../controllers/communityController')
@@ -44,6 +46,10 @@ router.get('/', getCommunities)
 //POST a Communities
 router.post('/', createCommunity)
 router.post('/unjoin', removeAccountFromCommunity)
+
+router.patch('/join' ,addUserToCommunity)
+
+router.patch('/edit',updateCommunity)
 
 //DELETE a Communities
 router.delete('/delete', deleteCommunity)

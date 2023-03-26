@@ -57,8 +57,8 @@ const Communities = () => {
         }
         console.log("dammm", userToCommunity)
 
-        fetch('/community', {
-            method: 'POST',
+        fetch('/community/join', {
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`
@@ -104,6 +104,7 @@ const Communities = () => {
 
     return (
         <>
+        {user?
             <div className=''>
                 <h3 className='border-bottom border-top py-2 pl-3'>Communities</h3>
                 {joinedCommunities &&
@@ -156,6 +157,7 @@ const Communities = () => {
                     </>
                 }
             </div>
+            :<h5>You need an account to see the communities you are part of</h5>}
         </>
     )
 }
