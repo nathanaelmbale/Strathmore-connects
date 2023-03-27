@@ -15,10 +15,11 @@ const loginUser = async (req, res) => {
         console.log(email, password)
         //create a token
         const token = createToken(user._id)
-        console.log("Failed here", user)
-
+        
+        const name = user.name
         res.status(200).json({
             email,
+            name,
             token,
             admin: user.admin,
             _id: user._id
@@ -46,10 +47,10 @@ const userId = async (req, res) => {
 }
 //signup user or store
 const signupUser = async (req, res) => {
-    const { email, password } = req.body
-
+    const { name ,email, password } = req.body
+    console.log(req.body)
     try {
-        const user = await User.signup(email, password)
+        const user = await User.signup(name ,email, password)
 
         //create a token
         const token = createToken(user._id)
@@ -57,6 +58,7 @@ const signupUser = async (req, res) => {
         res.status(200).json({
             email,
             token,
+            name,
             admin: user.admin,
             _id: user._id
         })
@@ -232,10 +234,7 @@ const updateUserAdmin = async (req, res) => {
         user.admin = admin
         await user.save()
         console.log(user)
-        res.status(200).json({
-            email: user.email,
-            admin: user.admin
-        })
+        res.status(200).json(user.email)
 
     } catch (error) {
         res.status(400).json({ message: error.message })

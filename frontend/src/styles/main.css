@@ -9,54 +9,78 @@
     --navy-blue: #1b249b;
     --strathmore-red: #D21F26;
     --strathmore-blue: #354e9d;
+    overflow-x: hidden;
+
 }
 
 body {
     overflow-x: hidden;
     background-color: rgb(252, 252, 252);
     font-family: 'Nunito', sans-serif;
+    height: 100%;
 }
-bg-white{
+
+.vh-100 {
+    height: 100vh;
+}
+
+.h-content {
+    height: fit-content;
+}
+
+.bg-white {
     background-color: white !important;
 }
 
-#welcome{
+#welcome {
     font-weight: 250;
 }
 
-#posts{
+#posts {
     font-weight: 300;
 }
-.clickable :hover{
+
+.clickable :hover {
     cursor: pointer;
     color: rgb(19, 109, 1);
 }
-h1,h2,h3 {
+
+h1,
+h2,
+h3 {
     color: #000;
     font-weight: 400;
 
 }
+
 h6 {
     color: #1f1f1fdc;
 }
-h5 ,h4 {
+
+h5,
+h4 {
     color: var(--navy-blue);
     font-weight: 300;
 }
 
-.text-desc{
-    color:rgb(0, 0, 0) ;
+.text-desc {
+    color: rgb(0, 0, 0);
     font-weight: 300;
 }
 
 /*--------------------------------------------------------------
     NAVBAR
 --------------------------------------------------------------*/
-.navbar {
-    background-color: transparent;
-    width: 100%;
+#navbar{
+    height: fit-content;
 }
 
+@media (max-width: 767.98px) {
+    #navbar {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+  }
 .navbar,
 .side-nav>svg {
     height: 4vh;
@@ -87,7 +111,20 @@ h5 ,h4 {
 .notification-bar {
     position: absolute;
     z-index: 1;
-    background-color: red;
+    background-color: rgb(240, 240, 240);
     width: 250px;
     right: -80px;
+}
+.notifications {
+    position: relative;
+    left: 20px;
+    bottom: 8px;
+}
+.notification-svg {
+    position: relative;
+    top: 2px;
+}
+
+.nav-controller{
+    margin: 40px;
 }

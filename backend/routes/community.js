@@ -44,7 +44,8 @@ router.use(requireAuth)
 router.get('/', getCommunities)
 
 //POST a Communities
-router.post('/', createCommunity)
+router.post('/create', createCommunity)
+
 router.post('/unjoin', removeAccountFromCommunity)
 
 router.patch('/join' ,addUserToCommunity)

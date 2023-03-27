@@ -75,6 +75,7 @@ const Communities = () => {
             })
 
     }
+    
     const deleteCommunity = async (community) => {
         const userToCommunity = {
             id: community._id,
@@ -94,8 +95,9 @@ const Communities = () => {
         })
             .then(response => response.json())
             .then(data => {
-                //console.log('Success:', data)
-                dispatchCommunity({ type: "DELETE_COMMUNITY", payload: data })
+                console.log('Success:', data)
+                if(!data.error) dispatchCommunity({ type: "SET_COMMUNITIES", payload: data })
+                console.log(data.error)
 
             }).catch((error) => {
                 console.log(error.message)

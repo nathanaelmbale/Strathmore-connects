@@ -12,39 +12,42 @@ const Navbar = () => {
         logout()
     }
     return (
-        <>
-            <nav className='sticky-top shadow-lg bg-light'>
-                <div className='row'>
-                    <div className='col'>
-                        <a href='/' >Home</a>
-                    </div>
-                    <div className='col-8'></div>
-                    <div className='col'>
-                        {!user && (
-                            <div className='login '>
-                                <Link to='/login' className='nav-item pr-3'>Log in</Link>
-                                <Link to='/signup' className='nav-item pr-3'>Sign up</Link>
-                            </div>
-                        )}
-                        {/*Logout */}
-                        {user && (
-                            <div className='d-flex'>
-                                <div> 
-                                    <Link to='/settings' className=''>Settings</Link></div>
-                                <div className='notification'>
-                                    <Notification></Notification>
+        <>  
+            <div className='nav-controller'></div>
+            <nav id='navbar' className='fixed-top shadow-lg bg-light border-bottom'>
+                <div className='container'>
+                    <div className='row align-items-center'>
+                        <div className='col'>
+                            <a href='/' className='nav-link pr-3'>Home</a>
+                        </div>
+                        <div className='col-6 d-none d-md-block'></div>
+                        <div className='col'>
+                            {!user && (
+                                <div className='nav-item d-flex align-middle'>
+                                    <Link to='/login' className='nav-link pr-3'>Log in</Link>
+                                    <Link to='/signup' className='nav-link pr-3'>Sign up</Link>
                                 </div>
+                            )}
+                            {/*Logout */}
+                            {user && (
+                                <div className='nav-item d-flex  align-middle'>
+                                    <div>
+                                        <Link to='/settings' className='nav-link pr-3'>Settings</Link>
+                                    </div>
+                                    <div className='notification align-middle'>
+                                        <Notification></Notification>
+                                    </div>
 
-                                <div className='pl-4'>
-                                    <button className='btn btn-danger' onClick={handleClick}>
-                                        Log out
-                                    </button>
+                                    <div className='pl-5'>
+                                        <button className='btn btn-danger' onClick={handleClick}>
+                                            Log out
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                 </div>
-
 
             </nav>
 

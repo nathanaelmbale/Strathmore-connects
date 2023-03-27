@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Communities from '../components/Communities'
 import CommunityForm from '../components/CommunityForm'
 import PostForm from '../components/PostForm'
@@ -6,14 +6,14 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import { usePostContext } from '../hooks/usePostsContext'
 import Posts from '../components/Posts'
 import '../styles/welcome.css'
+import EditCommunity from '../components/EditCommunity'
 
 const Welcome = () => {
   const { user } = useAuthContext()
   const { dispatch } = usePostContext()
- 
-  
+  const [edit, setEdit] = useState(false)
+
   useEffect(() => {
-    console.log("Rann")
     const fetchPosts = async () => {
       const response = await fetch('/post', {
         headers: { 'Authorization': `Bearer ${user.token}` },
@@ -31,7 +31,8 @@ const Welcome = () => {
       fetchPosts()
 
     }
-  }, [user,dispatch])
+  }, [user, dispatch])
+
 
   return (
     <>
@@ -46,7 +47,18 @@ const Welcome = () => {
           </div>
           <div id='community' className='col m-0 p-0 border-left absolute top-0 left-0 w-full h-auto z-10 sm:static sm:w-auto sm:h-full sm:z-0'>
             <CommunityForm></CommunityForm>
-            <Communities></Communities>
+            {user && user.admin === true ?
+              <div className='container'>
+                <button className='btn btn-dark container' onClick={() => setEdit(!edit)}>
+                  {edit ? 'Delete mode' : 'Edit mode'}
+                </button>
+              </div>
+            :null}
+            {edit && edit ?
+              <EditCommunity></EditCommunity>
+              : <Communities></Communities>}
+
+
           </div>
         </div>
       </div>

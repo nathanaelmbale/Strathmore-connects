@@ -3,59 +3,86 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import { useCommunityContext } from '../hooks/useCommunityContext'
 
 const CommunityForm = () => {
-    const [description, setDescription] = useState("")
-    const [name, setName] = useState("")
-    //context
-    const { user } = useAuthContext()
-    const { dispatch } = useCommunityContext()
+  const [description, setDescription] = useState("")
+  const [name, setName] = useState("")
+  //context
+  const { user } = useAuthContext()
+  const { dispatchCommunity } = useCommunityContext()
 
-    const community = { name, description }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = user.email
 
-        fetch('/community', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
-            },
-            body: JSON.stringify(community)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                setName("")
-                setDescription("")
-                dispatch({ type: "CREATE_COMMUNITY", payload: data })
+    const community = { name, description, email }
+    try {
+      const response = await fetch('/community/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: JSON.stringify(community)
+      });
 
-            }).catch((error) => {
-                console.log(error.message)
-            })
+      const json = await response.json();
+      if (response.ok) {
+        console.log('Success:', json.message);
+        setName('');
+        setDescription('');
+        dispatchCommunity({ type: 'SET_COMMUNITIES', payload: json.message });
+      } else {
+        console.log('Error:', json);
+      }
+    } catch (error) {
+      console.log(error.message);
     }
-    return (
-        <>
-            {user && user.admin ?
-                <form onSubmit={handleSubmit} className='container' >
-                    <h2>Community form</h2>
-                    <div className="form-group">
-                        <label>Community name</label>
-                        <input className="form-control" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+  };
 
-                    </div>
 
-                    <div className="form-group">
-                        <label>Description:</label>
-                        <input className="form-control" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-                    </div>
-                    <div className=' my-3'>
-                        <button type="submit" className='btn btn-primary container '>Submit</button>
+  return (
+    <>
+      {user && user.admin === true ?
+        <form onSubmit={handleSubmit} className='container' >
+          <h2>Community form</h2>
+          <div className="form-group">
+            <label>Community name</label>
+            <input className="form-control" type="text" value={name} onChange={(e) => setName(e.target.value)} />
 
-                    </div>
-                </form>
-                : null}
-        </>
-    )
+          </div>
+
+          <div className="form-group">
+            <label>Description:</label>
+            <input className="form-control" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+          </div>
+          <div className=' my-3'>
+            <button type="submit" className='btn btn-primary container '>Submit</button>
+
+          </div>
+        </form>
+        : null}
+
+      {user && user.admin === false ?
+        <form onSubmit={handleSubmit} className='container' >
+          <h2>Community form</h2>
+          <div className="form-group">
+            <label>Community name</label>
+            <input className="form-control" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+
+          </div>
+
+          <div className="form-group">
+            <label>Description:</label>
+            <input className="form-control" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+          </div>
+          <div className=' my-3'>
+            <button type="submit" className='btn btn-primary container '>Submit</button>
+
+          </div>
+        </form>
+        : null}
+    </>
+  )
 }
 
 export default CommunityForm

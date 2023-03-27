@@ -5,6 +5,10 @@ const Schema = mongoose.Schema
 
 const communitySchema = new Schema(
     {
+        email: {
+          type: String,
+          required: false,
+        },
         name: {
             type: String,
             required: true

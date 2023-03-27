@@ -11,7 +11,6 @@ function PostDetails() {
     const { user } = useAuthContext()
     const [post, setPost] = useState(null)
     const [comment, setComment] = useState(null)
-    //const [commentss, setComments] = useState(null)
     const [creator, setCreator] = useState("")
 
 
@@ -162,46 +161,48 @@ function PostDetails() {
     return (
         <>
             <div className="container">
-                <h1>Posts</h1>
-                {post && (
-                    <div className="card shadow">
-                        <div key={post._id} className='card-body'>
-                            {post && post.imagePath && (
-                                <img
-                                    src={require(`../uploads/${post.imagePath}`)}
-                                    className='card-img-top'
-                                    style={{ "width": "38rem" }}
-                                    alt={post.description}
-                                />
-                            )}
-
-                            <h4 className='card-title'>{post.title}</h4>
-                            <p className='card-text'>{post.description}</p>
-                            <small className="form-text text-muted">{post.category}</small>
+                <div className="container">
+                    <h1>Posts</h1>
+                    {post && (
+                        <div className="card shadow">
+                            <div key={post._id} className=''>
+                                {post && post.imagePath && (
+                                    <img
+                                        src={require(`../uploads/${post.imagePath}`)}
+                                        className='card-img-top w-100 m-0 p-0'
+                                        alt={post.description}
+                                    />
+                                )}
+                                <div className="card-body">
+                                    <h4 className='card-title'>{post.title}</h4>
+                                    <p className='card-text'>{post.description}</p>
+                                    <small className="form-text text-muted">{post.category}</small>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
 
-                <div className=" m-2"></div>
-                <small id="emailHelp" className="form-text text-muted">
-                    Make a comment here
-                </small>
+                    <div className=" m-2"></div>
+                    <small id="emailHelp" className="form-text text-muted">
+                        Make a comment here
+                    </small>
 
-                <form className="" onSubmit={makeAComment}>
-                    <input type="text" className="form-control" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="make a comment"></input>
-                    <input type="submit" className="btn btn-primary my-2" name="comment" placeholder="comment" value="comment" ></input>
-                </form>
+                    <form className="" onSubmit={makeAComment}>
+                        <input type="text" className="form-control" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="make a comment"></input>
+                        <input type="submit" className="btn btn-primary my-2" name="comment" placeholder="comment" value="comment" ></input>
+                    </form>
 
-                {comments && comments.map(comm => (
-                    <div key={comm._id} className="comment">
-                        <div className="d-flex justify-content-between align-items-center">
-                            <div>{comm.comment}</div>
-                            <button className="btn btn-outline-danger" onClick={() => deleteComment(comm._id)}>Delete</button>
+                    {comments && comments.map(comm => (
+                        <div key={comm._id} className="comment">
+                            <div className="d-flex justify-content-between align-items-center">
+                                <div>{comm.comment}</div>
+                                <button className="btn btn-outline-danger" onClick={() => deleteComment(comm._id)}>Delete</button>
+                            </div>
+                            <small className="form-text text-muted">Post made by {comm.user}</small>
                         </div>
-                        <small className="form-text text-muted">Post made by {comm.user}</small>
-                    </div>
-                ))}
+                    ))}
 
+                </div>
             </div>
         </>
     )

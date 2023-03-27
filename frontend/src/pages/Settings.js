@@ -28,8 +28,8 @@ const Settings = () => {
             </div>
           </div>
 
-          
-          {user.admin === false || user.admin === true?
+
+          {user && user.admin === false ?
             <div className='card rounded'>
               <div className='community-admin card-body'>
                 <div className='functionalities'>
@@ -42,15 +42,28 @@ const Settings = () => {
           }
 
           {user && user.admin === true ?
-            <div className='admin'>
-              <UserAdmin></UserAdmin>
-              <div className='functionalities'>
-                <EditCommunity></EditCommunity>
+            <div className='card rounded'>
+              <div className='community-admin card-body'>
+                <div className='functionalities'>
+                  <div>
+                    <RemoveUserFromCommunity></RemoveUserFromCommunity>
+                  </div>
+                </div>
+              </div>
+            </div> : null
+          }
+
+          {user && user.admin === true ?
+            <div className='admin card my-3'>
+              <div className='card-body'>
+                <UserAdmin></UserAdmin>
+                <div className='functionalities'>
+                  <EditCommunity></EditCommunity>
+                </div>
               </div>
             </div>
             : null
           }
-
 
         </div>
       </div>

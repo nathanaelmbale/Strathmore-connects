@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { usePostContext } from '../hooks/usePostsContext'
+import { useCommunityContext } from '../hooks/useCommunityContext'
 
 const PostForm = () => {
     const [file, setFile] = useState()
@@ -12,6 +13,7 @@ const PostForm = () => {
     const [communities, setCommunities] = useState(null)
     const { user } = useAuthContext()
     const { dispatch } = usePostContext()
+    const { dispatchCommunity } = useCommunityContext()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -91,7 +93,8 @@ const PostForm = () => {
                 setFile(null)
                 setTitle("")
                 setCommunity("Select a community")
-                
+                console.log("file", file)
+
             })
             .catch(error => {
                 console.error(error);
@@ -106,6 +109,7 @@ const PostForm = () => {
             const json = await response.json()
 
             if (response.ok) {
+                dispatchCommunity({ type: 'SET_COMMUNITIES', payload: json })
                 setCommunities(json)
             }
         }
@@ -113,21 +117,20 @@ const PostForm = () => {
         if (user) {
             fetchCommunity()
         }
-    }, [user, setCommunities])
+    }, [user, setCommunities, dispatchCommunity])
 
 
     return (
         <>
             {user && user.admin === true ?
-                
+
                 <form onSubmit={handleSubmit} >
                     <h1>Post form</h1>
                     <div className="form-group">
                         <label>Image </label>
                         <input className="form-control" type="file" name="NAME" onChange={(e) => {
                             //console.log("The file property",e.target.files[0])
-                            const image = e.target.files[0]
-                            setFile(image)
+                            setFile(e.target.files[0])
                         }} />
                     </div>
 
@@ -165,12 +168,72 @@ const PostForm = () => {
 
                             ))}
                         </select>
+                        <span className='text-danger'>
+                            <small>If you don't see the community reload or use previous name</small>
+                        </span>
                     </div>
 
                     <button type="submit" className='btn btn-outline-primary'>Submit</button>
 
                 </form>
                 : null}
+
+            {user && user.admin === false ?
+
+                <form onSubmit={handleSubmit} >
+                    <h1>Post form</h1>
+                    <div className="form-group">
+                        <label>Image </label>
+                        <input className="form-control" type="file" name="NAME" onChange={(e) => {
+                            //console.log("The file property",e.target.files[0])
+                            setFile(e.target.files[0])
+                        }} />
+                    </div>
+
+                    <div className="form-group">
+
+                        <label>
+                            Title:</label>
+                        <input className="form-control" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+
+                    </div>
+
+                    <div className="form-group">
+                        <label>Description:</label>
+                        <input className="form-control" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Type:  </label>
+                        <select className="form-control" value={category} onChange={(e) => setCategory(e.target.value)}>
+                            <option value="">Select a type</option>
+                            <option value="post">Post</option>
+                            <option value="comment">Comment</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Community:</label>
+                        <select value={community} className="form-control" onChange={(e) => setCommunity(e.target.value)}>
+                            <option value="">Select a community</option>
+                            {communities && communities.map(communite => (
+
+                                <option key={communite._id} value={communite._id}>
+                                    {communite.name}
+                                </option>
+
+                            ))}
+                        </select>
+                        <span className='text-danger'>
+                            <small>If you don't see the community reload or use previous name</small>
+                        </span>
+                    </div>
+
+                    <button type="submit" className='btn btn-outline-primary'>Submit</button>
+
+                </form>
+                : null}
+
         </>
     )
 }

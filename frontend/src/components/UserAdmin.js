@@ -11,7 +11,7 @@ const UserAdmin = () => {
 
 
     const handleAddAdmin = async () => {
-        console.log(email)
+        
 
         try {
             const response = await fetch(`/user/add/admin`, {
@@ -21,11 +21,13 @@ const UserAdmin = () => {
                 },
                 body: JSON.stringify({ email, admin: false }),
             })
-            const data = await response.json()
-            setMessage(data.message)
+            await response.json()
+
+            if (response.ok) setMessage("User added")
+            if (!response.ok) setMessage("Something went wrong")
             setIsAddingAdmin(false)
         } catch (error) {
-            setMessage(error.message)
+            setMessage("Something went wrong")
         }
     }
 
@@ -39,51 +41,61 @@ const UserAdmin = () => {
                 },
                 body: JSON.stringify({ email }),
             })
-            const data = await response.json()
-            setMessage(data.message)
+            await response.json()
+            
+            if (response.ok) setMessage("User added")
+            if (!response.ok) setMessage("Something went wrong")
             setIsRemovingAdmin(false)
         } catch (error) {
             setMessage(error.message)
+            console.log(error)
+            setMessage("Something went wrong")
+
         }
     }
 
     return (
-        <div>
+        <div className="border-bottom my-3">
             {user && user.admin === true ?
 
                 <div>
-                    <h3>User Admin</h3>
+                    <h3>Admin</h3>
                     <input
                         type="text"
                         placeholder="Email"
-                        className="form-control"
+                        className="form-control my-2"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                    {!isAddingAdmin && !isRemovingAdmin && (
-                        <button onClick={() => setIsAddingAdmin(true)}>Add Admin</button>
-                    )}
-                    {!isAddingAdmin && !isRemovingAdmin && (
-                        <button onClick={() => setIsRemovingAdmin(true)}>
-                            Remove Admin
-                        </button>
-                    )}
-                    {isAddingAdmin && (
-                        <>
-                            <div>
-                                <button onClick={handleAddAdmin}>Confirm</button>
-                                <button onClick={() => setIsAddingAdmin(false)}>Cancel</button>
-                            </div>
-                        </>
-                    )}
-                    {isRemovingAdmin && (
-                        <>
-                            <button onClick={handleRemoveAdmin}>Confirm</button>
-                            <button onClick={() => setIsRemovingAdmin(false)}>Cancel</button>
-                        </>
-                    )}
-                    {message && <p>{message}</p>}
-                </div> :
+                    <div className="my-3">
+                        {!isAddingAdmin && !isRemovingAdmin && (
+                            <button className="btn btn-outline-primary mx-3" onClick={() => setIsAddingAdmin(true)}>Add Admin</button>
+                        )}
+                        {!isAddingAdmin && !isRemovingAdmin && (
+                            <button className="btn btn-danger " onClick={() => setIsRemovingAdmin(true)}>
+                                Remove Admin
+                            </button>
+                        )}
+                        {isAddingAdmin && (
+                            <>
+                                <div className="m-2">
+                                    <button className="btn btn-outline-primary mx-3" onClick={handleAddAdmin}>Confirm</button>
+                                    <button className="btn btn-danger" onClick={() => setIsAddingAdmin(false)}>Cancel</button>
+                                </div>
+                            </>
+                        )}
+                        {isRemovingAdmin && (
+                            <>
+                                <div className="m-2">
+                                    <button className="btn btn-outline-primary mx-3" onClick={handleRemoveAdmin}>Confirm</button>
+                                    <button className="btn btn-danger" onClick={() => setIsRemovingAdmin(false)}>Cancel</button>
+                                </div>
+                            </>
+                        )}
+                        {message && <p>{message}</p>}
+                    </div>
+                </div> 
+                :
                 null
             }
 
