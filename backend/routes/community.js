@@ -12,7 +12,7 @@ const {
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 
-//Middleware to authetify user
+//Middleware to authetify user this middle ware checks the validity of the user token
 const requireAuth = async (req , res , next) => {
 
     //Verify authentification
@@ -22,6 +22,7 @@ const requireAuth = async (req , res , next) => {
         return res.status(401).json({error: 'Authorization token required'})
     }
 
+    //Checks token by spliting the token 
     const token = authorization.split(' ')[1]
 
     try {
@@ -38,7 +39,7 @@ const requireAuth = async (req , res , next) => {
 //require route for all routes
 const router = express.Router()
 
-router.use(requireAuth)
+router.use(requireAuth)//this middle ware checks the validity of the user token
 
 //gets all Communities
 router.get('/', getCommunities)
@@ -46,10 +47,13 @@ router.get('/', getCommunities)
 //POST a Communities
 router.post('/create', createCommunity)
 
+//REMOVE user from community
 router.post('/unjoin', removeAccountFromCommunity)
 
-router.patch('/join' ,addUserToCommunity)
+//ADD add user to community
+router.post('/join' ,addUserToCommunity)
 
+//Edit community
 router.patch('/edit',updateCommunity)
 
 //DELETE a Communities

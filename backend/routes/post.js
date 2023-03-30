@@ -29,11 +29,12 @@ router.post('/comment' , comment)
 //delete comment
 router.delete('/uncomment' , deleteComment)
 
-//middleware 
+//middleware variables
 const multer = require('multer')
 const path = require('path')
 const filename = Date.now()
 
+//storage middleware
 const storage = multer.diskStorage({
         destination: (req, file, callback) => {
                 console.log("File:" + file)
@@ -47,10 +48,11 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage: storage })
+
 //POST a posts
 router.post('/', upload.single("NAME"), createPost)
+
 //DELETE a posts
 router.delete('/delete', deletePost)
-
 
 module.exports = router

@@ -31,8 +31,7 @@ const ChangePassword = () => {
     const confirmPassword = async (e) => {
         e.preventDefault()
         await login(user.email, currentPassowrd)
-        console.log(user.email, currentPassowrd)
-        if (!error) setIsApproved(true)
+        console.log(error)
     }
     return (
         <div>
@@ -42,7 +41,7 @@ const ChangePassword = () => {
                     <label className='form-label'>Password</label>
                     <input type='password' className='form-control mb-3' placeholder='Type your current password' value={currentPassowrd} onChange={(e) => setCurrentPassowrd(e.target.value)} />
                     <button className='btn btn-primary container' disabled={isLoading} >Confirm</button>
-                    {error && <div className='alert alert-danger'>{error}</div>}
+                    {error && <div className='alert alert-danger mt-3'>{error}</div>}
                     {isAproved && <div className='succes alert-success rounded my-2 pt-1'><p><center>Correct password</center></p></div>}
                 </div>
             </form>

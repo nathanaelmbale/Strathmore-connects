@@ -6,17 +6,24 @@ const mongoose = require('mongoose')
 
 // get all the posts
 const getPosts = async (req, res) => {
+    //find all posts and sort from the most recent
     const posts = await Post.find({}).sort({ createdAt: -1 })
-    
 
+    //send posts as a response
     res.status(200).json(posts)
 }
 
 const getMyPosts = async (req, res) => {
+    //find user by id
     const user_id = req.user
 
+    //log the request body for debugging
+    console.log("getMyPosts request body:", req.body)
+
+    //find posts made by a certain user
     const posts = await Post.findById({ _id: user_id }).sort({ createdAt: -1 })
 
+    //send posts as a response
     res.status(200).json(posts)
 }
 
@@ -24,29 +31,46 @@ const getMyPosts = async (req, res) => {
 
 //create a new Item
 const createPost = async (req, res) => {
-    console.log("request", req.body)
     //defines parameters for the data to be inputed in the database
-    const { title, description, category, community , email } = req.body
+    const { title, description, category, community, email } = req.body
+
+    //log the request body for debugging
+    console.log("createPost request body:", req.body)
+
     //this is the image path
     const imagePath = req.file && req.file.filename
 
     //adds doc to db
     try {
-        //this os the user making the post
-        const user = await User.findOne({email: email})
-        const user_id = user._id
+        //array
+        let inputFields = []
 
-        //console.log(req.user)
+        //validate user input
+        if (!title) inputFields.push('title')
+        if (!description) inputFields.push('description')
+        if (!category) inputFields.push('category')
+        if (!community) inputFields.push('community')
+        if (!email) inputFields.push('email')
+
+        if (inputFields.length > 0) {
+            return res.status(400).json(`Missing fields ${inputFields}`)
+        }
+
+
+        const user = await User.findOne({ email: email })
+
+        if (!user) throw Error('Invalid email')
+
+        const user_id = user._id
 
         if (!imagePath) {
             //the schema takes in title category community , imagepath(optional) , user_id
             const post = await Post.create({ title, description, category, community, email, user_id })
-            //confirm post has been made
-            //console.log("Post made today:" + post)
+
             //find the community by its name and get the accounts in that community
-            const communite = await Community.findById({ _id : community })
+            const communite = await Community.findById({ _id: community })
             const accounts = communite.accounts
-            
+
 
             res.status(200).json({ post, accounts })
         } else {
@@ -56,10 +80,10 @@ const createPost = async (req, res) => {
             console.log("Post made today:" + post)
             //find the community by its name and get the accounts in that community
             const communite = await Community.findById({ _id: community })
-            console.log("users dd" ,communite.accounts)
+            console.log("users dd", communite.accounts)
             const accounts = communite.accounts
 
-
+            //sends accounts and posts back
             res.status(200).json({ post, accounts })
         }
 
@@ -72,14 +96,18 @@ const createPost = async (req, res) => {
 
 //add a comment
 const comment = async (req, res) => {
-    const { _id, comment, user } = req.body;
-    console.log(req.body)
+    //defines parameters from the request body
+    const { _id, comment, user } = req.body
 
+    //log the request body for debugging
+    console.log("comment request body:", req.body)
 
+    //try make a comment
     try {
+        //find post using the post id
         const post = await Post.findById({ _id: _id })
         if (!post) {
-            throw Error('Invalid post')
+            throw Error('Post not found')
         }
         // create new Comment object
         const newComment = {
@@ -87,64 +115,86 @@ const comment = async (req, res) => {
             user: user
         }
 
+        //push comment in the array of comments
         post.comments.push(newComment)
         await post.save()
 
+        //sends comments as a response
         res.status(200).json(post.comments)
 
     } catch (error) {
         res.status(400).json({ msg: error.message })
     }
 }
+
 //delete comment
 const deleteComment = async (req, res) => {
-    const { postId, commentId } = req.body;
-    
-    console.log(postId ,commentId)
+    // extract postId and commentId from request body
+    const { postId, commentId } = req.body
+
+    //log the request body for debugging
+    console.log("deleteComment request body:", req.body)
+
     try {
-      const post = await Post.findById(postId);
-  
-      if (!post) {
-        throw Error('Invalid post');
-      }
-  
-      const commentIndex = post.comments.findIndex(comment => comment._id == commentId);
-  
-      if (commentIndex === -1) {
-        throw Error('Invalid comment');
-      }
-  
-      post.comments.splice(commentIndex, 1);
-      await post.save();
-  
-      res.status(200).json({ message: 'Comment deleted successfully' , comment :post.comments });
+        // find post by postId using Post model
+        const post = await Post.findById(postId)
+
+        // if post is not found, throw an error
+        if (!post) {
+            throw Error('Invalid post')
+        }
+
+        // find comment index by commentId in post comments array
+        const commentIndex = post.comments.findIndex(comment => comment._id == commentId)
+
+        // if comment is not found, throw an error
+        if (commentIndex === -1) {
+            throw Error('Invalid comment')
+        }
+
+        // remove comment from post comments array
+        post.comments.splice(commentIndex, 1)
+
+        // save updated post
+        await post.save()
+
+        // send  response indicating comment was deleted successfully along with updated comments array
+        res.status(200).json({ message: 'Comment deleted successfully', comment: post.comments })
     } catch (error) {
-      res.status(400).json({ message: error.message });
+        // send response indicating error occurred
+        res.status(400).json({ message: error.message })
     }
-  };
-  
+}
+
 //delete a Item
 const deletePost = async (req, res) => {
+    // extract _id from request body
     const { _id } = req.body
-    //checks if id is valid
+
+    //log the request body for debugging
+    console.log("deletePost request body:", req.body)
+
+    // check if id is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(_id)) {
+        // if not valid, send error message
         res.status(404).json({ error: " No such post" })
     }
-    //finds id
+
+    // find post by _id and sort from most recently postsed
     const post = await Post.findById({ _id: _id }).sort({ createdAt: -1 })
 
+    // if post is not found, send error message
     if (!post) {
         return res.status(404).json({ error: "post not found" })
     }
 
-    // delete the post from the database
+    // remove post from database
     await post.remove()
 
-
-
+    // send JSON response indicating post was deleted successfully
     res.status(200).json({ message: "post was deleted", posts: post })
-    console.log("post was deleted", post)
 }
+
 
 
 

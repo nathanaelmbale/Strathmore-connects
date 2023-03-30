@@ -10,6 +10,7 @@ const PostForm = () => {
     const [description, setDescription] = useState('')
     const [category, setCategory] = useState('')
     const [community, setCommunity] = useState('')
+    const [error, setError] = useState('')
     const [communities, setCommunities] = useState(null)
     const { user } = useAuthContext()
     const { dispatch } = usePostContext()
@@ -17,6 +18,7 @@ const PostForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setError('')
         const email = user.email
         //console.log("email",email)
         const formData = new FormData()
@@ -44,6 +46,9 @@ const PostForm = () => {
                 console.log("Response accounts: " + JSON.stringify(json.accounts))
                 */
                 dispatch({ type: "CREATE_POST", payload: json.post })
+
+
+
                 const notifyUsers = async (email, notificationId, title, description) => {
                     console.log(email, notificationId, title, description)
                     const userArray = await json.accounts
@@ -97,7 +102,8 @@ const PostForm = () => {
 
             })
             .catch(error => {
-                console.error(error);
+                console.error(error.message)
+                setError('Missing fiedls')
             });
     }
 
@@ -127,7 +133,7 @@ const PostForm = () => {
                 <form onSubmit={handleSubmit} >
                     <h1>Post form</h1>
                     <div className="form-group">
-                        <label>Image </label>
+                        <label>Image(optional)</label>
                         <input className="form-control" type="file" name="NAME" onChange={(e) => {
                             //console.log("The file property",e.target.files[0])
                             setFile(e.target.files[0])
@@ -174,6 +180,8 @@ const PostForm = () => {
                     </div>
 
                     <button type="submit" className='btn btn-outline-primary'>Submit</button>
+                    {error && <div className='alert alert-danger mt-3'>{error}</div>}
+
 
                 </form>
                 : null}
@@ -183,7 +191,7 @@ const PostForm = () => {
                 <form onSubmit={handleSubmit} >
                     <h1>Post form</h1>
                     <div className="form-group">
-                        <label>Image </label>
+                        <label>Image(optional)</label>
                         <input className="form-control" type="file" name="NAME" onChange={(e) => {
                             //console.log("The file property",e.target.files[0])
                             setFile(e.target.files[0])
@@ -230,6 +238,8 @@ const PostForm = () => {
                     </div>
 
                     <button type="submit" className='btn btn-outline-primary'>Submit</button>
+                    {error && <div className='alert alert-danger mt-3'>{error}</div>}
+
 
                 </form>
                 : null}
