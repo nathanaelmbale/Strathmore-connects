@@ -5,6 +5,7 @@ import RemoveUserFromCommunity from '../components/RemoveUserFromCommunity'
 import EditCommunity from '../components/EditCommunity'
 import UserAdmin from '../components/UserAdmin'
 import { useAuthContext } from '../hooks/useAuthContext'
+import AddUserToCommunity from '../components/AddUserToCommunity'
 
 
 const Settings = () => {
@@ -19,10 +20,6 @@ const Settings = () => {
               <div className='functionalities'>
                 <div >
                   <ChangePassword></ChangePassword>
-                </div>
-
-                <div>
-                  <DeleteAccount></DeleteAccount>
                 </div>
               </div>
             </div>
@@ -42,11 +39,19 @@ const Settings = () => {
           }
 
           {user && user.admin === true ?
-            <div className='card rounded'>
-              <div className='community-admin card-body'>
+            <div className=''>
+              <div className='community-admin '>
                 <div className='functionalities'>
-                  <div>
-                    <RemoveUserFromCommunity></RemoveUserFromCommunity>
+                  <div className='card rounded'>
+                    <div className='card-body'>
+                      <AddUserToCommunity></AddUserToCommunity>
+
+                    </div>
+                  </div>
+                  <div className='card rounded mt-3'>
+                    <div className='card-body'>
+                      <RemoveUserFromCommunity></RemoveUserFromCommunity>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -59,6 +64,9 @@ const Settings = () => {
                 <UserAdmin></UserAdmin>
                 <div className='functionalities'>
                   <EditCommunity></EditCommunity>
+                </div>
+                <div>
+                  <DeleteAccount></DeleteAccount>
                 </div>
               </div>
             </div>

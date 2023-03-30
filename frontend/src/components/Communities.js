@@ -52,13 +52,12 @@ const Communities = () => {
 
         const userToCommunity = {
             id: community._id,
-            name: community.name,
-            description: community.description
+            email : user.email
         }
         console.log("dammm", userToCommunity)
 
         fetch('/community/join', {
-            method: 'PATCH',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`

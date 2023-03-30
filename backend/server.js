@@ -1,12 +1,13 @@
-require('dotenv').config()
+require('dotenv').config() //picks data from a hidden file .env
 
-const express = require('express')
-const mongoose = require('mongoose')
+const express = require('express') //the app
+const mongoose = require('mongoose') //the database 
 //routes
 const userRoutes = require('./routes/user')
 const postRoutes = require('./routes/post')
 const communityRoutes = require('./routes/community')
 
+//The variable for the .env environment
 const URI = process.env.MONGO_URI
 const port = process.env.PORT
 
@@ -14,23 +15,24 @@ const port = process.env.PORT
 //express app
 const app = express()
 
-//Global Middleware
+//Global Middleware uses json
 app.use(express.json())
 
+//logs the route called
 app.use((req, res, next) => {
     console.log(req.path, req.method)
     next()
 })
 
-//route
+//routes
 app.use('/user', userRoutes)
 app.use('/post', postRoutes)
 app.use('/community', communityRoutes)
 
 
 
-mongoose.set('strictQuery', true)
-//connect to dtabase
+mongoose.set('strictQuery', true)//this was from the most recent update
+//connect to database
 mongoose.connect(URI)
     .then(() => {
         //listen
@@ -39,5 +41,5 @@ mongoose.connect(URI)
         })
     })
     .catch((error) => {
-            console.log("error on the database:"+ error)
+            console.log("Error on the database:"+ error)
     })

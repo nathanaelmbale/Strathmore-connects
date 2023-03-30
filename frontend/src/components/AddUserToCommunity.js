@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useCommunityContext } from '../hooks/useCommunityContext'
 
-const RemoveUserFromCommunity = () => {
+const AddUserToCommunity = () => {
   const { user } = useAuthContext()
 
   const { communities, dispatchCommunity } = useCommunityContext()
@@ -48,18 +48,20 @@ const RemoveUserFromCommunity = () => {
     }
   }
 
-  const handleRemoveUser = async (e) => {
+  const handleAddUser = async (e) => {
     e.preventDefault()
     setUserError("")
     setEmail("")
+    const _id = community
+    console.log("community" ,community)
     try {
-      const response = await fetch('user/find', {
+      const response = await fetch('community/join', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${user.token}`
         },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email ,_id })
       })
       if (!response.ok) {
         setUserError("User not found")
@@ -83,8 +85,8 @@ const RemoveUserFromCommunity = () => {
   }
   return (
     <div>
-      <h2>Remove user from community</h2>
-      <form onSubmit={handleRemoveUser}>
+      <h2>Add user to community</h2>
+      <form onSubmit={handleAddUser}>
         <div className="form-group">
           <label className='form-label'>Community:</label>
           <select value={community} className="form-control" onChange={(e) => setCommunity(e.target.value)}>
@@ -101,7 +103,7 @@ const RemoveUserFromCommunity = () => {
           <label className='form-label'>Email</label>
           <input type="text" className="form-control" placeholder='Type in your email' value={email} onChange={(e) => setEmail(e.target.value)}></input>
           <div className='my-3'>
-            <button type='submit' className='btn btn-outline-danger container'>Remove user</button>
+            <button type='submit' className='btn btn-primary container'>Add user</button>
             {userError && <div className='alert alert-danger mt-3'>{userError}</div>}
             {userSuccess && <div className='success alert-success mt-3'>{userSuccess}</div>}
           </div>
@@ -115,4 +117,4 @@ const RemoveUserFromCommunity = () => {
   )
 }
 
-export default RemoveUserFromCommunity
+export default AddUserToCommunity
