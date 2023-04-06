@@ -3,6 +3,21 @@ const Community = require('../models/communityModel')
 const User = require('../models/userModel')
 const mongoose = require('mongoose')
 
+const { initializeApp } = require("firebase/app");
+const { Storage } = require('@google-cloud/storage');
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAxtzoJ7wztlSzpcYBC35BR3sy__aaXtOw",
+    authDomain: "strathmore-connects.firebaseapp.com",
+    projectId: "strathmore-connects",
+    storageBucket: "strathmore-connects.appspot.com",
+    messagingSenderId: "240269365746",
+    appId: "1:240269365746:web:497479fbff02d740689b6b",
+    measurementId: "G-6PWWSPLT67"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
 // get all the posts
 const getPosts = async (req, res) => {
@@ -74,12 +89,32 @@ const createPost = async (req, res) => {
 
             res.status(200).json({ post, accounts })
         } else {
-            //the schema takes in title category communityId , imagepath , user_id
-            const post = await Post.create({ title, description, category, email, community, imagePath, user_id })
+            const filename = Date.now()
+            // Upload the image to Firebase Storage and get the download URL
+            const file = req.file;
+            const storage = new Storage();
+            const bucket = storage.bucket();
+            const firebaseFilePath = `images/${filename + file.filename}`;
+            const fileUpload = bucket.file(firebaseFilePath);
+            await fileUpload.save(file.buffer, { contentType: file.mimetype });
+            const downloadUrl = await fileUpload.getSignedUrl({ action: "read", expires: "03-17-2025" });
+
+            const post = await Post.create({
+                title,
+                description,
+                category,
+                email,
+                community,
+                imagePath,
+                user_id,
+                imageUrl: downloadUrl[0], // Add the Firebase Storage URL to the Post document
+            });
             //confirm post has been made
             console.log("Post made today:" + post)
+
             //find the community by its name and get the accounts in that community
             const communite = await Community.findById({ _id: community })
+
             console.log("users dd", communite.accounts)
             const accounts = communite.accounts
 
