@@ -2,6 +2,7 @@ const express = require('express')
 
 const {
         createPost,
+        test,
         getMyPosts,
         getPosts,
         comment,
@@ -35,22 +36,17 @@ const path = require('path')
 const filename = Date.now()
 
 //storage middleware
-const storage = multer.diskStorage({
-        destination: (req, file, callback) => {
-                console.log("File:" + file)
-                callback(null, '../frontend/src/uploads')
-        },
-        filename: (req, file, callback) => {
-                callback(null, filename + file.originalname)
-                console.log("File:" + file.originalname)
 
-        }
-})
 
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage })
+
+const uploading = multer({ dest: '../frontend/src/uploads' })
 
 //POST a posts
 router.post('/', upload.single("NAME"), createPost)
+
+router.post('/test', uploading.single('image'), test)
 
 //DELETE a posts
 router.delete('/delete', deletePost)

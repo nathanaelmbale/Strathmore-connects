@@ -1,53 +1,46 @@
+
+const { storage }= require('../firebase')
+const { getDownloadURL, ref, uploadBytesResumable } = require('firebase/storage');
+
 const Post = require('../models/postsModel')
 const Community = require('../models/communityModel')
 const User = require('../models/userModel')
 const mongoose = require('mongoose')
 
-const { initializeApp } = require("firebase/app");
-const { Storage } = require('@google-cloud/storage');
+const test = async ( req,res) => {
+    try {
+        const filename = Date.now()
+        const file = req.file
+    
+        console.log("file-----",file)
+                
+        let downloadUrl = ''
+        const storageRef = ref(storage, `/images/${filename + file.name}`)
+    
+        const uploadTask = uploadBytesResumable(storageRef ,file)
+        
+        uploadTask.on("state_changed", (snapshot) => {
+            const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) *100)
+            console.log(progress)
+        },
+        (error) => console.log("error while uploading" + error),
+        () => {
+            getDownloadURL(uploadTask.snapshot.ref)
+            .then((url) => {
+                console.log(url)
+                downloadUrl = url
+            })
+        })
+    } catch (error) {
+        console.log(error)
+    }
 
-const firebaseConfig = {
-    apiKey: "AIzaSyAxtzoJ7wztlSzpcYBC35BR3sy__aaXtOw",
-    authDomain: "strathmore-connects.firebaseapp.com",
-    projectId: "strathmore-connects",
-    storageBucket: "strathmore-connects.appspot.com",
-    messagingSenderId: "240269365746",
-    appId: "1:240269365746:web:497479fbff02d740689b6b",
-    measurementId: "G-6PWWSPLT67"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-// get all the posts
-const getPosts = async (req, res) => {
-    //find all posts and sort from the most recent
-    const posts = await Post.find({}).sort({ createdAt: -1 })
-
-    //send posts as a response
-    res.status(200).json(posts)
 }
-
-const getMyPosts = async (req, res) => {
-    //find user by id
-    const user_id = req.user
-
-    //log the request body for debugging
-    console.log("getMyPosts request body:", req.body)
-
-    //find posts made by a certain user
-    const posts = await Post.findById({ _id: user_id }).sort({ createdAt: -1 })
-
-    //send posts as a response
-    res.status(200).json(posts)
-}
-
-
-
 //create a new Item
 const createPost = async (req, res) => {
     //defines parameters for the data to be inputed in the database
     const { title, description, category, community, email } = req.body
+    console.log("Post file-----",req.file)
 
     //log the request body for debugging
     console.log("createPost request body:", req.body)
@@ -78,7 +71,8 @@ const createPost = async (req, res) => {
 
         const user_id = user._id
 
-        if (!imagePath) {
+        if (!req.file) {
+            console.log("Here")
             //the schema takes in title category community , imagepath(optional) , user_id
             const post = await Post.create({ title, description, category, community, email, user_id })
 
@@ -89,15 +83,30 @@ const createPost = async (req, res) => {
 
             res.status(200).json({ post, accounts })
         } else {
+            console.log("Not here")
+
             const filename = Date.now()
             // Upload the image to Firebase Storage and get the download URL
             const file = req.file;
-            const storage = new Storage();
-            const bucket = storage.bucket();
-            const firebaseFilePath = `images/${filename + file.filename}`;
-            const fileUpload = bucket.file(firebaseFilePath);
-            await fileUpload.save(file.buffer, { contentType: file.mimetype });
-            const downloadUrl = await fileUpload.getSignedUrl({ action: "read", expires: "03-17-2025" });
+            console.log("file-->",file)
+            
+            let downloadUrl = ''
+            const storageRef = ref(storage, `/images/${filename + file.originalname}`)
+
+            const uploadTask = uploadBytesResumable(storageRef ,file)
+            
+            uploadTask.on("state_changed", (snapshot) => {
+                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) *100)
+                console.log(progress)
+            },
+            (error) => console.log("error while uploading" + error),
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref)
+                .then((url) => {
+                    console.log(url)
+                    downloadUrl = url
+                })
+            })
 
             const post = await Post.create({
                 title,
@@ -107,7 +116,7 @@ const createPost = async (req, res) => {
                 community,
                 imagePath,
                 user_id,
-                imageUrl: downloadUrl[0], // Add the Firebase Storage URL to the Post document
+                imageUrl: downloadUrl, // Add the Firebase Storage URL to the Post document
             });
             //confirm post has been made
             console.log("Post made today:" + post)
@@ -128,6 +137,32 @@ const createPost = async (req, res) => {
     }
 
 }
+
+// get all the posts
+const getPosts = async (req, res) => {
+    //find all posts and sort from the most recent
+    const posts = await Post.find({}).sort({ createdAt: -1 })
+
+    //send posts as a response
+    res.status(200).json(posts)
+}
+
+const getMyPosts = async (req, res) => {
+    //find user by id
+    const user_id = req.user
+
+    //log the request body for debugging
+    console.log("getMyPosts request body:", req.body)
+
+    //find posts made by a certain user
+    const posts = await Post.findById({ _id: user_id }).sort({ createdAt: -1 })
+
+    //send posts as a response
+    res.status(200).json(posts)
+}
+
+
+
 
 //add a comment
 const comment = async (req, res) => {
@@ -235,6 +270,7 @@ const deletePost = async (req, res) => {
 
 module.exports = {
     createPost,
+    test,
     getPosts,
     getMyPosts,
     comment,
