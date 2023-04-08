@@ -18,6 +18,7 @@ const PostForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        console.log(file)
         setError('')
         const email = user.email
         //console.log("email",email)

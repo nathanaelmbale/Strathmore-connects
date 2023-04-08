@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 const Posts = () => {
     const { user } = useAuthContext()
     const { posts, dispatch } = usePostContext()
-
+    console.log(posts)
     const deletePost = async (post) => {
 
         const postDelete = {
@@ -66,7 +66,7 @@ const Posts = () => {
                     <div className='card mt-2' key={post._id}>
                         {post.imagePath && (
                             <img
-                                src={require(`../uploads/${post.imagePath}`)}
+                                src={post.imagePath}
                                 className='card-img-top'
                                 style={{ "width": "100%" }}
                                 alt={post.description}
