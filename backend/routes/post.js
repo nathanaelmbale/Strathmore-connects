@@ -2,7 +2,6 @@ const express = require('express')
 
 const {
         createPost,
-        test,
         getMyPosts,
         getPosts,
         comment,
@@ -33,16 +32,13 @@ router.delete('/uncomment', deleteComment)
 //middleware variables
 const multer = require('multer')
 
-
-//storage middleware
 //storage middleware
 const storage = multer.memoryStorage();
       
-
-const upload = multer({ storage: storage })
+const upload = multer({ storage: storage });
 
 //POST a posts
-router.post('/', upload.single("NAME"), createPost)
+router.post('/', upload.single("NAME"), createPost);
 
 //DELETE a posts
 router.delete('/delete', deletePost)
