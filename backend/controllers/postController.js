@@ -1,121 +1,27 @@
+
+const { storage }= require('../firebase')
+const { getDownloadURL, ref, uploadBytesResumable } = require('firebase/storage');
+
 const Post = require('../models/postsModel')
 const Community = require('../models/communityModel')
 const User = require('../models/userModel')
 const mongoose = require('mongoose')
 
 const { initializeApp } = require("firebase/app");
-const { ref, getDownloadURL, uploadBytesResumable } = require('firebase/storage');
-const { firebaseConfig, storage } = require('../firebase');
-// Initialize a firebase application
-initializeApp(firebaseConfig);
+const { Storage } = require('@google-cloud/storage');
 
-// create a new Item
-const createPost = async (req, res) => {
-    // defines parameters for the data to be inputed in the database
-    const { title, description, category, community, email } = req.body;
+const firebaseConfig = {
+    apiKey: "AIzaSyAxtzoJ7wztlSzpcYBC35BR3sy__aaXtOw",
+    authDomain: "strathmore-connects.firebaseapp.com",
+    projectId: "strathmore-connects",
+    storageBucket: "strathmore-connects.appspot.com",
+    messagingSenderId: "240269365746",
+    appId: "1:240269365746:web:497479fbff02d740689b6b",
+    measurementId: "G-6PWWSPLT67"
+};
 
-    const file = req.file 
-    console.log("File",file)
-    // log the request body for debugging
-    console.log("createPost request body:", req.body);
-
-    // this is the image path
-    const imagePath = req.file && req.file.filename;
-    console.log("Image path:", imagePath);
-
-    // adds doc to db
-    try {
-        // array
-        let inputFields = [];
-
-        // validate user input
-        if (!title) inputFields.push("title");
-        if (!description) inputFields.push("description");
-        if (!category) inputFields.push("category");
-        if (!community) inputFields.push("community");
-        if (!email) inputFields.push("email");
-
-        if (inputFields.length > 0) {
-            return res.status(400).json(`Missing fields ${inputFields}`);
-        }
-
-        const user = await User.findOne({ email: email });
-
-        if (!user) throw Error("Invalid email");
-
-        const user_id = user._id;
-
-        if (!file) {
-            console.log("there")
-
-            // the schema takes in title category community , imagepath(optional) , user_id
-            const post = await Post.create({
-                title,
-                description,
-                category,
-                community,
-                email,
-                user_id,
-            });
-
-            // find the community by its name and get the accounts in that community
-            const communityData = await Community.findById({ _id: community });
-            const accounts = communityData.accounts;
-
-            res.status(200).json({ post, accounts });
-        } else {
-            console.log("here")
-            const time = Date.now();
-            // Upload the image to Firebase Storage and get the download URL
-            const file = req.file;
-
-            //const firebaseFilePath = `images/${time + file.filename}`;
-            const storageRef = ref(storage, `images/${time + file.originalname}`);
-
-            const metadata = {
-                contentType: req.file.mimetype,
-            };
-
-            // Upload the file in the bucket storage
-            console.log('Array:', req.file.buffer);
-
-            const snapshot = await uploadBytesResumable(
-                storageRef,
-                req.file.buffer,
-                metadata
-            );
-
-            // Grab the public url
-            const downloadURL = await getDownloadURL(snapshot.ref);
-
-            const post = await Post.create({
-                title,
-                description,
-                category,
-                email,
-                community,
-                imagePath: downloadURL,
-                user_id,
-            });
-
-            // confirm post has been made
-            console.log("Post made today:" + post);
-
-            // find the community by its name and get the accounts in that community
-            const communityData = await Community.findById({ _id: community });
-
-            console.log("users dd", communityData.accounts);
-            const accounts = communityData.accounts;
-
-            // send accounts and posts back
-            res.status(200).json({ post, accounts });
-        }
-    } catch (error) {
-        console.log("failed to upload: " + error.message);
-        res.status(400).json({ error: error.message })
-    }
-}
-
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
 // get all the posts
 const getPosts = async (req, res) => {
@@ -126,20 +32,94 @@ const getPosts = async (req, res) => {
     res.status(200).json(posts)
 }
 
-const getMyPosts = async (req, res) => {
-    //find user by id
-    const user_id = req.user
-
-    //log the request body for debugging
-    console.log("getMyPosts request body:", req.body)
-
-    //find posts made by a certain user
-    const posts = await Post.findById({ _id: user_id }).sort({ createdAt: -1 })
-
-    //send posts as a response
-    res.status(200).json(posts)
 }
 
+
+
+//create a new Item
+const createPost = async (req, res) => {
+    //defines parameters for the data to be inputed in the database
+    const { title, description, category, community, email } = req.body
+
+    //log the request body for debugging
+    console.log("createPost request body:", req.body)
+
+    //this is the image path
+    const imagePath = req.file && req.file.filename
+
+    //adds doc to db
+    try {
+        //array
+        let inputFields = []
+
+        //validate user input
+        if (!title) inputFields.push('title')
+        if (!description) inputFields.push('description')
+        if (!category) inputFields.push('category')
+        if (!community) inputFields.push('community')
+        if (!email) inputFields.push('email')
+
+        if (inputFields.length > 0) {
+            return res.status(400).json(`Missing fields ${inputFields}`)
+        }
+
+
+        const user = await User.findOne({ email: email })
+
+        if (!user) throw Error('Invalid email')
+
+        const user_id = user._id
+
+        if (!imagePath) {
+            //the schema takes in title category community , imagepath(optional) , user_id
+            const post = await Post.create({ title, description, category, community, email, user_id })
+
+            //find the community by its name and get the accounts in that community
+            const communite = await Community.findById({ _id: community })
+            const accounts = communite.accounts
+
+
+            res.status(200).json({ post, accounts })
+        } else {
+            const filename = Date.now()
+            // Upload the image to Firebase Storage and get the download URL
+            const file = req.file;
+            const storage = new Storage();
+            const bucket = storage.bucket();
+            const firebaseFilePath = `images/${filename + file.filename}`;
+            const fileUpload = bucket.file(firebaseFilePath);
+            await fileUpload.save(file.buffer, { contentType: file.mimetype });
+            const downloadUrl = await fileUpload.getSignedUrl({ action: "read", expires: "03-17-2025" });
+
+            const post = await Post.create({
+                title,
+                description,
+                category,
+                email,
+                community,
+                imagePath,
+                user_id,
+                imageUrl: downloadUrl[0], // Add the Firebase Storage URL to the Post document
+            });
+            //confirm post has been made
+            console.log("Post made today:" + post)
+
+            //find the community by its name and get the accounts in that community
+            const communite = await Community.findById({ _id: community })
+
+            console.log("users dd", communite.accounts)
+            const accounts = communite.accounts
+
+            //sends accounts and posts back
+            res.status(200).json({ post, accounts })
+        }
+
+    } catch (error) {
+        console.log("failed to upload: " + error.message)
+        res.status(400).json({ error: error.message })
+    }
+
+}
 
 //add a comment
 const comment = async (req, res) => {
@@ -247,6 +227,7 @@ const deletePost = async (req, res) => {
 
 module.exports = {
     createPost,
+    test,
     getPosts,
     getMyPosts,
     comment,
