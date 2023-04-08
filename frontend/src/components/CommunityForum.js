@@ -173,7 +173,7 @@ const CommunityForum = () => {
                             <div className='card mt-2' key={post._id}>
                                 {post.imagePath && (
                                     <img
-                                        src={require(`../uploads/${post.imagePath}`)}
+                                        src={post.imagePath}
                                         className='card-img-top'
                                         style={{ "width": "100%" }}
                                         alt={post.description}
