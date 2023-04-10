@@ -32,6 +32,8 @@ router.delete('/uncomment', deleteComment)
 //middleware variables
 const multer = require('multer')
 
+
+//storage middleware
 //storage middleware
 const storage = multer.memoryStorage();
       

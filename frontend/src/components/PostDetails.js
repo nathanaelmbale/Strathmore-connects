@@ -168,7 +168,7 @@ function PostDetails() {
                             <div key={post._id} className=''>
                                 {post && post.imagePath && (
                                     <img
-                                        src={require(`../uploads/${post.imagePath}`)}
+                                        src={post.imagePath}
                                         className='card-img-top w-100 m-0 p-0'
                                         alt={post.description}
                                     />
