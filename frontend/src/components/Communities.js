@@ -12,8 +12,8 @@ const Communities = () => {
     const [joinedCommunities, setJoinedCommunities] = useState([])
     const [notJoinedCommunities, setNotJoinedCommunities] = useState([])
 
-    useEffect(() => {
 
+    useEffect(() => {
         const fetchCommunity = async () => {
             const response = await fetch('/community', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
@@ -30,16 +30,18 @@ const Communities = () => {
         if (user) {
             fetchCommunity()
         }
+        console.log("effect")
     }, [dispatchCommunity, user])
 
     useEffect(() => {
 
         if (communities && communities.length > 0) {
-            const joined = communities.filter(community => community.accounts.includes(user._id))
+            const joined = communities.filter(community => community.accounts.includes(user.email))
             setJoinedCommunities(joined)
+            console.log(joined)
             dispatchCommunity({ type: 'SET_JOINED_COMMUNITIES', payload: joined })
 
-            const notJoined = communities.filter(community => !community.accounts.includes(user._id))
+            const notJoined = communities.filter(community => !community.accounts.includes(user.email))
             setNotJoinedCommunities(notJoined)
             dispatchCommunity({ type: 'SET_NOT_JOINED_COMMUNITIES', payload: joined })
 
@@ -49,12 +51,7 @@ const Communities = () => {
 
 
     const joinedCommunity = async (community) => {
-
-        const userToCommunity = {
-            id: community._id,
-            email : user.email
-        }
-        console.log("dammm", userToCommunity)
+        //console.log(community)
 
         fetch('/community/join', {
             method: 'POST',
@@ -62,11 +59,12 @@ const Communities = () => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`
             },
-            body: JSON.stringify(userToCommunity)
+            body: JSON.stringify({ communityId :community._id ,email: user.email})
         })
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data)
+                dispatchCommunity({ payload: 'SET_COMMUNITIES'})
 
 
             }).catch((error) => {

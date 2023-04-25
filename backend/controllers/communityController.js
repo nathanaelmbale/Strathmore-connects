@@ -12,8 +12,7 @@ const getCommunities = async (req, res) => {
     res.status(200).json(community)
 }
 
-
-//create a new Item
+//create a new post
 const createCommunity = async (req, res) => {
 
     //defines parameters for the data to be inputed in the database
@@ -79,24 +78,29 @@ const addUserToCommunity = async (req, res) => {
 
     //defines parameters for the data to be inputed in the database
     console.log(req.body)
-    const { _id, email } = req.body
+    const { communityId, email } = req.body
 
     //update document
     try {
         const user = await User.findOne({ email: email })
 
-        console.log(user)
+        //console.log(user.email)
 
         //checks if user exists
         if (!user) throw Error('User not found')
 
-        
+        if (!mongoose.Types.ObjectId.isValid(communityId)) {
+            console.log('Invalid community Id');
+            throw Error('Invalid community Id')
+        }
+
         //finds the document and campares it and updates where change is needed
-        const community = await Community.findById(_id)
-        
-        console.log(community)
-        
+
+        const community = await Community.findById(communityId)
+
         if (!community) throw Error('Community not found')
+
+        console.log(community)
 
         // add the user's email to the community's accounts array
         community.accounts.push(email)
@@ -104,10 +108,17 @@ const addUserToCommunity = async (req, res) => {
         // save the updated community document to the database
         await community.save()
 
-        return res.status(200).json({ message: 'User added to community successfully' })
+        const communities = await Community.find({}).sort({ createdAt: -1 })
+
+        //send community as a response
+        return res.status(200).json({communities ,message: 'User added to community successfully'})
+
+        //return res.status(200).json({ message: 'User added to community successfully' })
 
     } catch (error) {
-        return res.status(500).json({ error: 'Failed to add user' });
+        console.error('Failed to add user to community:', error)
+
+        return res.status(500).json({ error: 'Failed to add user to community' + error });
     }
 }
 
