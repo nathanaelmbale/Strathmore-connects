@@ -5,7 +5,7 @@ export const useCommentContext = () =>{
     const context = useContext(CommentContext)
 
     if(!context) {
-        throw Error('useWorkout context must be used in the root tree of App.js')
+        throw Error('useCOmment context must be used in the root tree of App.js')
     }
 
     return context

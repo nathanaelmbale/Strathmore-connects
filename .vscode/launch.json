@@ -7,8 +7,8 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Open Registration Form 2.html",
-            "file": "c:\\Users\\njoro\\Downloads\\Registration Form 2.html"
+            "name": "Open postController",
+            "file": "c:\\Users\\mupoy\\OneDrive\\webstore\\Semester-project\\backend\\controllers\\postController.js"
         }
     ]
 }

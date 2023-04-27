@@ -24,33 +24,23 @@ router.get('/', getPosts)
 router.get('/mypost', getMyPosts)
 
 //make comment
-router.post('/comment' , comment)
+router.post('/comment', comment)
 
 //delete comment
-router.delete('/uncomment' , deleteComment)
+router.delete('/uncomment', deleteComment)
 
 //middleware variables
 const multer = require('multer')
-const path = require('path')
-const filename = Date.now()
+
 
 //storage middleware
-const storage = multer.diskStorage({
-        destination: (req, file, callback) => {
-                console.log("File:" + file)
-                callback(null, '../frontend/src/uploads')
-        },
-        filename: (req, file, callback) => {
-                callback(null, filename + file.originalname)
-                console.log("File:" + file.originalname)
-
-        }
-})
-
-const upload = multer({ storage: storage })
+//storage middleware
+const storage = multer.memoryStorage();
+      
+const upload = multer({ storage: storage });
 
 //POST a posts
-router.post('/', upload.single("NAME"), createPost)
+router.post('/', upload.single("NAME"), createPost);
 
 //DELETE a posts
 router.delete('/delete', deletePost)

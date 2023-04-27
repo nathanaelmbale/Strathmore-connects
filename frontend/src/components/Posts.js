@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 const Posts = () => {
     const { user } = useAuthContext()
     const { posts, dispatch } = usePostContext()
-
+    console.log(posts)
     const deletePost = async (post) => {
 
         const postDelete = {
@@ -59,32 +59,34 @@ const Posts = () => {
     }
     return (
         <>
-        {user ?
-            <div className='container'>
-                <h1>Posts</h1>
-                {posts && posts.filter(post => post.category === 'post').map(post => (
-                    <div className='card mt-2' key={post._id}>
-                        {post.imagePath && (
-                            <img
-                                src={require(`../uploads/${post.imagePath}`)}
-                                className='card-img-top'
-                                style={{ "width": "100%" }}
-                                alt={post.description}
-                            />
-                        )}
-
-                        <div className='card-body'>
-                            <h4 className='card-title'>{post.title}</h4>
-                            <p className='card-text'>{post.description}</p>
-                            <Link className='btn btn-primary mr-2' to={`/posts/${post._id}`}>view post</Link>
-                            {user.admin === true ?
-                                <button className='btn btn-danger' onClick={() => deletePost(post)}>delete</button>
-                                : null}
+            {user ?
+                <div className='container'>
+                    <h1>Posts</h1>
+                    {posts && posts.filter(post => post.category === 'post').map(post => (
+                        <div className='card m-4' key={post._id}>
+                            {post.imagePath && (
+                                <img
+                                    src={post.imagePath}
+                                    className='card-img-top'
+                                    style={{ "width": "100%" }}
+                                    alt={post.description}
+                                />
+                            )}
+                            <div className='card-body'>
+                                <h4 className='card-title'>{post.title}</h4>
+                                <p className='card-text'>{post.description}
+                                <br></br>
+                                    <span className="badge badge-success">{post.category}</span>
+                                </p>
+                                <Link className='btn btn-primary mr-2' to={`/posts/${post._id}`}>view post</Link>
+                                {user.admin === true ?
+                                    <button className='btn btn-danger' onClick={() => deletePost(post)}>delete</button>
+                                    : null}
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </div> :
-            <h5>You need an account to view the posts</h5>}
+                    ))}
+                </div> :
+                <h5>You need an account to view the posts</h5>}
         </>
     )
 }

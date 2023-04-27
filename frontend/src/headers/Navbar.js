@@ -4,6 +4,8 @@ import { useLogout } from '../hooks/useLogout'
 import { useAuthContext } from '../hooks/useAuthContext'
 import Notification from '../components/Notification'
 import '../styles/main.css'
+import Logo from '../images/logo.png'
+
 
 const Navbar = () => {
     const { logout } = useLogout()
@@ -12,13 +14,17 @@ const Navbar = () => {
         logout()
     }
     return (
-        <>  
+        <>
             <div className='nav-controller'></div>
             <nav id='navbar' className='fixed-top shadow-lg bg-light border-bottom'>
                 <div className='container'>
                     <div className='row align-items-center'>
                         <div className='col'>
-                            <a href='/' className='nav-link pr-3'>Home</a>
+                            <div className='d-flex'>
+                                <img className="my-3" alt='strathmore connect logo' height='20px' src={Logo}></img>
+
+                                <a href='/' className='nav-link pr-3 d-flex align-items-center justify-content-center'>Home</a>
+                            </div>
                         </div>
                         <div className='col-6 d-none d-md-block'></div>
                         <div className='col'>
