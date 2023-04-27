@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useSignup } from '../hooks/useSignup'
+import Logo from '../images/logo.png'
+
 
 const Signup = () => {
   const [name, setName] = useState('')
@@ -9,13 +11,16 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await signup(name ,email, password)
+    await signup(name, email, password)
   }
 
   return (
     <>
       <form className='container' onSubmit={handleSubmit}>
         <div className="conatiner">
+          <center>
+            <img className="my-3" alt='strathmore connect logo' height='30px' src={Logo}></img>
+          </center>
           <h3><center>Sign up</center></h3>
           <div className='form-group'>
             <label className='form-label'>Name</label>

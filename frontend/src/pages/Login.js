@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useLogin } from '../hooks/useLogin'
 import '../styles/main.css'
+import Logo from '../images/logo.png'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -18,7 +19,11 @@ const Login = () => {
     <>
       <form className='container vh-100 d-flex flex-column align-items-center justify-content-center' onSubmit={handleSubmit}>
         <div className="container ">
-          <h3><center>Log in page</center></h3>
+          <center>
+          <img className="mb-3 " alt='strathmore connect logo' height='30px' src={Logo}></img>
+
+          </center>
+          <h3><center>Log in form</center></h3>
 
           <div className='form-group'>
             <label className='form-label'>Email</label>
