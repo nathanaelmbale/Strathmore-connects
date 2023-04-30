@@ -32,6 +32,9 @@ const ChangePassword = () => {
         e.preventDefault()
         await login(user.email, currentPassowrd)
         console.log(error)
+        if(!error) {
+            setIsApproved(true)
+        }
     }
     return (
         <div>
