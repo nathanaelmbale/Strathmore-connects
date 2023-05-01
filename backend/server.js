@@ -2,6 +2,10 @@ require('dotenv').config() //picks data from a hidden file .env
 
 const express = require('express') //the app
 const mongoose = require('mongoose') //the database 
+//const cors = require('cors');
+
+
+
 //routes
 const userRoutes = require('./routes/user')
 const postRoutes = require('./routes/post')
@@ -14,6 +18,14 @@ const port = process.env.PORT
 
 //express app
 const app = express()
+
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://www.example.com');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+  });
 
 //Global Middleware uses json
 app.use(express.json())
