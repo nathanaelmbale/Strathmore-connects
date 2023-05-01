@@ -16,7 +16,7 @@ const Community = () => {
     useEffect(() => {
 
         const fetchPosts = async () => {
-            const response = await fetch('/post', {
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/post', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
 

@@ -32,7 +32,7 @@ const PostForm = () => {
         formData.append('email', email)
 
 
-        axios.post('/post', formData, {
+        axios.post('https://strathmoreconnects-backend.onrender.com/post', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'authorization': `Bearer ${user.token}`
@@ -110,7 +110,7 @@ const PostForm = () => {
 
     useEffect(() => {
         const fetchCommunity = async () => {
-            const response = await fetch('/community', {
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
             const json = await response.json()
