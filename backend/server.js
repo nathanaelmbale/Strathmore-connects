@@ -19,14 +19,15 @@ const port = process.env.PORT
 //express app
 const app = express()
 
-// app.use(cors({
-//     origin: "https://strathmoreconnects-backend.onrender.com",
-// }));
+app.use(cors({
+    origin: "https://strathmoreconnects-backend.onrender.com",
+    methods: ["GET", "POST" ,"PATCH" ,"PUT","DELETE" ,"OPTIONS"]
+}));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'https://strathmoreconnects-backend.onrender.com');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
     next();
   });
 
