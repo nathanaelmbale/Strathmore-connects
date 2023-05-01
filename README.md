@@ -1,5 +1,11 @@
 <h1> <span style="color:blue">Strathmore Connects⚡⚡ </span></h1>
 
+Here is the link to the website
+
+```
+https://main--strathmoreconnects.netlify.app/
+```
+
 Strathmore University is facing a significant challenge in effectively communicating information about clubs and societies to its students. The current system relies heavily on email, which has proven to be inadequate in providing timely and relevant updates to the university community. Consequently, students are missing out on essential information such as registration deadlines for extracurricular activities, resulting in reduced participation and engagement in these activities.
 
 Furthermore, the process of connecting students with similar interests is time-consuming, as students are required to visit the clubs office at specific times to learn about the different clubs and their eligibility criteria. As a result, there is a need for an exclusive application that is only available to Strathmore students, which can provide the Strathmore experience beyond academic activities.
