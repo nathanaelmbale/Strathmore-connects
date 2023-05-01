@@ -20,12 +20,12 @@ const port = process.env.PORT
 const app = express()
 
 app.use(cors({
-    origin: "https://strathmoreconnects-backend.onrender.com",
+    origin: "https://main--strathmoreconnects.netlify.app",
     methods: ["GET", "POST" ,"PATCH" ,"PUT","DELETE" ,"OPTIONS"]
 }));
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://strathmoreconnects-backend.onrender.com');
+    res.setHeader('Access-Control-Allow-Origin', 'https://main--strathmoreconnects.netlify.app/');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
     next();
