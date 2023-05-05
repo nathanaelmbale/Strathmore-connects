@@ -8,14 +8,14 @@ import { Link } from 'react-router-dom'
 const Communities = () => {
     const { user } = useAuthContext()
     const { communities, dispatchCommunity } = useCommunityContext()
-    
+
     const [joinedCommunities, setJoinedCommunities] = useState([])
     const [notJoinedCommunities, setNotJoinedCommunities] = useState([])
 
 
     useEffect(() => {
         const fetchCommunity = async () => {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community', {
+            const response = await fetch('/community', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
 
@@ -46,25 +46,25 @@ const Communities = () => {
             dispatchCommunity({ type: 'SET_NOT_JOINED_COMMUNITIES', payload: joined })
 
         }
-    }, [communities, user ,dispatchCommunity])
+    }, [communities, user, dispatchCommunity])
 
 
 
     const joinedCommunity = async (community) => {
         //console.log(community)
 
-        fetch('https://strathmoreconnects-backend.onrender.com/community/join', {
+        fetch('/community/join', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`
             },
-            body: JSON.stringify({ communityId :community._id ,email: user.email})
+            body: JSON.stringify({ communityId: community._id, email: user.email })
         })
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data)
-                dispatchCommunity({ payload: 'SET_COMMUNITIES'})
+                dispatchCommunity({ payload: 'SET_COMMUNITIES' })
 
 
             }).catch((error) => {
@@ -72,7 +72,7 @@ const Communities = () => {
             })
 
     }
-    
+
     const deleteCommunity = async (community) => {
         const userToCommunity = {
             id: community._id,
@@ -82,7 +82,7 @@ const Communities = () => {
 
         //console.log("dammm", userToCommunity)
 
-        fetch('https://strathmoreconnects-backend.onrender.com/community/delete', {
+        fetch('/community/delete', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ const Communities = () => {
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data)
-                if(!data.error) dispatchCommunity({ type: "SET_COMMUNITIES", payload: data })
+                if (!data.error) dispatchCommunity({ type: "SET_COMMUNITIES", payload: data })
                 console.log(data.error)
 
             }).catch((error) => {
@@ -103,60 +103,63 @@ const Communities = () => {
 
     return (
         <>
-        {user?
-            <div className=''>
-                <h3 className='border-bottom border-top py-2 pl-3'>Communities</h3>
-                {joinedCommunities &&
-                    <>
-                        {notJoinedCommunities.map(community => (
-                            <div className='conatiner community-header border-bottom pl-3 py-2' key={community._id}>
+            {user ?
+                <div className=''>
+                    <h3 className='border-b-2 text-3xl py-2 pl-3 my-2'>Communities</h3>
+                    {joinedCommunities &&
+                        <>
+                            {notJoinedCommunities.map(community => (
+                                <div className='conatiner border-b-2 pl-3 py-2 ' key={community._id}>
 
-                                <Link
-                                    className='link'
-                                    to={`/community/${community._id}`}>
-                                    <h4 className='clickable-title'>{community.name}</h4>
-                                </Link>
+                                    <Link
+                                        className='link'
+                                        to={`/community/${community._id}`}>
+                                        <h4 className='clickable-title'>{community.name}</h4>
+                                    </Link>
 
-                                <p className='text-desc'>{community.description}</p>
-                                <small>Created on: {new Date(community.createdAt).toLocaleDateString('en-GB')}</small>
-                                <div className='my-2'>
-                                    <button onClick={() => joinedCommunity(community)} className="btn btn-outline-primary ">Join</button>
-                                </div>
-                                {user.admin &&
-                                    <div className='my-2'>
-                                        <button onClick={() => deleteCommunity(community)} className="btn btn-danger ">Delete</button>
-                                    </div>
-                                }
-                            </div>
-                        ))}
-
-                        <h3 className='border-bottom community-header py-2 pl-3'>Communities joined</h3>
-
-                        {joinedCommunities.map(community => (
-                            <div className='conatiner border-bottom pl-3 py-2' key={community._id}>
-                                <Link
-                                    className='link'
-                                    to={`/community/${community._id}`}
-                                >
-                                    <h4 className='clickable-title'>{community.name}</h4>
-                                </Link>
-
-                                <div className='community-description'>
                                     <p className='text-desc'>{community.description}</p>
-                                    <small className='text-right'>Created on: {new Date(community.createdAt).toLocaleDateString('en-GB')}</small>
-                                </div>
-
-                                {user.admin &&
+                                    <small>Created on: {new Date(community.createdAt).toLocaleDateString('en-GB')}</small>
                                     <div className='my-2'>
-                                        <button onClick={() => deleteCommunity(community)} className="btn btn-danger ">Delete</button>
+
+                                        <button onClick={() => joinedCommunity(community)}
+                                            className="inline-flex items-center mt-2 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            Join</button>
                                     </div>
-                                }
-                            </div>
-                        ))}
-                    </>
-                }
-            </div>
-            :<h5>You need an account to see the communities you are part of</h5>}
+                                    {user.admin &&
+                                        <div className='my-2'>
+                                            <button onClick={() => deleteCommunity(community)} className="btn btn-danger ">Delete</button>
+                                        </div>
+                                    }
+                                </div>
+                            ))}
+
+                            <h3 className='border-b-2 text-3xl py-2 pl-3 my-2'>Communities joined</h3>
+
+                            {joinedCommunities.map(community => (
+                                <div className='conatiner border-b-2 pl-3 py-2' key={community._id}>
+                                    <Link
+                                        className='link'
+                                        to={`/community/${community._id}`}
+                                    >
+                                        <h4 className='clickable-title'>{community.name}</h4>
+                                    </Link>
+
+                                    <div className='community-description'>
+                                        <p className='text-desc'>{community.description}</p>
+                                        <small className='text-right font-bold'>Created on: {new Date(community.createdAt).toLocaleDateString('en-GB')}</small>
+                                    </div>
+
+                                    {user.admin &&
+                                        <div className='my-2'>
+                                            <button onClick={() => deleteCommunity(community)} className="btn btn-danger ">Delete</button>
+                                        </div>
+                                    }
+                                </div>
+                            ))}
+                        </>
+                    }
+                </div>
+                : <h5>You need an account to see the communities you are part of</h5>}
         </>
     )
 }

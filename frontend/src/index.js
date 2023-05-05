@@ -7,6 +7,7 @@ import { AuthContextProvider } from './context/AuthContext';
 import { CommunityContextProvider } from './context/CommunityContext';
 import { CommentContextProvider } from './context/CommentContext';
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

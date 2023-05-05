@@ -28,11 +28,10 @@ const PostForm = () => {
         formData.append('description', description)
         formData.append('category', category)
         formData.append('community', community)
-        //console.log(community+ " community")
         formData.append('email', email)
 
 
-        axios.post('https://strathmoreconnects-backend.onrender.com/post', formData, {
+        axios.post('/post', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'authorization': `Bearer ${user.token}`
@@ -110,7 +109,7 @@ const PostForm = () => {
 
     useEffect(() => {
         const fetchCommunity = async () => {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community', {
+            const response = await fetch('/community', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
             const json = await response.json()
@@ -128,20 +127,21 @@ const PostForm = () => {
 
 
     return (
-        <>
+        <div className='w-full border-b-2'>
             {user && user.admin === true ?
 
-                <form onSubmit={handleSubmit} >
-                    <h1>Post form</h1>
-                    <div className="form-group">
-                        <label>Image(optional)</label>
+                <form onSubmit={handleSubmit} className='mx-auto w-5/6 ' >
+                    <h1 className=' text-4xl'>Post form</h1>
+                    <div className="items-center ">
+                        <label className='block'>Image(optional)</label>
                         <input className="form-control" type="file" name="NAME" onChange={(e) => {
                             //console.log("The file property",e.target.files[0])
                             setFile(e.target.files[0])
                         }} />
                     </div>
 
-                    <div className="form-group">
+
+                    <div className="items-center">
 
                         <label>
                             Title:</label>
@@ -149,12 +149,14 @@ const PostForm = () => {
 
                     </div>
 
-                    <div className="form-group">
+
+
+                    <div className="items-center">
                         <label>Description:</label>
                         <input className="form-control" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
                     </div>
 
-                    <div className="form-group">
+                    <div className="items-center">
                         <label>Type:  </label>
                         <select className="form-control" value={category} onChange={(e) => setCategory(e.target.value)}>
                             <option value="">Select a type</option>
@@ -163,7 +165,7 @@ const PostForm = () => {
                         </select>
                     </div>
 
-                    <div className="form-group">
+                    <div className="items-center">
                         <label>Community:</label>
                         <select value={community} className="form-control" onChange={(e) => setCommunity(e.target.value)}>
                             <option value="">Select a community</option>
@@ -189,41 +191,70 @@ const PostForm = () => {
 
             {user && user.admin === false ?
 
-                <form onSubmit={handleSubmit} >
-                    <h1>Post form</h1>
-                    <div className="form-group">
-                        <label>Image(optional)</label>
-                        <input className="form-control" type="file" name="NAME" onChange={(e) => {
-                            //console.log("The file property",e.target.files[0])
+                <form onSubmit={handleSubmit} className='mx-auto w-5/6 my-5' >
+                    <h1 className='text-4xl'>Post form</h1>
+
+
+                    <div className="items-center">
+                        <label
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            for="file_input">
+                            Upload file
+                        </label>
+                    </div>
+
+
+                    <input
+                        className="block w-full p-2 text-md text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                        id="file_input"
+                        type="file"
+                        name="NAME" 
+                        onChange={(e) => {
                             setFile(e.target.files[0])
                         }} />
+
+
+
+                    <div className="md-input-box">
+                        <input
+                            id="Title"
+                            name="Title"
+                            type="text"
+                            className="md-input m-0.5"
+                            placeholder=""
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                        />
+                        <label for="Title" className="md-label text-md">Title</label>
+                        <div className="md-input-underline" />
                     </div>
 
-                    <div className="form-group">
-
-                        <label>
-                            Title:</label>
-                        <input className="form-control" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <div className="md-input-box">
+                        <input
+                            id="Description"
+                            name="Description"
+                            className="md-input m-0.5"
+                            type="text"
+                            placeholder=""
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)} />
+                        <label for="Description" className="md-label text-md">Description</label>
+                        <div className="md-input-underline" />
 
                     </div>
 
-                    <div className="form-group">
-                        <label>Description:</label>
-                        <input className="form-control" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Type:  </label>
-                        <select className="form-control" value={category} onChange={(e) => setCategory(e.target.value)}>
+                    <div className="block">
+                        <label className="text-md">Type  </label>
+                        <select className="md-input rounded-xl pl-4" value={category} onChange={(e) => setCategory(e.target.value)}>
                             <option value="">Select a type</option>
                             <option value="post">Post</option>
                             <option value="comment">Comment</option>
                         </select>
                     </div>
 
-                    <div className="form-group">
-                        <label>Community:</label>
-                        <select value={community} className="form-control" onChange={(e) => setCommunity(e.target.value)}>
+                    <div className="items-center">
+                        <label>Community</label>
+                        <select value={community} className="md-input rounded-xl pl-4" onChange={(e) => setCommunity(e.target.value)}>
                             <option value="">Select a community</option>
                             {communities && communities.map(communite => (
 
@@ -233,19 +264,23 @@ const PostForm = () => {
 
                             ))}
                         </select>
-                        <span className='text-danger'>
+                        <span className='text-red-700'>
                             <small>If you don't see the community reload or use previous name</small>
                         </span>
                     </div>
 
-                    <button type="submit" className='btn btn-outline-primary'>Submit</button>
+                    <button type="submit"
+                        className='inline-flex items-center  mt-2 px-3 py-2 text-sm font-medium text-center
+                     text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none
+                      focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700
+                       dark:focus:ring-blue-800'>Submit</button>
                     {error && <div className='alert alert-danger mt-3'>{error}</div>}
 
 
                 </form>
                 : null}
 
-        </>
+        </div>
     )
 }
 

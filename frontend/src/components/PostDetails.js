@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { usePostContext } from "../hooks/usePostsContext"
 import { useCommentContext } from "../hooks/useCommentContext";
+import Communities from "./Communities";
 
 function PostDetails() {
     const { dispatch } = usePostContext()
@@ -32,7 +33,7 @@ function PostDetails() {
 
         //post the notification to the user
         try {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/user/notification/add', {
+            const response = await fetch('/user/notification/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,7 +58,7 @@ function PostDetails() {
             user: user.email
         }
         try {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/post/comment', {
+            const response = await fetch('/post/comment', {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,7 +89,7 @@ function PostDetails() {
             commentId: commentId
         }
         try {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/post/uncomment', {
+            const response = await fetch('/post/uncomment', {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json',
@@ -109,7 +110,7 @@ function PostDetails() {
                         notificationId: postId
                     }
 
-                    const response = await fetch('https://strathmoreconnects-backend.onrender.com/user/notification/delete', {
+                    const response = await fetch('/user/notification/delete', {
                         method: "DELETE",
                         headers: {
                             'Content-Type': 'application/json',
@@ -133,7 +134,7 @@ function PostDetails() {
     useEffect(() => {
         //fetch posts
         const fetchPosts = async () => {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/post', {
+            const response = await fetch('/post', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
             const json = await response.json()
@@ -160,48 +161,54 @@ function PostDetails() {
 
     return (
         <>
-            <div className="container">
-                <div className="container">
-                    <h1>Posts</h1>
-                    {post && (
-                        <div className="card shadow">
-                            <div key={post._id} className=''>
-                                {post && post.imagePath && (
-                                    <img
-                                        src={post.imagePath}
-                                        className='card-img-top w-100 m-0 p-0'
-                                        alt={post.description}
-                                    />
-                                )}
-                                <div className="card-body">
-                                    <h4 className='card-title'>{post.title}</h4>
-                                    <p className='card-text'>{post.description}</p>
-                                    <small className="form-text text-muted">{post.category}</small>
+            <div className="grid 2xl:grid-cols-12 xl:grid-cols-12 lg:grid-span-12 w-full">
+                <div className="2xl:col-span-9 xl:col-span-9 lg:col-span-9 w-full">
+                    <div className=" md:w-9/12  lg:w-9/12 xl:w-9/12 2xl:w-9/12 mx-auto  my-10 w-full">
+                        {post && (
+                            <div className="bg-white shadow-sm rounded-b-lg w-full m-0 ">
+                                <div key={post._id} className=''>
+                                    {post && post.imagePath && (
+                                        <img
+                                            src={post.imagePath}
+                                            className='rounded-t-lg'
+                                            alt={post.description}
+                                        />
+                                    )}
+
+                                    <div className="p-5 ">
+                                        <h4 className='card-title'>{post.title}</h4>
+                                        <p className='card-text'>{post.description}</p>
+                                        <small className="bg-gray-200 py-0.5 px-1 rounded-lg">{post.category}</small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
+                        )}
 
-                    <div className=" m-2"></div>
-                    <small id="emailHelp" className="form-text text-muted">
-                        Make a comment here
-                    </small>
+                        <div className="m-2"></div>
+                        <p id="emailHelp" className="">
+                            Make a comment
+                        </p>
 
-                    <form className="" onSubmit={makeAComment}>
-                        <input type="text" className="form-control" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="make a comment"></input>
-                        <input type="submit" className="btn btn-primary my-2" name="comment" placeholder="comment" value="comment" ></input>
-                    </form>
+                        <form className="bg-white rounded-xl" onSubmit={makeAComment}>
+                            <input type="text" className="w-11/12 bg-gray-100 ml-5" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="make a comment"></input>
+                            <br></br>
+                            <input type="submit" className="btn btn-primary my-2" name="comment" placeholder="comment" value="comment" ></input>
+                        </form>
 
-                    {comments && comments.map(comm => (
-                        <div key={comm._id} className="comment">
-                            <div className="d-flex justify-content-between align-items-center">
-                                <div>{comm.comment}</div>
-                                <button className="btn btn-outline-danger" onClick={() => deleteComment(comm._id)}>Delete</button>
+                        {comments && comments.map(comm => (
+                            <div key={comm._id} className="comment">
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <div>{comm.comment}</div>
+                                    <button className="btn btn-outline-danger" onClick={() => deleteComment(comm._id)}>Delete</button>
+                                </div>
+                                <small className="">Post made by {comm.user}</small>
                             </div>
-                            <small className="form-text text-muted">Post made by {comm.user}</small>
-                        </div>
-                    ))}
+                        ))}
 
+                    </div>
+                </div>
+                <div className="col-span-3 border-l-2">
+                    <Communities />
                 </div>
             </div>
         </>
