@@ -119,8 +119,6 @@ const createPost = async (req, res) => {
 
 // get all the posts
 const getPosts = async (req, res) => {
-    console.log(req.body)
-    console.log(req.headers)
     //find all posts and sort from the most recent
     const posts = await Post.find({}).sort({ createdAt: -1 })
 

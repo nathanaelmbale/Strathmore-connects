@@ -14,6 +14,7 @@ const Community = () => {
     const { dispatch } = usePostContext()
 
     useEffect(() => {
+        console.log("me ")
 
         const fetchPosts = async () => {
             const response = await fetch('/post', {
@@ -37,11 +38,11 @@ const Community = () => {
         <>
             <section id='community'>
                 <div className='bg-white' id='welcome'>
-                    <div className='row m-0 p-0'>
-                        <div className='col-12 col-md-9 m-2 absolute top-0 left-0 w-full h-auto z-10'>
+                    <div className='grid grid-cols-1 2xl:grid-cols-12 xl:grid-cols-12 lg:grid-span-12 w-full'>
+                        <div className='2xl:col-span-9 xl:col-span-9 lg:col-span-9   w-11/12'>
                             <Outlet />
                         </div>
-                        <div id='communities' className='col m-0 p-0 border-left absolute top-0 left-0 w-full h-auto z-10 sm:static sm:w-auto sm:h-full sm:z-0'>
+                        <div id='communities' className='col-span-3 border-l-2'>
                             <Communities ></Communities>
                         </div>
                     </div>

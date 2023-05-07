@@ -66,4 +66,5 @@ mongoose.connect(URI)
     })
     .catch((error) => {
             console.log("Error on the database:"+ error)
+            console.dir("gere")
     })

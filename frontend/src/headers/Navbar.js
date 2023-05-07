@@ -6,7 +6,6 @@ import Notification from '../components/Notification'
 import '../styles/main.css'
 import Logo from '../images/logo.png'
 
-
 const Navbar = () => {
     const { logout } = useLogout()
     const { user } = useAuthContext()
@@ -15,7 +14,7 @@ const Navbar = () => {
     }
     return (
         <>
-            <div className='nav-controller'></div>
+            <div className='m-4'>t</div>
             
             <nav id='navbar' className='fixed block top-0 shadow-sm bg-white border-b w-full z-50'>
                 <div className='container'>
