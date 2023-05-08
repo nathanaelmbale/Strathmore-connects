@@ -215,12 +215,13 @@ const deleteComment = async (req, res) => {
 
 //delete a Item
 const deletePost = async (req, res) => {
-    // extract _id from request body
-    const { _id } = req.body
+
 
     //log the request body for debugging
     console.log("deletePost request body:", req.body)
-
+    
+    // extract _id from request body
+    const { _id } = req.body
     // check if id is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(_id)) {
         // if not valid, send error message

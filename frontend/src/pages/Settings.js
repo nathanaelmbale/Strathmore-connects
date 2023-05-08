@@ -13,9 +13,9 @@ const Settings = () => {
   return (
     <>
       <div className='container '>
-        <div className='container '>
-          <h2>Settings </h2>
-          <div className='card rounded my-3'>
+        <div className='m-9 '>
+          <h2 className='text-3xl m-4 font-semibold'>Settings </h2>
+          <div className='shadow-sm border my-5 p-5 rounded-xl md:m-6 bg-white'>
             <div className='student card-body'>
               <div className='functionalities'>
                 <div >
@@ -43,13 +43,13 @@ const Settings = () => {
               <div className='community-admin '>
                 <div className='functionalities'>
                   <div className='card rounded'>
-                    <div className='card-body'>
+                    <div className='shadow-sm border my-5 p-5 rounded-xl md:m-6 bg-white'>
                       <AddUserToCommunity></AddUserToCommunity>
 
                     </div>
                   </div>
                   <div className='card rounded mt-3'>
-                    <div className='card-body'>
+                    <div className='shadow-sm border my-5 p-5 rounded-xl md:m-6 bg-white'>
                       <RemoveUserFromCommunity></RemoveUserFromCommunity>
                     </div>
                   </div>
@@ -58,21 +58,25 @@ const Settings = () => {
             </div> : null
           }
 
+
           {user && user.admin === true ?
             <div className='admin card my-3'>
-              <div className='card-body'>
-                <UserAdmin></UserAdmin>
-                <div className='functionalities'>
+              <div >
+                <div className='shadow-sm border my-5 p-5 rounded-xl md:m-6 bg-white'>
+                  <UserAdmin></UserAdmin>
+                </div>
+                <div className='shadow-sm border my-5 p-5 rounded-xl md:m-6 bg-white'>
                   <EditCommunity></EditCommunity>
                 </div>
-                <div>
-                  <DeleteAccount></DeleteAccount>
-                </div>
+
               </div>
             </div>
             : null
           }
 
+          <div className='shadow-sm border my-5 p-5 rounded-xl md:m-6 bg-white'>
+            <DeleteAccount></DeleteAccount>
+          </div>
         </div>
       </div>
     </>

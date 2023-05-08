@@ -20,7 +20,7 @@ const Navbar = () => {
                 <div className='container'>
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center'>
-                            <a href='/' className='nav-link pr-3 flex items-center justify-center hover:text-blue-600'>
+                            <a href='/' className='hover:text-blue-900 pr-3 flex items-center justify-center'>
                             <img className="my-3 h-5" alt='strathmore connect logo' height='20px' src={Logo}></img>
                             <span className='ml-2 lg:block md:block sm:hidden'>Home</span>
                             </a>
@@ -28,15 +28,15 @@ const Navbar = () => {
                         <div className='flex items-center'>
                             {!user && (
                                 <div className='flex items-center'>
-                                    <Link to='/login' className='nav-link pr-3'>Log in</Link>
-                                    <Link to='/signup' className='nav-link pr-3'>Sign up</Link>
+                                    <Link to='/login' className='hover:text-blue-900 pr-3'>Log in</Link>
+                                    <Link to='/signup' className='hover:text-blue-900 pr-3'>Sign up</Link>
                                 </div>
                             )}
                             {/*Logout */}
                             {user && (
                                 <div className='flex items-center mx-2'>
                                     <div>
-                                        <Link to='/settings' className='nav-link pr-3'>Settings</Link>
+                                        <Link to='/settings' className='hover:text-blue-900 pr-3'>Settings</Link>
                                     </div>
                                     <div className='notification'>
                                         <Notification></Notification>

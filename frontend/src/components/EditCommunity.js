@@ -6,8 +6,7 @@ const EditCommunity = () => {
     const { user } = useAuthContext()
     const { communities, dispatchCommunity } = useCommunityContext()
     const [results, setResults] = useState("")
-    const [isCommunityName, setIsCommunityName] = useState(false)
-    const [isCommunityDescription, isSetCommunityDescription] = useState(false)
+
     let newName
     let newCommunity
     let communityName
@@ -37,7 +36,6 @@ const EditCommunity = () => {
         newName = e.target.textContent;
         communityName = true
         console.log("edit value", newName, communityName)
-        setIsCommunityName(true)
 
         //dispatchCommunity({ type: "UPDATE_COMMUNITY", payload: updatedCommunity });
     };
@@ -46,7 +44,6 @@ const EditCommunity = () => {
         newCommunity = e.target.textContent;
         communityDescription = true
         console.log("edit value", newCommunity, communityDescription)
-        isSetCommunityDescription(true)
 
         //ispatchCommunity({ type: "UPDATE_COMMUNITY", payload: updatedCommunity });
     }
@@ -82,37 +79,40 @@ const EditCommunity = () => {
 
     return (
         <>
-            <h3 className="pl-3">Communities</h3>
-            <h4 className="text-danger pl-3">Hover over the text to edit</h4>
+            <h3 className="pl-3 font-bold text-xl px-4">Communities</h3>
+            <h4 className="text-danger font-bold text-red-600 text-lg pl-3">Hover over the text to edit</h4>
             {communities &&
                 communities.map((community) => (
-                    <form className="conatiner" key={community._id} onSubmit={(e) => handleUpdate(e, community)}>
+                    <form className="border-b-2 px-2" key={community._id} onSubmit={(e) => handleUpdate(e, community)}>
                         <div
-                            className=' community-header pl-2 py-2'
+                            className=' px-4'
                             contentEditable={true}
                             onInput={(e) => handle(e, community)}
                         >
-                            <h4 className='pl-2'>{community.name}</h4>
+                            <h4 className='pl-3  text-xl mt-3'>{community.name}</h4>
                         </div>
                         <div
                             contentEditable={true}
                             onInput={(e) => handleDescriptionChange(e, community)}
+                            className="px-4"
                         >
 
                             <p className='pl-3'>{community.description}</p>
                         </div>
                         {results ?
                             <>
-                                <p className="p-2 text-success">
+                                <p className="pl-6 text-green-500">
                                     {results}
                                 </p>
                             </> : null
                         }
-                        <div className="conatiner">
-                            {isCommunityName || isCommunityDescription ?
-                                <button type="submit" className="btn btn-secondary container">Update Community</button> :
-                                null
-                            }
+                        <div className="mx-5 my-2">
+
+                                <button type="submit"
+                                    className=' w-full items-center  mt-2 px-3 py-2 text-sm font-medium text-center
+                                            text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none
+                                            focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700
+                                            dark:focus:ring-gray-800'>Update Community</button>
                         </div>
 
                     </form>

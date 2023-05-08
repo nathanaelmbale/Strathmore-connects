@@ -48,8 +48,11 @@ const Welcome = () => {
           <div className='col-span-3 border-l-2'>
             <CommunityForm></CommunityForm>
             {user && user.admin === true ?
-              <div className='container'>
-                <button className='btn btn-dark container' onClick={() => setEdit(!edit)}>
+              <div className='border-b-2 mx-5'>
+                <button className=' w-full items-center  mt-2 px-3 py-2 text-sm font-medium text-center
+                    text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none
+                    focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700
+                     dark:focus:ring-gray-800' onClick={() => setEdit(!edit)}>
                   {edit ? 'Delete mode' : 'Edit mode'}
                 </button>
               </div>

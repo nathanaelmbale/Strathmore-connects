@@ -16,8 +16,9 @@ const CommunityForum = () => {
     const { communityId } = useParams()
     const { user } = useAuthContext()
     const { posts, dispatch } = usePostContext()
-    const { communities, dispatchCommunity } = useCommunityContext()
+    const {  dispatchCommunity } = useCommunityContext()
 
+    const [communities, setCommunities] = useState([])
     const [communityPosts, setCommunityPosts] = useState([])
     const [isUserInCommunity, setIsUserInCommunity] = useState(false)
     const [makePost, setMakePost] = useState(false)
@@ -26,7 +27,7 @@ const CommunityForum = () => {
 
 
     useEffect(() => {
-        console.log("me ")
+
 
         const fetchPosts = async () => {
             const response = await fetch('/post', {
@@ -49,7 +50,7 @@ const CommunityForum = () => {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
             const commune = await response.json()
-            //console.log("json:" + JSON.stringify(json))
+            setCommunities(commune)
 
             const communityee = commune && commune.find(c => c._id === communityId)
             setCurrentCommunity(communityee)
@@ -69,7 +70,7 @@ const CommunityForum = () => {
         fetchPosts()
         fetchCommunity()
 
-    }, [communityId])
+    }, [communityId,dispatch,posts ,dispatchCommunity ,user])
 
 
 
@@ -77,10 +78,12 @@ const CommunityForum = () => {
         console.log("new community ")
         const communityMember = async () => {
             console.log(communityId)
-            const community = await communities && communities.find(c => c._id === communityId)
+            console.log("communities",communities)
+            const community = communities && communities.find(c => c._id === communityId)
             console.log("current",community)
-            const comm = await community && community.accounts.includes(user._id)
-            console.log("bool",comm)
+            const comm = community && community.accounts.includes(user.email)
+            setIsUserInCommunity(community && community.accounts.includes(user.email))
+            console.log("bool",comm,isUserInCommunity)
 
             if (comm === true) {
                 setIsUserInCommunity(true)
@@ -109,21 +112,18 @@ const CommunityForum = () => {
 
         manageState()
 
-    }, [communityId])
+    }, [communityId,dispatch,communities,user ,isUserInCommunity])
 
 
     const deletePost = async (post) => {
-        const postDelete = {
-            _id: post._id
-        }
 
-        fetch('post/delete', {
+        fetch('/post/delete', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`
             },
-            body: JSON.stringify(postDelete)
+            body: JSON.stringify({_id : post._id})
         })
             .then(response => response.json())
             .then(data => {
@@ -192,7 +192,7 @@ const CommunityForum = () => {
                         <CommunityPost ></CommunityPost> :
                         null}
                     {communityPosts && communityPosts.map(post => (
-                        <div className='shadow-sm border my-5  md:m-6 rounded-lg' key={post._id}>
+                        <div className='shadow-sm border my-5 ml-5  md:m-6 rounded-lg' key={post._id}>
                             {post.imagePath && (
                                 <img
                                     src={post.imagePath}
@@ -202,15 +202,33 @@ const CommunityForum = () => {
                                 />
                             )}
 
-                            <div className='m-5'>
-                                <h4 className=' font-light text-lg'>{post.title}</h4>
-                                <p className='card-text'>{post.description}</p>
+                            <div className='m-5 '>
+                                <div className='flex'>
+                                <h4 className='flex-1 font-light text-lg'>{post.title}</h4>
+                                {user.admin === true ?
+                                    <button 
+                                    className='bg-red-200 p-1.5 mr-2 rounded-full w-8 h-8' 
+                                    onClick={() => deletePost(post)}>
+                                        <svg
+                                            width="20"
+                                            height="20"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.7404 9L14.3942 18M9.60577 18L9.25962 9M19.2276 5.79057C19.5696 5.84221 19.9104 5.89747 20.25 5.95629M19.2276 5.79057L18.1598 19.6726C18.0696 20.8448 17.0921 21.75 15.9164 21.75H8.08357C6.90786 21.75 5.93037 20.8448 5.8402 19.6726L4.77235 5.79057M19.2276 5.79057C18.0812 5.61744 16.9215 5.48485 15.75 5.39432M3.75 5.95629C4.08957 5.89747 4.43037 5.84221 4.77235 5.79057M4.77235 5.79057C5.91878 5.61744 7.07849 5.48485 8.25 5.39432M15.75 5.39432V4.47819C15.75 3.29882 14.8393 2.31423 13.6606 2.27652C13.1092 2.25889 12.5556 2.25 12 2.25C11.4444 2.25 10.8908 2.25889 10.3394 2.27652C9.16065 2.31423 8.25 3.29882 8.25 4.47819V5.39432M15.75 5.39432C14.5126 5.2987 13.262 5.25 12 5.25C10.738 5.25 9.48744 5.2987 8.25 5.39432" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </button>
+                                    : null}
+                                    </div>
+                                <p className=''>{post.description}</p>
                                 <p className=' text-xs text-gray-600'>Posted by {post.email}</p>
-                                {post.category === "post" ?
+                                
                                     <Link
                                         className="inline-flex items-center mt-2 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                         to={`/posts/${post._id}`}>
-                                        view post
+                                            {post === "post" ?<>view post</>: <>Comment</>}
+                                         
                                         <svg aria-hidden="true"
                                             className="w-4 h-4 ml-2 -mr-1"
                                             fill="currentColor"
@@ -222,10 +240,7 @@ const CommunityForum = () => {
                                                 d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
                                         </svg>
                                     </Link>
-                                    : null}
-                                {user.admin === true ?
-                                    <button className='btn btn-danger container my-2' onClick={() => deletePost(post)}>delete</button>
-                                    : null}
+
                             </div>
                         </div>
                     ))}

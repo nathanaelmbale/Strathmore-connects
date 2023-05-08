@@ -16,48 +16,54 @@ const Login = () => {
   }
 
   return (
-    <>
-      <form className='container vh-100 d-flex flex-column align-items-center justify-content-center' onSubmit={handleSubmit}>
+    <div className='w-full h-screen '>
+      <form className='mx-auto flex  shadow-lg items-center w-9/12 bg-white rounded-2xl p-10' onSubmit={handleSubmit}>
         <div className="container ">
           <center>
-          <img className="mb-3 " alt='strathmore connect logo' height='30px' src={Logo}></img>
+            <img className="mb-3 w-20" alt='strathmore connect logo' height='30px' src={Logo}></img>
 
           </center>
-          <h3><center>Log in form</center></h3>
+          <h3 className='text-3xl font-bold'><center>Log in form</center></h3>
 
-          <div className='form-group'>
-            <label className='form-label'>Email</label>
+          <div className='mt-3'>
+            <label>Email</label>
 
             <input
               type="email"
               onChange={(e) => { setEmail(e.target.value) }}
               value={email}
-              className='form-control'
+              className="block w-full p-2 text-md text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
               name="email"
-              autoComplete='off'
+              autoComplete='on'
+              placeholder='email'
             />
           </div>
-          <div className='form-group'>
+          <div className='mt-3'>
 
-            <label className='form-label'>Password</label>
+            <label>Password</label>
 
             <input
               type="password"
               onChange={(e) => { setPassword(e.target.value) }}
               value={password}
               name="password"
-              className='form-control'
-              autoComplete='off'
+              className="block w-full p-2 text-md text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+              autoComplete='on'
+              placeholder='password'
             />
           </div>
 
-          <button disabled={isLoading} className='btn btn-primary container'>
+          <button disabled={isLoading} 
+          className='w-full items-center  mt-2 px-3 py-2 text-sm font-medium text-center
+          text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none
+          focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700
+           dark:focus:ring-blue-800'>
             Log in
           </button>
           {error && <div className='alert alert-danger mt-3'>{error}</div>}
         </div>
       </form>
-    </>
+    </div>
   )
 }
 

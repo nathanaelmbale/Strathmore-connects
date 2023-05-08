@@ -53,7 +53,7 @@ const AddUserToCommunity = () => {
     setUserError("")
     setEmail("")
     const _id = community
-    console.log("community" ,community)
+    console.log("community", community)
     try {
       const response = await fetch('community/join', {
         method: 'POST',
@@ -61,7 +61,7 @@ const AddUserToCommunity = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${user.token}`
         },
-        body: JSON.stringify({ email ,_id })
+        body: JSON.stringify({ email, _id })
       })
       if (!response.ok) {
         setUserError("User not found")
@@ -84,28 +84,43 @@ const AddUserToCommunity = () => {
     setCommunity(" ")
   }
   return (
-    <div>
-      <h2>Add user to community</h2>
+    <div className=''>
+      <h2 className='text-3xl font-bold'>Add user to community</h2>
       <form onSubmit={handleAddUser}>
         <div className="form-group">
-          <label className='form-label'>Community:</label>
-          <select value={community} className="form-control" onChange={(e) => setCommunity(e.target.value)}>
-            <option value="">Select a community</option>
-            {communities && communities.map(communite => (
+          <div className='block'>
+            <label className='py-5'>Community</label>
+            <select value={community} className="md-input rounded-xl pl-4" 
+            onChange={(e) => setCommunity(e.target.value)}>
+              <option value="">Select a community</option>
+              {communities && communities.map(communite => (
 
-              <option key={communite._id} value={communite._id}>
-                {communite.name}
-              </option>
+                <option key={communite._id} value={communite._id}>
+                  {communite.name}
+                </option>
 
-            ))}
-          </select>
-
-          <label className='form-label'>Email</label>
-          <input type="text" className="form-control" placeholder='Type in your email' value={email} onChange={(e) => setEmail(e.target.value)}></input>
+              ))}
+            </select>
+          </div>
+          <div>
+          <div className=''>
+          <label className='block'>Email</label>
+          <input 
+          type="text" 
+          className="block w-full p-2 text-md text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+          placeholder='Type in your email' 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)}></input>
+          </div>
           <div className='my-3'>
-            <button type='submit' className='btn btn-primary container'>Add user</button>
+            <button type='submit' 
+             className='inline-flex items-center  mt-2 px-3 py-2 text-sm font-medium text-center
+             text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none
+             focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700
+              dark:focus:ring-blue-800' >Add user</button>
             {userError && <div className='alert alert-danger mt-3'>{userError}</div>}
             {userSuccess && <div className='success alert-success mt-3'>{userSuccess}</div>}
+          </div>
           </div>
         </div>
 

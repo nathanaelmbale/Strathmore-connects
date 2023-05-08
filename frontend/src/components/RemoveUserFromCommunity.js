@@ -83,11 +83,12 @@ const RemoveUserFromCommunity = () => {
   }
   return (
     <div>
-      <h2>Remove user from community</h2>
+      <h2 className='text-3xl font-bold'>Remove user from community</h2>
       <form onSubmit={handleRemoveUser}>
-        <div className="form-group">
-          <label className='form-label'>Community:</label>
-          <select value={community} className="form-control" onChange={(e) => setCommunity(e.target.value)}>
+        <div className='block'>
+          <label className='py-5'>Community</label>
+          <select value={community} className="md-input rounded-xl pl-4"
+            onChange={(e) => setCommunity(e.target.value)}>
             <option value="">Select a community</option>
             {communities && communities.map(communite => (
 
@@ -97,18 +98,28 @@ const RemoveUserFromCommunity = () => {
 
             ))}
           </select>
-
-          <label className='form-label'>Email</label>
-          <input type="text" className="form-control" placeholder='Type in your email' value={email} onChange={(e) => setEmail(e.target.value)}></input>
+        </div>
+        <div>
+          <div className=''>
+            <label className='block'>Email</label>
+            <input
+              type="text"
+              className="block w-full p-2 text-md text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+              placeholder='Type in your email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}></input>
+          </div>
           <div className='my-3'>
-            <button type='submit' className='btn btn-outline-danger container'>Remove user</button>
+            <button type='submit'
+              className='inline-flex items-center  mt-2 px-3 py-2 text-sm font-medium text-center
+             text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none
+             focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700
+              dark:focus:ring-blue-800'
+            >Remove user</button>
             {userError && <div className='alert alert-danger mt-3'>{userError}</div>}
             {userSuccess && <div className='success alert-success mt-3'>{userSuccess}</div>}
           </div>
         </div>
-
-
-
 
       </form>
     </div>

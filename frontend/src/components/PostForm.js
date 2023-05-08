@@ -130,35 +130,63 @@ const PostForm = () => {
         <div className='w-full border-b-2'>
             {user && user.admin === true ?
 
-                <form onSubmit={handleSubmit} className='mx-auto w-5/6 ' >
-                    <h1 className=' text-4xl'>Post form</h1>
-                    <div className="items-center ">
-                        <label className='block'>Image(optional)</label>
-                        <input className="form-control" type="file" name="NAME" onChange={(e) => {
-                            //console.log("The file property",e.target.files[0])
+                <form onSubmit={handleSubmit} className='mx-auto w-5/6 my-5' >
+                    <h1 className='text-4xl'>Post form</h1>
+
+
+                    <div className="items-center">
+                        <label
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            for="file_input">
+                            Upload file
+                        </label>
+                    </div>
+
+
+                    <input
+                        className="block w-full p-2 text-md text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                        id="file_input"
+                        type="file"
+                        name="NAME"
+                        onChange={(e) => {
                             setFile(e.target.files[0])
                         }} />
+
+
+
+                    <div className="md-input-box">
+                        <input
+                            id="Title"
+                            name="Title"
+                            type="text"
+                            className="md-input m-0.5"
+                            placeholder=""
+                            autoComplete='off'
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                        />
+                        <label for="Title" className="md-label text-md">Title</label>
+                        <div className="md-input-underline" />
                     </div>
 
-
-                    <div className="items-center">
-
-                        <label>
-                            Title:</label>
-                        <input className="form-control" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <div className="md-input-box">
+                        <input
+                            id="Description"
+                            name="Description"
+                            className="md-input m-0.5"
+                            type="text"
+                            placeholder=""
+                            autoComplete='off'
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)} />
+                        <label for="Description" className="md-label text-md">Description</label>
+                        <div className="md-input-underline" />
 
                     </div>
 
-
-
-                    <div className="items-center">
-                        <label>Description:</label>
-                        <input className="form-control" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-                    </div>
-
-                    <div className="items-center">
-                        <label>Type:  </label>
-                        <select className="form-control" value={category} onChange={(e) => setCategory(e.target.value)}>
+                    <div className="block">
+                        <label className="text-md">Type  </label>
+                        <select className="md-input rounded-xl pl-4" value={category} onChange={(e) => setCategory(e.target.value)}>
                             <option value="">Select a type</option>
                             <option value="post">Post</option>
                             <option value="comment">Comment</option>
@@ -166,8 +194,8 @@ const PostForm = () => {
                     </div>
 
                     <div className="items-center">
-                        <label>Community:</label>
-                        <select value={community} className="form-control" onChange={(e) => setCommunity(e.target.value)}>
+                        <label>Community</label>
+                        <select value={community} className="md-input rounded-xl pl-4" onChange={(e) => setCommunity(e.target.value)}>
                             <option value="">Select a community</option>
                             {communities && communities.map(communite => (
 
@@ -177,12 +205,16 @@ const PostForm = () => {
 
                             ))}
                         </select>
-                        <span className='text-danger'>
+                        <span className='text-red-700'>
                             <small>If you don't see the community reload or use previous name</small>
                         </span>
                     </div>
 
-                    <button type="submit" className='btn btn-outline-primary'>Submit</button>
+                    <button type="submit"
+                        className='inline-flex items-center  mt-2 px-3 py-2 text-sm font-medium text-center
+                    text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none
+                    focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700
+                     dark:focus:ring-blue-800'>Create</button>
                     {error && <div className='alert alert-danger mt-3'>{error}</div>}
 
 
@@ -208,7 +240,7 @@ const PostForm = () => {
                         className="block w-full p-2 text-md text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
                         id="file_input"
                         type="file"
-                        name="NAME" 
+                        name="NAME"
                         onChange={(e) => {
                             setFile(e.target.files[0])
                         }} />

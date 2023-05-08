@@ -15,7 +15,7 @@ const CommunityPost = () => {
     const { communityId } = useParams()
 
     useEffect(() => {
-        
+
         console.log("Hello World")
 
         const fetchCommunity = async () => {
@@ -32,7 +32,7 @@ const CommunityPost = () => {
 
         fetchCommunity()
 
-    }, [communityId ,user])
+    }, [communityId, user])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -64,6 +64,9 @@ const CommunityPost = () => {
                 console.log("Response accounts: " + JSON.stringify(json.accounts))
                 */
                 dispatch({ type: "CREATE_POST", payload: json.post })
+                setDescription('')
+                setTitle('')
+
                 const notifyUsers = async (email, notificationId, title, description) => {
                     console.log(email, notificationId, title, description)
                     const userArray = await json.accounts
@@ -124,24 +127,46 @@ const CommunityPost = () => {
     return (
         <div className='card mt-3'>
 
-            <form className=' m-3' onSubmit={handleSubmit} >
-                <h4><center>Make a community post</center></h4>
-                <div className="form-group">
-                    <label>
-                        Title:</label>
-                    <input className="form-control" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <form className='shadow-sm border my-5 ml-4 p-5 md:m-6 rounded-lg ' onSubmit={handleSubmit} >
+                <h4 className='text-2xl font-bold'>Make a community post</h4>
 
+                <div className="md-input-box">
+                    <input
+                        id="Title"
+                        name="Title"
+                        autoComplete='off'
+                        type="text"
+                        className="md-input m-0.5"
+                        placeholder=""
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                    <label for="Title" className="md-label text-md">Title</label>
+                    <div className="md-input-underline" />
                 </div>
 
-                <div className="form-group">
-                    <label>Description:</label>
-                    <input className="form-control" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+                <div className="md-input-box">
+                    <input
+                        id="Description"
+                        name="Description"
+                        className="md-input m-0.5"
+                        autoComplete='off'
+                        type="text"
+                        placeholder=""
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)} />
+                    <label for="Description" className="md-label text-md">Description</label>
+                    <div className="md-input-underline" />
+
                 </div>
-
-
-
-                <button type="submit" className='btn btn-primary container'>Post</button>
-
+                <div className='px-10 my-4'>
+                    <button
+                        type="submit"
+                        className='w-full  items-center  mt-2 px-3 py-2 mx-auto text-sm font-medium text-center
+                    text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none
+                    focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700
+                     dark:focus:ring-blue-800'><center>Make post</center></button>
+                </div> 
             </form>
         </div>
     )
