@@ -4,8 +4,7 @@ import { usePostContext } from '../hooks/usePostsContext'
 import { useParams, Link } from 'react-router-dom'
 import { useCommunityContext } from '../hooks/useCommunityContext'
 import CommunityPost from './CommunityPost'
-import Communities from './Communities'
-import Posts from './Posts'
+
 
 //allow user to post -comment
 //start handling errors
