@@ -12,7 +12,6 @@ const AddUserToCommunity = () => {
   const [userError, setUserError] = useState("")
   const [userSuccess, setUserSuccess] = useState("")
 
-
   useEffect(() => {
 
     const fetchCommunity = async () => {
