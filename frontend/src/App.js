@@ -13,6 +13,7 @@ import CommunityForum from "./components/CommunityForum"
 import Community from "./components/Community"
 import Settings from './pages/Settings'
 
+
 function App() {
   const { user } = useAuthContext()
 

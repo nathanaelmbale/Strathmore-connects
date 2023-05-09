@@ -6,6 +6,7 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import { usePostContext } from '../hooks/usePostsContext'
 import Posts from '../components/Posts'
 import '../styles/welcome.css'
+import '../styles/main.css'
 import EditCommunity from '../components/EditCommunity'
 
 const Welcome = () => {
@@ -15,13 +16,12 @@ const Welcome = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch('/post', {
+      const response = await fetch('https://strathmoreconnects-backend.onrender.com/post', {
         headers: { 'Authorization': `Bearer ${user.token}` },
       })
       const json = await response.json()
       //console.log("json:" + JSON.stringify(json))
       //test = JSON.stringify(json)
-
       if (response.ok) {
         dispatch({ type: 'SET_POSTS', payload: json })
       }
@@ -37,19 +37,22 @@ const Welcome = () => {
   return (
     <>
 
-      <div className='bg-white' id='welcome'>
-        <div className='row m-0 p-0 '>
-          <div className='col-9 m-2'>
-            <div id='posts' className='container w-100 p-5'>
+      <div className='bg-white'>
+        <div className='grid 2xl:grid-cols-12 xl:grid-cols-12 lg:grid-span-12 w-full'>
+          <div className='2xl:col-span-9 xl:col-span-9 lg:col-span-9 w-full'>
+            <div id='posts' className='w-full pt-5'>
               <PostForm></PostForm>
               <Posts></Posts>
             </div>
           </div>
-          <div id='community' className='col m-0 p-0 border-left absolute top-0 left-0 w-full h-auto z-10 sm:static sm:w-auto sm:h-full sm:z-0'>
+          <div className='col-span-3 border-l-2'>
             <CommunityForm></CommunityForm>
             {user && user.admin === true ?
-              <div className='container'>
-                <button className='btn btn-dark container' onClick={() => setEdit(!edit)}>
+              <div className='border-b-2 mx-5'>
+                <button className=' w-full items-center  mt-2 px-3 py-2 text-sm font-medium text-center
+                    text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none
+                    focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700
+                     dark:focus:ring-gray-800' onClick={() => setEdit(!edit)}>
                   {edit ? 'Delete mode' : 'Edit mode'}
                 </button>
               </div>

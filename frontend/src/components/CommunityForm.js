@@ -18,7 +18,7 @@ const CommunityForm = () => {
 
     const community = { name, description, email }
     try {
-      const response = await fetch('/community/create', {
+      const response = await fetch('https://strathmoreconnects-backend.onrender.com/community/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,13 +29,13 @@ const CommunityForm = () => {
 
       const json = await response.json();
       if (response.ok) {
-        console.log('Success:', json.message);
         setName('');
         setDescription('');
-        dispatchCommunity({ type: 'SET_COMMUNITIES', payload: json.message });
+        console.log(json)
+        dispatchCommunity({ type: 'SET_COMMUNITIES', payload: json });
       } else {
         console.log('Error:', json)
-      setError(json.error)
+        setError(json.error)
 
       }
     } catch (error) {
@@ -48,20 +48,43 @@ const CommunityForm = () => {
   return (
     <>
       {user && user.admin === true ?
-        <form onSubmit={handleSubmit} className='container' >
-          <h2>Community form</h2>
-          <div className="form-group">
-            <label>Community name</label>
-            <input className="form-control" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+        <form onSubmit={handleSubmit} className='px-5 py-2' >
+          <h2 className='text-2xl font-bold'>Community form</h2>
+
+          <div className="md-input-box">
+            <input
+              name="name"
+              className="md-input m-0.5"
+              type="text"
+              placeholder=""
+              autoComplete='off'
+              value={name}
+              onChange={(e) => setName(e.target.value)} />
+            <label for="Description" className="md-label text-md">Name</label>
+            <div className="md-input-underline" />
 
           </div>
 
-          <div className="form-group">
-            <label>Description:</label>
-            <input className="form-control" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+          <div className="md-input-box">
+            <input
+              id="Description"
+              name="Description"
+              className="md-input m-0.5"
+              type="text"
+              placeholder=""
+              autoComplete='off'
+              value={description}
+              onChange={(e) => setDescription(e.target.value)} />
+            <label for="Description" className="md-label text-md">Description</label>
+            <div className="md-input-underline" />
+
           </div>
+
           <div className=' my-3'>
-            <button type="submit" className='btn btn-primary container '>Submit</button>
+            <button type="submit" className='  w-full items-center  mt-2 px-3 py-2 text-sm font-medium text-center
+                    text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none
+                    focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700
+                     dark:focus:ring-blue-800'>Create</button>
             {error && <div className='alert alert-danger mt-3'>{error}</div>}
           </div>
         </form>

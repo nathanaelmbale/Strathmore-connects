@@ -10,9 +10,9 @@ const DeleteAccount = () => {
     const navigate = useNavigate()
 
     const deleteAccount = async () => {
-        if (window.confirm("Are you sure you want to remove admin privileges from this user?")) {
+        if (window.confirm("Are you sure you want permanently delete your account?")) {
             // User clicked "OK"
-            const response = fetch('/user/account/delete', {
+            const response = fetch('https://strathmoreconnects-backend.onrender.com/user/account/delete', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,7 +41,12 @@ const DeleteAccount = () => {
     return (
         <div className='mx-3'>
             <h3 className='ml-2'>Delete your account</h3>
-            <button className='btn btn-danger container m-2' onClick={deleteAccount}>Delete Account</button>
+            <button 
+            className='mx-2 inline-flex items-center  mt-2 px-3 py-2 text-sm font-medium text-center
+            text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none
+            focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-600
+            dark:focus:ring-red-800'
+            onClick={deleteAccount}>Delete Account</button>
 
         </div>
     )

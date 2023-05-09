@@ -47,7 +47,9 @@ export const CommunityReducer = (state, action) => {
 export const CommunityContextProvider = ({ children }) => {
     ////console.log("Child:", children)
     const [state, dispatchCommunity] = useReducer(CommunityReducer, {//func name,this is the current state and action is what is passed in the dispacth property
-        communities: null
+        communities: null,
+        joinedCommunities: null,
+        joinedNotommunities: null
     })
 
 

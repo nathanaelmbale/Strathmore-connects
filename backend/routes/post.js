@@ -14,11 +14,10 @@ const requireAuth = require('../middleware/requireAuth')
 //require route for all routes
 const router = express.Router()
 
-router.use(requireAuth)
-
 //gets all posts
 router.get('/', getPosts)
 
+router.use(requireAuth)
 
 //get my post
 router.get('/mypost', getMyPosts)

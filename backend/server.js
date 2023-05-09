@@ -2,6 +2,10 @@ require('dotenv').config() //picks data from a hidden file .env
 
 const express = require('express') //the app
 const mongoose = require('mongoose') //the database 
+const cors = require('cors');
+
+
+
 //routes
 const userRoutes = require('./routes/user')
 const postRoutes = require('./routes/post')
@@ -15,6 +19,18 @@ const port = process.env.PORT
 //express app
 const app = express()
 
+app.use(cors({
+    origin: "https://strathmoreconnects.netlify.app",
+    methods: ["GET", "POST" ,"PATCH" ,"PUT","DELETE" ,"OPTIONS"]
+}));
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://strathmoreconnects.netlify.app');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    next();
+  });
+
 //Global Middleware uses json
 app.use(express.json())
 
@@ -24,6 +40,14 @@ app.use((req, res, next) => {
     next()
 })
 
+//CORS middleware
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+  });
+  
 //routes
 app.use('/user', userRoutes)
 app.use('/post', postRoutes)
@@ -42,4 +66,5 @@ mongoose.connect(URI)
     })
     .catch((error) => {
             console.log("Error on the database:"+ error)
+            console.dir("gere")
     })

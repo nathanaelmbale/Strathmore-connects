@@ -128,3 +128,55 @@ h4 {
 .nav-controller{
     margin: 40px;
 }
+
+.md-input-main {
+  	width: 50%;
+	font-size: 1.25rem;
+  	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+}
+.md-input-box {
+  	position: relative;
+}
+.md-input {
+  	width: 100%;
+	outline: none;
+	height: 50px;
+}
+.md-label {
+    margin-top: 10px;
+  	display: block;
+  	position: absolute;
+  	pointer-events: none;
+	transform-origin: top left;
+	transform: translate(0, -40px) scale(1);
+	transition: color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms, transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
+}
+.md-label-focus {
+
+	color: #3182ce;
+	transform: translate(0, -65px) scale(0.75);
+	transform-origin: top left;
+}
+.md-input-underline {
+	border-bottom: 1px solid #718096;;
+}
+.md-input-underline:after {
+  	position: absolute;
+  	left: 0;
+  	right: 0;
+  	pointer-events: none;
+	bottom: -0.05rem;
+	content: "";
+	transition: transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
+	transform: scaleX(0);
+	border-bottom: 2px solid #805ad5;
+}
+.md-input:focus ~ .md-input-underline:after {
+	transform: scaleX(1);
+}
+.md-input:focus + .md-label, .md-input:not(:placeholder-shown) + .md-label {
+	color: #3182ce;
+	transform: translate(0, -65px) scale(0.75);
+	transform-origin: top left;
+}
