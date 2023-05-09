@@ -29,10 +29,10 @@ const CommunityForm = () => {
 
       const json = await response.json();
       if (response.ok) {
-        console.log('Success:', json.message);
         setName('');
         setDescription('');
-        dispatchCommunity({ type: 'SET_COMMUNITIES', payload: json.message });
+        console.log(json)
+        dispatchCommunity({ type: 'SET_COMMUNITIES', payload: json });
       } else {
         console.log('Error:', json)
         setError(json.error)

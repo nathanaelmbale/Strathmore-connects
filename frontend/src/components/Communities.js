@@ -67,7 +67,7 @@ const Communities = () => {
             .then(data => {
                 console.log('Success:', data)
                 dispatchCommunity({ payload: 'SET_COMMUNITIES' })
-
+                manageState()
 
             }).catch((error) => {
                 console.log(error.message)
@@ -94,8 +94,9 @@ const Communities = () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data)
+                //console.log('Success:', data)
                 if (!data.error) dispatchCommunity({ type: "SET_COMMUNITIES", payload: data })
+                manageState()
                 console.log(data.error)
 
             }).catch((error) => {
@@ -103,6 +104,38 @@ const Communities = () => {
             })
     }
 
+    const manageState = async () => {
+        const fetchCommunity = async () => {
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community', {
+                headers: { 'Authorization': `Bearer ${user.token}` },
+            })
+
+            const json = await response.json()
+
+            if (response.ok) {
+                dispatchCommunity({ type: 'SET_COMMUNITIES', payload: json })
+            }
+        }
+
+        await fetchCommunity()
+
+        const setcommunities = async () => {
+            if (communities && communities.length > 0) {
+                const joined = communities.filter(community => community.accounts.includes(user.email))
+                setJoinedCommunities(joined)
+                //console.log("joined", joined)
+                dispatchCommunity({ type: 'SET_JOINED_COMMUNITIES', payload: joined })
+
+                const notJoined = communities.filter(community => !community.accounts.includes(user.email))
+                setNotJoinedCommunities(notJoined)
+                //console.log("not joined", notJoined)
+                dispatchCommunity({ type: 'SET_NOT_JOINED_COMMUNITIES', payload: joined })
+
+            }
+        }
+
+        await setcommunities()
+    }
     return (
         <>
             {user ?
@@ -113,29 +146,29 @@ const Communities = () => {
                             {notJoinedCommunities.map(community => (
                                 <div className='conatiner border-b-2 pl-3 py-2 ' key={community._id}>
                                     <div className='flex'>
-                                    <Link
-                                        className='link flex-1'
-                                        to={`/community/${community._id}`}>
-                                        <h4 className='clickable-title'>{community.name}</h4>
-                                    </Link>
-                                    {user.admin &&
-                                        <div className=''>
-                                            <button onClick={() => deleteCommunity(community)} 
-                                            className="bg-red-200 p-1.5 mr-4 rounded-full w-8 h-8"
-                                            >
-                                                
-                                                <svg
-                                                    width="20"
-                                                    height="20"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M14.7404 9L14.3942 18M9.60577 18L9.25962 9M19.2276 5.79057C19.5696 5.84221 19.9104 5.89747 20.25 5.95629M19.2276 5.79057L18.1598 19.6726C18.0696 20.8448 17.0921 21.75 15.9164 21.75H8.08357C6.90786 21.75 5.93037 20.8448 5.8402 19.6726L4.77235 5.79057M19.2276 5.79057C18.0812 5.61744 16.9215 5.48485 15.75 5.39432M3.75 5.95629C4.08957 5.89747 4.43037 5.84221 4.77235 5.79057M4.77235 5.79057C5.91878 5.61744 7.07849 5.48485 8.25 5.39432M15.75 5.39432V4.47819C15.75 3.29882 14.8393 2.31423 13.6606 2.27652C13.1092 2.25889 12.5556 2.25 12 2.25C11.4444 2.25 10.8908 2.25889 10.3394 2.27652C9.16065 2.31423 8.25 3.29882 8.25 4.47819V5.39432M15.75 5.39432C14.5126 5.2987 13.262 5.25 12 5.25C10.738 5.25 9.48744 5.2987 8.25 5.39432" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    }
+                                        <Link
+                                            className='link flex-1'
+                                            to={`/community/${community._id}`}>
+                                            <h4 className='clickable-title'>{community.name}</h4>
+                                        </Link>
+                                        {user.admin &&
+                                            <div className=''>
+                                                <button onClick={() => deleteCommunity(community)}
+                                                    className="bg-red-200 p-1.5 mr-4 rounded-full w-8 h-8"
+                                                >
+
+                                                    <svg
+                                                        width="20"
+                                                        height="20"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M14.7404 9L14.3942 18M9.60577 18L9.25962 9M19.2276 5.79057C19.5696 5.84221 19.9104 5.89747 20.25 5.95629M19.2276 5.79057L18.1598 19.6726C18.0696 20.8448 17.0921 21.75 15.9164 21.75H8.08357C6.90786 21.75 5.93037 20.8448 5.8402 19.6726L4.77235 5.79057M19.2276 5.79057C18.0812 5.61744 16.9215 5.48485 15.75 5.39432M3.75 5.95629C4.08957 5.89747 4.43037 5.84221 4.77235 5.79057M4.77235 5.79057C5.91878 5.61744 7.07849 5.48485 8.25 5.39432M15.75 5.39432V4.47819C15.75 3.29882 14.8393 2.31423 13.6606 2.27652C13.1092 2.25889 12.5556 2.25 12 2.25C11.4444 2.25 10.8908 2.25889 10.3394 2.27652C9.16065 2.31423 8.25 3.29882 8.25 4.47819V5.39432M15.75 5.39432C14.5126 5.2987 13.262 5.25 12 5.25C10.738 5.25 9.48744 5.2987 8.25 5.39432" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        }
                                     </div>
                                     <p className='text-desc'>{community.description}</p>
                                     <small>Created on: {new Date(community.createdAt).toLocaleDateString('en-GB')}</small>
@@ -154,7 +187,7 @@ const Communities = () => {
                                             </svg>
                                         </button>
                                     </div>
-   
+
                                 </div>
                             ))}
 
@@ -162,23 +195,39 @@ const Communities = () => {
 
                             {joinedCommunities.map(community => (
                                 <div className='conatiner border-b-2 pl-3 py-2' key={community._id}>
+                                    <div className='flex'>
                                     <Link
-                                        className='link'
+                                        className='link flex-1 m-0 p-0'
                                         to={`/community/${community._id}`}
                                     >
                                         <h4 className='clickable-title'>{community.name}</h4>
                                     </Link>
 
+                                    {user.admin &&
+                                        <div className='my-2'>
+                                            <button onClick={() => deleteCommunity(community)}
+                                                    className="bg-red-200 p-1 mr-4 rounded-full w-8 h-8"
+                                                >
+
+                                                    <svg
+                                                        width="20"
+                                                        height="20"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M14.7404 9L14.3942 18M9.60577 18L9.25962 9M19.2276 5.79057C19.5696 5.84221 19.9104 5.89747 20.25 5.95629M19.2276 5.79057L18.1598 19.6726C18.0696 20.8448 17.0921 21.75 15.9164 21.75H8.08357C6.90786 21.75 5.93037 20.8448 5.8402 19.6726L4.77235 5.79057M19.2276 5.79057C18.0812 5.61744 16.9215 5.48485 15.75 5.39432M3.75 5.95629C4.08957 5.89747 4.43037 5.84221 4.77235 5.79057M4.77235 5.79057C5.91878 5.61744 7.07849 5.48485 8.25 5.39432M15.75 5.39432V4.47819C15.75 3.29882 14.8393 2.31423 13.6606 2.27652C13.1092 2.25889 12.5556 2.25 12 2.25C11.4444 2.25 10.8908 2.25889 10.3394 2.27652C9.16065 2.31423 8.25 3.29882 8.25 4.47819V5.39432M15.75 5.39432C14.5126 5.2987 13.262 5.25 12 5.25C10.738 5.25 9.48744 5.2987 8.25 5.39432" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+                                                </button>
+                                        </div>
+                                    }
+                                    </div>
                                     <div className='community-description'>
                                         <p className='text-desc'>{community.description}</p>
                                         <small className='text-right font-bold'>Created on: {new Date(community.createdAt).toLocaleDateString('en-GB')}</small>
                                     </div>
 
-                                    {user.admin &&
-                                        <div className='my-2'>
-                                            <button onClick={() => deleteCommunity(community)} className="btn btn-danger ">Delete</button>
-                                        </div>
-                                    }
+
                                 </div>
                             ))}
                         </>
