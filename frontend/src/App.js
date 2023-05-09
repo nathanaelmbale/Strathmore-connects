@@ -25,7 +25,7 @@ function App() {
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/" element={<Welcome />} />
-          <Route path="https://strathmoreconnects-backend.onrender.com/posts/:postId" element={<PostDetails />} />
+          <Route path="/posts/:postId" element={<PostDetails />} />
           <Route path='/settings' element={<Settings></Settings>}></Route>
           <Route path="/community" element={<Community />}>
             <Route path=":communityId" element={<CommunityForum />}></Route>
