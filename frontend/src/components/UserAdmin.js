@@ -14,7 +14,7 @@ const UserAdmin = () => {
 
 
         try {
-            const response = await fetch(`/user/add/admin`, {
+            const response = await fetch(`https://strathmoreconnects-backend.onrender.com/user/add/admin`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -34,7 +34,7 @@ const UserAdmin = () => {
     const handleRemoveAdmin = async () => {
         console.log(email)
         try {
-            const response = await fetch(`/user/remove/admin`, {
+            const response = await fetch(`https://strathmoreconnects-backend.onrender.com/user/remove/admin`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
