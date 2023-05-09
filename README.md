@@ -3,7 +3,7 @@
 Here is the link to the website
 
 ```
-https://main--strathmoreconnects.netlify.app/
+https://strathmoreconnects.netlify.app/
 ```
 
 Strathmore University is facing a significant challenge in effectively communicating information about clubs and societies to its students. The current system relies heavily on email, which has proven to be inadequate in providing timely and relevant updates to the university community. Consequently, students are missing out on essential information such as registration deadlines for extracurricular activities, resulting in reduced participation and engagement in these activities.
