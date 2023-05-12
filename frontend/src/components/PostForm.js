@@ -127,9 +127,10 @@ const PostForm = () => {
 
 
     return (
+        <>
+        {user && user.admin ?
         <div className='w-full border-b-2'>
             {user && user.admin === true ?
-
                 <form onSubmit={handleSubmit} className='mx-auto w-5/6 my-5' >
                     <h1 className='text-4xl'>Post form</h1>
 
@@ -312,7 +313,9 @@ const PostForm = () => {
                 </form>
                 : null}
 
-        </div>
+        </div> :
+        null}
+        </>
     )
 }
 

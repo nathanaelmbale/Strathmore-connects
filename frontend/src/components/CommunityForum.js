@@ -29,9 +29,7 @@ const CommunityForum = () => {
 
 
         const fetchPosts = async () => {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/post', {
-                headers: { 'Authorization': `Bearer ${user.token}` },
-            })
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/post')
             const json = await response.json()
 
             setCommunityPosts(json)
@@ -45,9 +43,7 @@ const CommunityForum = () => {
         }
 
         const fetchCommunity = async () => {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community', {
-                headers: { 'Authorization': `Bearer ${user.token}` },
-            })
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community')
             const commune = await response.json()
             setCommunities(commune)
 
@@ -184,7 +180,7 @@ const CommunityForum = () => {
                                 <path
                                     d="M11.9998 9.00006V12.7501M2.69653 16.1257C1.83114 17.6257 2.91371 19.5001 4.64544 19.5001H19.3541C21.0858 19.5001 22.1684 17.6257 21.303 16.1257L13.9487 3.37819C13.0828 1.87736 10.9167 1.87736 10.0509 3.37819L2.69653 16.1257ZM11.9998 15.7501H12.0073V15.7576H11.9998V15.7501Z" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                            <p className='flex-1 mx-2'>You should be part of the community to make a post or comment</p>
+                            <p className='flex-1 mx-2'>You should be part of the community to make a post on a community</p>
 
                         </div>}
                     {makePost ?
@@ -204,7 +200,7 @@ const CommunityForum = () => {
                             <div className='m-5 '>
                                 <div className='flex'>
                                 <h4 className='flex-1 font-light text-lg'>{post.title}</h4>
-                                {user.admin === true ?
+                                {user && user.admin === true ?
                                     <button 
                                     className='bg-red-200 p-1.5 mr-2 rounded-full w-8 h-8' 
                                     onClick={() => deletePost(post)}>

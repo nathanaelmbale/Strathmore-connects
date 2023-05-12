@@ -134,9 +134,7 @@ function PostDetails() {
     useEffect(() => {
         //fetch posts
         const fetchPosts = async () => {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/post', {
-                headers: { 'Authorization': `Bearer ${user.token}` },
-            })
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/post')
             const json = await response.json()
             //console.log(JSON.stringify(json)) --the posts
 
@@ -153,9 +151,7 @@ function PostDetails() {
             }
         }
 
-        if (user) {
-            fetchPosts()
-        }
+        fetchPosts()
 
     }, [dispatch, dispatchComments, user, postId])
 
@@ -184,7 +180,22 @@ function PostDetails() {
                             </div>
                         )}
 
-                        <form className="bg-white rounded-2xl my-3 shadow-sm w-full ml-4" onSubmit={makeAComment}>
+
+                        <form className="bg-white rounded-2xl my-3 py-3 shadow-sm w-full ml-4" onSubmit={makeAComment}>
+                        {!user ?
+                        <div className='w-11/12 mx-auto flex bg-red-200 border-2 border-red-300 py-1.5 px-1.5 text-red-900 rounded-xl m-2'>
+                            <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="red" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M11.9998 9.00006V12.7501M2.69653 16.1257C1.83114 17.6257 2.91371 19.5001 4.64544 19.5001H19.3541C21.0858 19.5001 22.1684 17.6257 21.303 16.1257L13.9487 3.37819C13.0828 1.87736 10.9167 1.87736 10.0509 3.37819L2.69653 16.1257ZM11.9998 15.7501H12.0073V15.7576H11.9998V15.7501Z" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <p className='flex-1 mx-2 text-sm'>log in to comment</p>
+
+                        </div>:
+                        null}
                             <div className="py-4">
                                 <input
                                     type="text"
@@ -193,12 +204,22 @@ function PostDetails() {
                                     onChange={(e) => setComment(e.target.value)}
                                     placeholder="comment here"></input>
                                 <br></br>
-                                <input type="submit"
-                                    className="inline-flex items-center mt-2 ml-5 px-3 py-2 text-sm font-medium 
+                                {user ?
+                                    <>
+                                        <input type="submit"
+                                        className="inline-flex items-center mt-2 ml-5 px-3 py-2 text-sm font-medium 
                                     text-center text-white bg-blue-700 rounded-2xl hover:bg-blue-800
                                      focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600
                                       dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    name="comment" placeholder="comment" value="comment" ></input>
+                                            name="comment" placeholder="comment" value="comment" ></input>
+                                    </> :
+                                    <input type="submit" disabled={user}
+                                        className="inline-flex items-center mt-2 ml-5 px-3 py-2 text-sm font-medium 
+                                    text-center text-white bg-blue-500 rounded-2xl hover:bg-blue-500
+                                     focus:ring-4 focus:outline-none "
+                                        name="comment" placeholder="comment" value="comment" ></input>
+                                }
+
                             </div>
                         </form>
 
@@ -206,23 +227,23 @@ function PostDetails() {
                             <div key={comm._id} className="bg-white rounded-2xl my-3 shadow-sm w-full py-4 ml-4">
                                 <div className="d-flex justify-content-between align-items-center ml-5 flex">
                                     <div className="flex-1">{comm.comment}</div>
-                                    {user.email === comm.user?
-                                    <button  onClick={() => deleteComment(comm._id)}
-                                    className="bg-red-200 p-1.5 mr-2 rounded-full w-8 h-8"
-                                    >
-                                        
-                                        <svg
-                                            width="20"
-                                            height="20"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M14.7404 9L14.3942 18M9.60577 18L9.25962 9M19.2276 5.79057C19.5696 5.84221 19.9104 5.89747 20.25 5.95629M19.2276 5.79057L18.1598 19.6726C18.0696 20.8448 17.0921 21.75 15.9164 21.75H8.08357C6.90786 21.75 5.93037 20.8448 5.8402 19.6726L4.77235 5.79057M19.2276 5.79057C18.0812 5.61744 16.9215 5.48485 15.75 5.39432M3.75 5.95629C4.08957 5.89747 4.43037 5.84221 4.77235 5.79057M4.77235 5.79057C5.91878 5.61744 7.07849 5.48485 8.25 5.39432M15.75 5.39432V4.47819C15.75 3.29882 14.8393 2.31423 13.6606 2.27652C13.1092 2.25889 12.5556 2.25 12 2.25C11.4444 2.25 10.8908 2.25889 10.3394 2.27652C9.16065 2.31423 8.25 3.29882 8.25 4.47819V5.39432M15.75 5.39432C14.5126 5.2987 13.262 5.25 12 5.25C10.738 5.25 9.48744 5.2987 8.25 5.39432" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </button>:
-                                    null}
-                                    
+                                    {user && user.email === comm.user ?
+                                        <button onClick={() => deleteComment(comm._id)}
+                                            className="bg-red-200 p-1.5 mr-2 rounded-full w-8 h-8"
+                                        >
+
+                                            <svg
+                                                width="20"
+                                                height="20"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M14.7404 9L14.3942 18M9.60577 18L9.25962 9M19.2276 5.79057C19.5696 5.84221 19.9104 5.89747 20.25 5.95629M19.2276 5.79057L18.1598 19.6726C18.0696 20.8448 17.0921 21.75 15.9164 21.75H8.08357C6.90786 21.75 5.93037 20.8448 5.8402 19.6726L4.77235 5.79057M19.2276 5.79057C18.0812 5.61744 16.9215 5.48485 15.75 5.39432M3.75 5.95629C4.08957 5.89747 4.43037 5.84221 4.77235 5.79057M4.77235 5.79057C5.91878 5.61744 7.07849 5.48485 8.25 5.39432M15.75 5.39432V4.47819C15.75 3.29882 14.8393 2.31423 13.6606 2.27652C13.1092 2.25889 12.5556 2.25 12 2.25C11.4444 2.25 10.8908 2.25889 10.3394 2.27652C9.16065 2.31423 8.25 3.29882 8.25 4.47819V5.39432M15.75 5.39432C14.5126 5.2987 13.262 5.25 12 5.25C10.738 5.25 9.48744 5.2987 8.25 5.39432" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </button> :
+                                        null}
+
                                 </div>
                                 <small className="ml-5 text-gray-400">Post made by {comm.user}</small>
                             </div>

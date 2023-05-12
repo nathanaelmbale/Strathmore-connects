@@ -23,8 +23,8 @@ function App() {
         <Navbar />
 
         <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/" element={<Welcome />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Welcome />} />
           <Route path="/posts/:postId" element={<PostDetails />} />
           <Route path='/settings' element={<Settings></Settings>}></Route>
           <Route path="/community" element={<Community />}>

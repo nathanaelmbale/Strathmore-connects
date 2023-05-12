@@ -16,28 +16,28 @@ const Welcome = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch('https://strathmoreconnects-backend.onrender.com/post', {
-        headers: { 'Authorization': `Bearer ${user.token}` },
-      })
+      console.log("fetch posts")
+      const response = await fetch('https://strathmoreconnects-backend.onrender.com/post')
       const json = await response.json()
       //console.log("json:" + JSON.stringify(json))
       //test = JSON.stringify(json)
       if (response.ok) {
         dispatch({ type: 'SET_POSTS', payload: json })
       }
+      if(!response.ok) {
+        console.log(response)
+      }
     }
 
-    if (user) {
       fetchPosts()
 
-    }
-  }, [user, dispatch])
+  }, [dispatch])
 
 
   return (
     <>
 
-      <div className='bg-white'>
+      <div className='bg-white h-full'>
         <div className='grid 2xl:grid-cols-12 xl:grid-cols-12 lg:grid-span-12 w-full'>
           <div className='2xl:col-span-9 xl:col-span-9 lg:col-span-9 w-full'>
             <div id='posts' className='w-full pt-5'>
