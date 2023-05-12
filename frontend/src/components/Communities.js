@@ -136,7 +136,7 @@ const Communities = () => {
     return (
         <>
 
-            <div className='bg-white h-full mt-4'>
+            <div className='bg-white mt-4'>
                 <h3 className='border-b-2 text-3xl py-2 pl-3 '>Communities</h3>
                 {user ?
                     <>
