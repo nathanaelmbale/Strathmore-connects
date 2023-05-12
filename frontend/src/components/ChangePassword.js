@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useLogin } from '../hooks/useLogin'
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const ChangePassword = () => {
     const { user } = useAuthContext()
@@ -10,7 +10,7 @@ const ChangePassword = () => {
     const [newPassowrd, setNewPassowrd] = useState("")
     const [success, setSuccess] = useState("")
     const [visible, setVisible] = useState(false)
-    const history = useHistory();
+    const navigate = useNavigate();
     
 
     const changeUserPassoword = async (e) => {
@@ -27,7 +27,7 @@ const ChangePassword = () => {
         if (response.ok) {
             setCurrentPassowrd("")
             setNewPassowrd("")
-            history.push('/settings');
+            navigate('/settings');
         }
     }
 
