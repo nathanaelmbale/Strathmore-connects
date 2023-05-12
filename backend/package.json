@@ -6,19 +6,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "you": "node server.js"
+    "here": "nodemon server.js"
     
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/DedanKimani/Strathmore-connects.git"
+    "url": "https://github.com/nathanaelmbale/Strathmore-connects.git"
   },
   "author": "Nathanael and Dedan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nathanaelmbale/Semester-project/issues"
+    "url": "https://github.com/nathanaelmbale/Strathmore-connects/issues"
   },
-  "homepage": "https://github.com/nathanaelmbale/Semester-project#readme",
+  "homepage": "https://github.com/nathanaelmbale/Strathmore-connects#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",

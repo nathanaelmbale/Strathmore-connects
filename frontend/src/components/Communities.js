@@ -16,7 +16,7 @@ const Communities = () => {
 
     useEffect(() => {
         const fetchCommunity = async () => {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community')
+            const response = await fetch('http://localhost:5000/community')
 
             const json = await response.json()
 
@@ -53,7 +53,7 @@ const Communities = () => {
         //console.log(community)
         console.log(loading)
 
-        fetch('https://strathmoreconnects-backend.onrender.com/community/join', {
+        fetch('http://localhost:5000/community/join', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ const Communities = () => {
 
         //console.log("dammm", userToCommunity)
 
-        fetch('https://strathmoreconnects-backend.onrender.com/community/delete', {
+        fetch('http://localhost:5000/community/delete', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ const Communities = () => {
 
     const manageState = async () => {
         const fetchCommunity = async () => {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community')
+            const response = await fetch('http://localhost:5000/community')
 
             const json = await response.json()
 

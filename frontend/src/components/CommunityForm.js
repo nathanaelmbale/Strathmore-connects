@@ -18,7 +18,7 @@ const CommunityForm = () => {
 
     const community = { name, description, email }
     try {
-      const response = await fetch('https://strathmoreconnects-backend.onrender.com/community/create', {
+      const response = await fetch('http://localhost:5000/community/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

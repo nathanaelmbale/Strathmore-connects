@@ -29,7 +29,7 @@ const CommunityForum = () => {
 
 
         const fetchPosts = async () => {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/post')
+            const response = await fetch('http://localhost:5000/post')
             const json = await response.json()
 
             setCommunityPosts(json)
@@ -43,7 +43,7 @@ const CommunityForum = () => {
         }
 
         const fetchCommunity = async () => {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community')
+            const response = await fetch('http://localhost:5000/community')
             const commune = await response.json()
             setCommunities(commune)
 
@@ -88,7 +88,7 @@ const CommunityForum = () => {
         communityMember()
         const manageState = () => {
             const fetchPosts = async () => {
-                const response = await fetch('https://strathmoreconnects-backend.onrender.com/post', {
+                const response = await fetch('http://localhost:5000/post', {
                     headers: { 'Authorization': `Bearer ${user.token}` },
                 })
                 const json = await response.json()
@@ -112,7 +112,7 @@ const CommunityForum = () => {
 
     const deletePost = async (post) => {
 
-        fetch('https://strathmoreconnects-backend.onrender.com/post/delete', {
+        fetch('http://localhost:5000/post/delete', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

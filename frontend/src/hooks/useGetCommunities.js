@@ -14,7 +14,7 @@ export const useGetCommunities = () => {
         setError(null)
 
         try {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community', {
+            const response = await fetch('http://localhost:5000/community', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
             const json = await response.json()
