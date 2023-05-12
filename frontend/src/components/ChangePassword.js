@@ -15,7 +15,7 @@ const ChangePassword = () => {
         e.preventDefault()
         const email = user.email
         const response = await fetch('https://strathmoreconnects-backend.onrender.com/user/password', {
-            method: 'PATCH',
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email, password: newPassowrd })
         })

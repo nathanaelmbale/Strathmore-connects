@@ -23,7 +23,7 @@ router.post('/login', loginUser)
 router.post('/signup', signupUser)
 
 //change password
-router.patch('/password', changePassword)
+router.post('/password', changePassword)
 
 //find userId
 router.post('/find',userId)
