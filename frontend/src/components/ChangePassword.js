@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useLogin } from '../hooks/useLogin'
-
+import { useHistory } from 'react-router-dom';
 
 const ChangePassword = () => {
     const { user } = useAuthContext()
@@ -10,21 +10,24 @@ const ChangePassword = () => {
     const [newPassowrd, setNewPassowrd] = useState("")
     const [success, setSuccess] = useState("")
     const [visible, setVisible] = useState(false)
+    const history = useHistory();
+    
 
     const changeUserPassoword = async (e) => {
         e.preventDefault()
         const email = user.email
         const response = await fetch('https://strathmoreconnects-backend.onrender.com/user/password', {
-            method: 'POST',
+            method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email, password: newPassowrd })
         })
         const json = await response.json()
 
         setSuccess(JSON.stringify(json.message))
-        if (json) {
+        if (response.ok) {
             setCurrentPassowrd("")
             setNewPassowrd("")
+            history.push('/settings');
         }
     }
 
