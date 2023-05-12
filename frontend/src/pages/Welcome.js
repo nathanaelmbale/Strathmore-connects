@@ -17,7 +17,7 @@ const Welcome = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       console.log("fetch posts")
-      const response = await fetch('http://localhost:5000/post')
+      const response = await fetch('https://strathmoreconnects-backend.onrender.com/post')
       const json = await response.json()
       //console.log("json:" + JSON.stringify(json))
       //test = JSON.stringify(json)

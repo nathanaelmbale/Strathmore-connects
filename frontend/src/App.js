@@ -30,8 +30,8 @@ function App() {
           <Route path="/community" element={<Community />}>
             <Route path=":communityId" element={<CommunityForum />}></Route>
           </Route>
-          <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/" />} />
-          <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+          <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/home" />} />
+          <Route path="/login" element={!user ? <Login /> : <Navigate to="/home" />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>

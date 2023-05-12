@@ -20,7 +20,7 @@ export const usePost = () => {
 
     const fetchPosts = async () => {
         setIsLoading(true)
-        const response = await fetch('http://localhost:5000/post', {
+        const response = await fetch('https://strathmoreconnects-backend.onrender.com/post', {
           headers: { 'Authorization': `Bearer ${user.token}` },
         })
         const json = await response.json()

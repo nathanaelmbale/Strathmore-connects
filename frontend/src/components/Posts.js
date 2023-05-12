@@ -14,7 +14,7 @@ const Posts = () => {
             _id: post._id
         }
 
-        fetch('http://localhost:5000/post/delete', {
+        fetch('https://strathmoreconnects-backend.onrender.com/post/delete', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ const Posts = () => {
             }
             console.log(notify)
 
-            fetch('http://localhost:5000/user/notification/delete', {
+            fetch('https://strathmoreconnects-backend.onrender.com/user/notification/delete', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

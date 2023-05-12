@@ -23,7 +23,7 @@ const Navbar = () => {
     }
     return (
         <>
-            <div className='m-3.5'>.</div>
+            <div className='m-4'>.</div>
 
             <nav id='navbar' className='fixed block top-0 shadow-sm bg-white border-b w-full z-50 '>
                 <div className='mx-auto w-10/12'>
