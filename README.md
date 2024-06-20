@@ -1,10 +1,15 @@
 <h1> <span style="color:blue">Strathmore Connects⚡⚡ </span></h1>
 
 Here is the link to the website
+Here is the link to youtube video explanation
 
+```
+https://www.youtube.com/watch?v=bQTZuMo-urc
+```
 ```
 https://strathmoreconnects.netlify.app/
 ```
+
 
 Strathmore University is facing a significant challenge in effectively communicating information about clubs and societies to its students. The current system relies heavily on email, which has proven to be inadequate in providing timely and relevant updates to the university community. Consequently, students are missing out on essential information such as registration deadlines for extracurricular activities, resulting in reduced participation and engagement in these activities.
 
