@@ -1,11 +1,12 @@
 <h1> <span style="color:blue">Strathmore Connects⚡⚡ </span></h1>
 
-Here is the link to the website
+
 Here is the link to youtube video explanation
 
 ```
 https://www.youtube.com/watch?v=bQTZuMo-urc
 ```
+Here is the link to the website
 ```
 https://strathmoreconnects.netlify.app/
 ```
