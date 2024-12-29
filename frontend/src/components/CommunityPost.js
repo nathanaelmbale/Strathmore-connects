@@ -19,7 +19,7 @@ const CommunityPost = () => {
         console.log("Hello World")
 
         const fetchCommunity = async () => {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community', {
+            const response = await fetch('/community', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
 
@@ -50,7 +50,7 @@ const CommunityPost = () => {
         formData.append('email', email)
 
 
-        axios.post('https://strathmoreconnects-backend.onrender.com/post', formData, {
+        axios.post('/post', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'authorization': `Bearer ${user.token}`

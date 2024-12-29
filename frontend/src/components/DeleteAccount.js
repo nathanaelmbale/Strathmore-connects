@@ -12,7 +12,7 @@ const DeleteAccount = () => {
     const deleteAccount = async () => {
         if (window.confirm("Are you sure you want permanently delete your account?")) {
             // User clicked "OK"
-            const response = fetch('https://strathmoreconnects-backend.onrender.com/user/account/delete', {
+            const response = fetch('/user/account/delete', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

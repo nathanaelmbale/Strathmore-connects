@@ -15,7 +15,7 @@ const EditCommunity = () => {
     useEffect(() => {
 
         const fetchCommunity = async () => {
-            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community', {
+            const response = await fetch('/community', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
 
@@ -56,7 +56,7 @@ const EditCommunity = () => {
         if (communityName === false) newName = community.name
         if (communityDescription === false) newName = community.description
         try {
-            const res = await fetch('https://strathmoreconnects-backend.onrender.com/community/edit', {
+            const res = await fetch('/community/edit', {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
