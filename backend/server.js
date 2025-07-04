@@ -4,6 +4,11 @@ const express = require('express') //the app
 const mongoose = require('mongoose') //the database 
 const cors = require('cors');
 
+app.use(cors({
+    origin: ['https://strathmoreconnects.netlify.app', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 
 
 //routes
