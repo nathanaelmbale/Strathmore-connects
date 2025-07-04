@@ -4,11 +4,6 @@ const express = require('express') //the app
 const mongoose = require('mongoose') //the database 
 const cors = require('cors');
 
-app.use(cors({
-    origin: ['https://strathmoreconnects.netlify.app', 'http://localhost:3000'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-}));
 
 
 //routes
@@ -24,6 +19,13 @@ const port = process.env.PORT
 //express app
 const app = express()
 
+//CORE POLICIES
+//allows the app to be accessed from the frontend
+app.use(cors({
+    origin: ['https://strathmoreconnects.netlify.app', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 
 //Global Middleware uses json
 app.use(express.json())
