@@ -15,7 +15,7 @@ const AddUserToCommunity = () => {
   useEffect(() => {
 
     const fetchCommunity = async () => {
-      const response = await fetch('/community', {
+      const response = await fetch('https://strathmoreconnects-backend.onrender.com/community', {
         headers: { 'Authorization': `Bearer ${user.token}` },
       })
 
@@ -33,7 +33,7 @@ const AddUserToCommunity = () => {
   const removeUser = async () => {
     setUserSuccess(null)
 
-    const response = await fetch('/community/unjoin', {
+    const response = await fetch('https://strathmoreconnects-backend.onrender.com/community/unjoin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const AddUserToCommunity = () => {
     const _id = community
     console.log("community", community)
     try {
-      const response = await fetch('community/join', {
+      const response = await fetch('https://strathmoreconnects-backend.onrender.com/community/join', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

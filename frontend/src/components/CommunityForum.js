@@ -29,7 +29,7 @@ const CommunityForum = () => {
 
 
         const fetchPosts = async () => {
-            const response = await fetch('/post')
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/post')
             const json = await response.json()
 
             setCommunityPosts(json)
@@ -43,7 +43,7 @@ const CommunityForum = () => {
         }
 
         const fetchCommunity = async () => {
-            const response = await fetch('/community')
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community')
             const commune = await response.json()
             setCommunities(commune)
 
@@ -88,7 +88,7 @@ const CommunityForum = () => {
         communityMember()
         const manageState = () => {
             const fetchPosts = async () => {
-                const response = await fetch('/post', {
+                const response = await fetch('https://strathmoreconnects-backend.onrender.com/post', {
                     headers: { 'Authorization': `Bearer ${user.token}` },
                 })
                 const json = await response.json()

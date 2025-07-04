@@ -10,7 +10,7 @@ const Notification = () => {
     useEffect(() => {
         //console.log("Actual user", user)
         const getNotifications = async () => {
-            const response = await fetch('user/notification', {
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/user/notification', {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${user.token}`,

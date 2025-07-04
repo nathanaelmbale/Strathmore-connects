@@ -16,7 +16,7 @@ const RemoveUserFromCommunity = () => {
   useEffect(() => {
 
     const fetchCommunity = async () => {
-      const response = await fetch('/community', {
+      const response = await fetch('https://strathmoreconnects-backend.onrender.com/community', {
         headers: { 'Authorization': `Bearer ${user.token}` },
       })
 
@@ -34,7 +34,7 @@ const RemoveUserFromCommunity = () => {
   const removeUser = async () => {
     setUserSuccess(null)
 
-    const response = await fetch('/community/unjoin', {
+    const response = await fetch('https://strathmoreconnects-backend.onrender.com/community/unjoin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const RemoveUserFromCommunity = () => {
     setUserError("")
     setEmail("")
     try {
-      const response = await fetch('user/find', {
+      const response = await fetch('https://strathmoreconnects-backend.onrender.com/user/find', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -16,7 +16,7 @@ const Communities = () => {
 
     useEffect(() => {
         const fetchCommunity = async () => {
-            const response = await fetch('/community')
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community')
 
             const json = await response.json()
 
@@ -105,7 +105,7 @@ const Communities = () => {
 
     const manageState = async () => {
         const fetchCommunity = async () => {
-            const response = await fetch('/community')
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community')
 
             const json = await response.json()
 

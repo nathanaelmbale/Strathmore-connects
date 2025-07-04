@@ -19,7 +19,7 @@ const CommunityPost = () => {
         console.log("Hello World")
 
         const fetchCommunity = async () => {
-            const response = await fetch('/community', {
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
 
@@ -84,7 +84,7 @@ const CommunityPost = () => {
                         }
 
                         try {
-                            const response = await fetch('user/notification/add', {
+                            const response = await fetch('https://strathmoreconnects-backend.onrender.com/user/notification/add', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',

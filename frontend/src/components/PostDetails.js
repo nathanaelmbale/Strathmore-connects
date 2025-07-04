@@ -33,7 +33,7 @@ function PostDetails() {
 
         //post the notification to the user
         try {
-            const response = await fetch('/user/notification/add', {
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/user/notification/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function PostDetails() {
             user: user.email
         }
         try {
-            const response = await fetch('/post/comment', {
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/post/comment', {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ function PostDetails() {
             commentId: commentId
         }
         try {
-            const response = await fetch('/post/uncomment', {
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/post/uncomment', {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ function PostDetails() {
                         notificationId: postId
                     }
 
-                    const response = await fetch('/user/notification/delete', {
+                    const response = await fetch('https://strathmoreconnects-backend.onrender.com/user/notification/delete', {
                         method: "DELETE",
                         headers: {
                             'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ function PostDetails() {
     useEffect(() => {
         //fetch posts
         const fetchPosts = async () => {
-            const response = await fetch('/post')
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/post')
             const json = await response.json()
             //console.log(JSON.stringify(json)) --the posts
 

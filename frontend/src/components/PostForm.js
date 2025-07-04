@@ -66,7 +66,7 @@ const PostForm = () => {
                         }
 
                         try {
-                            const response = await fetch('user/notification/add', {
+                            const response = await fetch('https://strathmoreconnects-backend.onrender.com/user/notification/add', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ const PostForm = () => {
 
     useEffect(() => {
         const fetchCommunity = async () => {
-            const response = await fetch('/community', {
+            const response = await fetch('https://strathmoreconnects-backend.onrender.com/community', {
                 headers: { 'Authorization': `Bearer ${user.token}` },
             })
             const json = await response.json()

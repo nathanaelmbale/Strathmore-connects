@@ -11,7 +11,7 @@ export const useSignup = () => {
         setError(null)
         console.log(JSON.stringify({name ,email ,password}))
 
-        const response = await fetch('/user/signup', {
+        const response = await fetch('https://strathmoreconnects-backend.onrender.com/user/signup', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({name ,email ,password })
