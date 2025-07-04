@@ -29,7 +29,7 @@ const Navbar = () => {
                 <div className='mx-auto w-10/12'>
                     <div className='flex  items-center justify-between '>
                         <div className='flex items-center basis-3/4'>
-                            <a href='/home' aria-label='go to home page' className='hover:text-blue-900 pr-3
+                            <a href='/' aria-label='go to home page' className='hover:text-blue-900 pr-3
                              flex items-center justify-center h-14 focus:outline-none focus-visible:ring-2 ring-blue-400
                              rounded-md ring-offset-2 ring-offset-transparent'>
                                 <span className='font-bold text-xl ml-3'>SC</span>
