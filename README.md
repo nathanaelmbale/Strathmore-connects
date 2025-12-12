@@ -11,41 +11,329 @@ Here is the link to the website
 https://strathmoreconnects.netlify.app/
 ```
 
+Strathmore University Community Platform
 
-Strathmore University is facing a significant challenge in effectively communicating information about clubs and societies to its students. The current system relies heavily on email, which has proven to be inadequate in providing timely and relevant updates to the university community. Consequently, students are missing out on essential information such as registration deadlines for extracurricular activities, resulting in reduced participation and engagement in these activities.
+A full-stack web platform designed to centralize communication for Strathmore University clubs and societies.
+It replaces scattered announcements across email, WhatsApp, Teams, and Slack with a single place for communities, posts, comments, membership, and notifications.
 
-Furthermore, the process of connecting students with similar interests is time-consuming, as students are required to visit the clubs office at specific times to learn about the different clubs and their eligibility criteria. As a result, there is a need for an exclusive application that is only available to Strathmore students, which can provide the Strathmore experience beyond academic activities.
+🔍 Problem
 
-This application would enable students to connect with like-minded individuals with just a click of a button and receive real-time updates on activities happening in the communities they have subscribed to. This would also help new students feel more at home by facilitating connections with other students who share similar interests.
+Students miss important updates, deadlines, and opportunities because communication is spread across multiple platforms. Email overload is common and students often ignore messages.
+There is no unified system for:
+
+Event announcements
+
+Club membership management
+
+Community interactions
+
+Centralized updates
+
+This project solves the communication gap by giving students and club leaders a single structured platform.
+
+🎯 Objectives
+
+Provide a unified dashboard for all clubs and societies
+
+Allow students to join, follow, and interact with communities
+
+Give admins tools to manage posts, comments, and membership
+
+Support secure authentication with proper access control
+
+Enable real-time-style updates through a notification system
+
+🏗️ Features
+Authentication
+
+Signup and login
+
+JWT-based authentication
+
+Password encryption using bcrypt
+
+Role-based access control
+
+Protected routes using middleware
+
+User Roles
+
+Student — join communities, view posts, comment
+
+Admin — manage communities, posts, and members
+
+Main Admin — full platform control
+
+Communities
+
+Create community
+
+Delete community
+
+Join / unjoin functions
+
+View all communities
+
+Role-based admin actions
+
+Posts
+
+Create posts with images (Firebase storage)
+
+Delete posts
+
+View posts by community
+
+Author validation rules
+
+Comments
+
+Add comments
+
+Delete comments
+
+Nested replies
+
+Moderation tied to user roles
+
+Notifications
+
+Triggered when communities create posts
+
+User-specific notifications
+
+Delete notifications
+
+🧰 Tech Stack
+Frontend
+
+React
+
+Context API for state management
+
+Firebase for image storage
+
+Fetch API for server communication
+
+Backend
+
+Node.js
+
+Express.js
+
+JWT for authentication
+
+bcrypt for hashing
+
+Middleware for protected routes
+
+Database
+
+MongoDB
+
+Mongoose ORM
+
+Tools
+
+Postman for API testing
+
+Git + GitHub
+
+VS Code
+
+Draw.io for diagrams
+
+Deployment
+
+Frontend: Netlify
+
+Backend: Render
+
+🔐 API Structure (Simplified)
+/user
+
+POST /signup
+
+POST /login
+
+GET /current
+
+Protected user routes
+
+/community
+
+POST /create
+
+DELETE /:id
+
+GET /all
+
+POST /join/:id
+
+POST /leave/:id
+
+/post
+
+POST /create
+
+DELETE /:id
+
+GET /community/:id
+
+🧪 Testing
+API Testing
+
+Used Postman to test all route responses
+
+Tested JWT expiry
+
+Tested unauthorized route restrictions
+
+Validated error handling with try/catch blocks
+
+Security Testing
+
+Password hashing verified
+
+JWT integrity tested
+
+Validation tests for missing fields
+
+Ensured admins cannot delete content in other communities
+
+Frontend Testing
+
+Manual component testing
+
+State verification using Context API
+
+Tested form validation and image uploads
+
+🧱 System Architecture
+Main Components
+
+Client (React)
+
+Server (Express)
+
+Database (MongoDB)
+
+Storage (Firebase)
+
+Flow
+
+User interacts with React UI
+
+Frontend sends requests to Express API
+
+Middleware validates JWT tokens
+
+MongoDB stores and returns structured data
+
+Firebase stores static files
+
+React renders updated state
+
+🔄 CI/CD (In Progress)
+
+GitHub Actions pipeline includes:
+
+Linting with ESLint
+
+Formatting with Prettier
+
+Install dependencies
+
+Build frontend
+
+Test backend routes
+
+Push to Netlify / Render
+
+More steps planned:
+
+Backend unit tests
+
+E2E tests
+
+Docker support
+
+🧗 Challenges
+
+Designing secure JWT authentication
+
+Handling Firebase uploads inside post creation
+
+Managing state across authentication, posts, communities, and comments
+
+Handling role-based permissions
+
+Debugging MongoDB validation errors
+
+Synchronizing frontend state after backend mutations
+
+📚 What I Learned
+
+Full-stack web systems from architecture to deployment
+
+Real authentication patterns using JWT + bcrypt
+
+Building modular Express routes with middleware
+
+Structuring MongoDB schemas
+
+State management strategies in React
+
+Writing secure APIs
+
+Planning and diagramming systems (ERD, Use Cases, Sequence)
+
+Agile iteration and testing cycles
+
+🚀 Future Improvements
+
+Fully rewrite frontend in Next.js
+
+Rewrite backend in Rust for speed and safety
+
+Add TypeScript for type-safe frontend and backend
+
+Replace Firebase with unified backend storage
+
+Add real-time notifications (websockets)
+
+Implement automated testing
+
+Add Docker for local dev and deployment
+
+Improve UI/UX design
+
+📦 Installation
+
+Clone repo:
+
+git clone https://github.com/yourusername/yourrepo.git
 
 
-<h2 >Implementation</h2>
+Backend setup:
 
-<p>
-To improve communication at Strathmore University through a dedicated social media platform, a powerful web application needs to be developed. The MERN stack is an excellent choice for this project, as it provides a robust and scalable solution for handling user data, community data, and posts data.
-</p>
-<p>
-Here is a breakdown of the MERN stack components and other tools that can be used to develop the application:
-    <ol>
-<li>MongoDB 🍃: This is a popular NoSQL database that provides a flexible and scalable way to store data. It is used to store community data, user data, and posts data.</li>
-<li>Express ✨: This is a lightweight web application framework for Node.js. It is used to start the local application and handle server-side logic.</li>
-<li>React 🔵: This is a popular JavaScript library for building user interfaces. It is used to create a responsive and user-friendly interface for users to access the social media platform.</li>
-<li>Node.js 🌳: This is a server-side JavaScript runtime environment. It is used to execute JavaScript code on the server-side and handle requests and responses.</li>
-<li>Firebase🔥🚒: This is a cloud-based platform that provides a variety of tools and services for app development. It can be used to handle image uploads for user profiles and posts.</li>
-        </ol>
-    </p>
-<p>
-In addition, several packages and tools can be used in the development process, including:
-    <ul>
-<li>JSON Web Token (JWT): This is a popular tool for user authentication. It can be used to secure user data and authorize access to certain features of the application.</li>
-<li>
-Mongoose: This is an Object Data Modeling (ODM) library for MongoDB. It provides a simple and elegant way to interact with the MongoDB database.</li>
-<li>
-Npm: This is the Node Package Manager. It is used to install and manage dependencies for the application.
-    </li>
-        </ul>
-Overall, using the MERN stack and other tools described above, a powerful and user-friendly social media platform can be developed to improve communication and engagement within the Strathmore University community.
-</p>
+cd backend
+npm install
+npm start
 
 
+Frontend setup:
 
+cd frontend
+npm install
+npm start
+
+
+Environment variables must include:
+
+MONGO_URI=
+JWT_SECRET=
+FIREBASE_API_KEY=
+FIREBASE_PROJECT_ID=
+
+📸 Screenshots (Optional)
