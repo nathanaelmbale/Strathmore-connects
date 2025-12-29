@@ -1,15 +1,13 @@
 <h1> <span style="color:blue">Strathmore Connects⚡⚡ </span></h1>
 
 
+## 📋 Quick Summary
 
-Here is the link to the website
-```
-https://strathmoreconnects.netlify.app/
-```
+Strathmore Connects is a full-stack community platform that centralizes communication for Strathmore University clubs and societies. Built with React, Node.js/Express, and MongoDB, it provides role-based access control, post management, nested comments, and notifications. The platform features JWT authentication, Firebase image storage, and automated CI/CD pipelines that run unit tests and deploy to Netlify (frontend) and Render (backend) on every push.
 
-# Strathmore University Community Platform
+**Live Site:** [strathmoreconnects.netlify.app](https://strathmoreconnects.netlify.app/)
 
-A full-stack web platform designed to centralize communication for Strathmore University clubs and societies. It replaces scattered announcements across email, WhatsApp, Teams, and Slack with a single place for communities, posts, comments, membership, and notifications.
+
 
 ## 🔍 Problem
 
@@ -32,70 +30,43 @@ This project solves the communication gap by giving students and club leaders a 
 
 ## 🏗️ Features
 
-### Authentication
-- Signup and login
-- JWT-based authentication
+## 🎯 Features
+
+### Authentication & Authorization
+- JWT-based secure authentication
 - Password encryption using bcrypt
-- Role-based access control
-- Protected routes using middleware
+- Role-based access control (Student, Admin, Main Admin)
+- Protected routes with middleware validation
 
-### User Roles
-- **Student** — join communities, view posts, comment  
-- **Admin** — manage communities, posts, and members  
-- **Main Admin** — full platform control
+### Community Management
+- Create and delete communities
+- Join/leave communities
+- Browse all communities
+- Admin-controlled community moderation
 
-### Communities
-- Create community
-- Delete community
-- Join / unjoin functions
-- View all communities
-- Role-based admin actions
-
-### Posts
-- Create posts with images (Firebase storage)
-- Delete posts
-- View posts by community
-- Author validation rules
-
-### Comments
-- Add comments
-- Delete comments
-- Nested replies
-- Moderation tied to user roles
+### Content & Engagement
+- Create posts with image uploads (Firebase storage)
+- Nested comments and replies
+- Delete posts and comments with role validation
+- Author-based content ownership
 
 ### Notifications
-- Triggered when communities create posts
-- User-specific notifications
-- Delete notifications
+- Automated notifications when communities create posts
+- User-specific notification feeds
+- Notification management (mark read/delete)
 
-## 🧰 Tech Stack
+### CI/CD Pipeline
+- Automated testing on every push
+- Unit tests for backend routes
+- ESLint and Prettier checks
+- Automatic deployment to Netlify (frontend) and Render (backend)
+- GitHub Actions workflow integration
 
-### Frontend
-- React
-- Context API for state management
-- Firebase for image storage
-- Fetch API for server communication
-
-### Backend
-- Node.js
-- Express.js
-- JWT for authentication
-- bcrypt for hashing
-- Middleware for protected routes
-
-### Database
-- MongoDB
-- Mongoose ORM
-
-### Tools
-- Postman for API testing
-- Git + GitHub
-- VS Code
-- Draw.io for diagrams
-
-### Deployment
-- Frontend: Netlify
-- Backend: Render
+### User Experience
+- Unified dashboard for all club activities
+- Real-time-style updates
+- Responsive design
+- Centralized communication hub
 
 ## 🔐 API Structure (Simplified)
 
