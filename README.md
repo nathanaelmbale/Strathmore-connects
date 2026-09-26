@@ -6,6 +6,7 @@
 Strathmore Connects is a full-stack community platform that centralizes communication for Strathmore University clubs and societies. Built with React, Node.js/Express, and MongoDB, it provides role-based access control, post management, nested comments, and notifications. The platform features JWT authentication, Firebase image storage, and automated CI/CD pipelines that run unit tests and deploy to Netlify (frontend) and Render (backend) on every push.
 
 **Live Site:** [strathmoreconnects.netlify.app](https://strathmoreconnects.netlify.app/)
+** Documentation: ** [Strathmore application software life cycle documentation](https://docs.google.com/document/d/1mPaCYMuOlbp8mupDteNMLI4Sdyms9wmT/edit?usp=sharing&ouid=117893097989548096267&rtpof=true&sd=true)
 
 
 
